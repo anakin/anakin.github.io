@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: http://anakin.github.io/sitemap.xml
