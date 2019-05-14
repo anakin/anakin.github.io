@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Tags - Anakin- 奔向NB的生活</title>
+  <title>TCP协议细节学习 - Anakin- 奔向NB的生活</title>
   
 
 <meta name="renderer" content="webkit" />
@@ -23,7 +23,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="Anakin" />
-  <meta name="description" content="anakin sun golang github." />
+  <meta name="description" content="TCP协议中包含ip信息么 TCP协议中并不包含ip信息，ip信息是在第三层处理的，TCP中处理的是端口信息 MSS的值是如何计算的 TCP协议中" />
+
   <meta name="keywords" content="anakin, sun, github" />
 
 
@@ -34,8 +35,7 @@
 <meta name="generator" content="Hugo 0.55.5" />
 
 
-<link rel="canonical" href="http://anakin.github.io/tags/" />
-<link href="%7balternate%20%7bRSS%20application/rss&#43;xml%20%20index%20alternate%20%20false%20false%20true%20false%20false%200%7d%20/tags/index.xml%20http://anakin.github.io/tags/index.xml%7d" rel="alternate" type="application/rss+xml" title="Anakin- 奔向NB的生活" />
+<link rel="canonical" href="http://anakin.github.io/post/tcp-detail/" />
 
 
 
@@ -57,19 +57,27 @@
 
 
 
-<meta property="og:title" content="Tags" />
-<meta property="og:description" content="anakin sun golang github." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="http://anakin.github.io/tags/" />
+<meta property="og:title" content="TCP协议细节学习" />
+<meta property="og:description" content="TCP协议中包含ip信息么 TCP协议中并不包含ip信息，ip信息是在第三层处理的，TCP中处理的是端口信息 MSS的值是如何计算的 TCP协议中" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://anakin.github.io/post/tcp-detail/" />
+<meta property="article:published_time" content="2019-05-14T12:34:43&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-14T12:34:43&#43;08:00"/>
 
-<meta property="og:updated_time" content="2019-05-14T12:34:43&#43;08:00"/>
+<meta itemprop="name" content="TCP协议细节学习">
+<meta itemprop="description" content="TCP协议中包含ip信息么 TCP协议中并不包含ip信息，ip信息是在第三层处理的，TCP中处理的是端口信息 MSS的值是如何计算的 TCP协议中">
 
-<meta itemprop="name" content="Tags">
-<meta itemprop="description" content="anakin sun golang github.">
 
+<meta itemprop="datePublished" content="2019-05-14T12:34:43&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-14T12:34:43&#43;08:00" />
+<meta itemprop="wordCount" content="1702">
+
+
+
+<meta itemprop="keywords" content="TCP," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Tags"/>
-<meta name="twitter:description" content="anakin sun golang github."/>
+<meta name="twitter:title" content="TCP协议细节学习"/>
+<meta name="twitter:description" content="TCP协议中包含ip信息么 TCP协议中并不包含ip信息，ip信息是在第三层处理的，TCP中处理的是端口信息 MSS的值是如何计算的 TCP协议中"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -228,7 +236,7 @@
 
       </li>
     
-        <li class="menu-item active">
+        <li class="menu-item">
         
           
           
@@ -260,67 +268,195 @@
     <main id="main" class="main bg-llight">
       <div class="content-wrapper">
         <div id="content" class="content container">
-          
-  
-  
-  
-  
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">TCP协议细节学习</h1>
+      
+      <div class="post-meta">
+        <time datetime="2019-05-14" class="post-time">
+          2019-05-14
+        </time>
+        
+        
 
-  
-  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <div class="tag-cloud" style="padding: 5px 15px">
-      <div class="tag-cloud-title">
-        3 Tags In Total
+        
+        
+
+        
+        
       </div>
-      <div class="tag-cloud-tags">
+    </header>
+
+    
+    
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Table of Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#tcp协议中包含ip信息么">TCP协议中包含ip信息么</a></li>
+<li><a href="#mss的值是如何计算的">MSS的值是如何计算的</a></li>
+<li><a href="#四次挥手的原因">四次挥手的原因</a></li>
+<li><a href="#time-wait状态">TIME-WAIT状态</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+
+    
+    <div class="post-content">
       
-        
-        
-        
-        
-        
-        
-        
-        <a href="http://anakin.github.io/tags/gc/"
-          style="font-size:1rem">gc</a>
-        
-      
-        
-        
-        
-        
-        
-        
-        
-        <a href="http://anakin.github.io/tags/golang/"
-          style="font-size:1rem">golang</a>
-        
-      
-        
-        
-        
-        
-        
-        
-        
-        <a href="http://anakin.github.io/tags/tcp/"
-          style="font-size:1rem">tcp</a>
-        
-      
-      </div>
+
+<h2 id="tcp协议中包含ip信息么">TCP协议中包含ip信息么</h2>
+
+<p>TCP协议中并不包含ip信息，ip信息是在第三层处理的，TCP中处理的是端口信息</p>
+
+<h2 id="mss的值是如何计算的">MSS的值是如何计算的</h2>
+
+<p>TCP协议中可选的MSS（Maximum Segment Size，最大报文长度））参数，一般使用MTU代替，值为1460。这个值是怎么来的呢？
+Maximum Transmission Unit，缩写MTU，中文名是：最大传输单元。
+假设MTU值和IP数据包大小一致，一个IP数据包的大小是：65535，那么加上以太网帧头和为，一个以太网帧的大小就是：65535 + 14 + 4 = 65553，看起来似乎很完美，发送方也不需要拆包，接收方也不需要重组。
+那么假设我们现在的带宽是：100Mbps，因为以太网帧是传输中的最小可识别单元，再往下就是0101所对应的光信号了，所以我们的一条带宽同时只能发送一个以太网帧。如果同时发送多个，那么对端就无法重组成一个以太网帧了，在100Mbps的带宽中（假设中间没有损耗），我们计算一下发送这一帧需要的时间：</p>
+
+<pre><code>( 65553 * 8 ) / ( 100 * 1024 * 1024 ) ≈ 0.005(s)
+</code></pre>
+
+<p>在100M网络下传输一帧就需要5ms，也就是说这5ms其他进程发送不了任何数据。如果是早先的电话拨号，网速只有2M的情况下：</p>
+
+<pre><code>( 65553 * 8 ) / ( 2 * 1024 * 1024 ) ≈ 0.100(s)
+</code></pre>
+
+<p>100ms，这简直是噩梦。其实这就像红绿灯，时间要设置合理，交替通行，不然同一个方向如果一直是绿灯，那么另一个方向就要堵成翔了。
+既然大了不行，那设置小一点可以么？
+假设MTU值设置为100，那么单个帧传输的时间，在2Mbps带宽下需要：</p>
+
+<pre><code>( 100 * 8 ) / ( 2 * 1024 * 1024 ) * 1000 ≈ 5(ms)
+</code></pre>
+
+<p>时间上已经能接受了，问题在于，不管MTU设置为多少，以太网头帧尾大小是固定的，都是14 + 4，所以在MTU为100的时候，一个以太网帧的传输效率为：</p>
+
+<pre><code>( 100 - 14 - 4 ) / 100 = 82%
+</code></pre>
+
+<p>写成公式就是：( T - 14 - 4 ) / T，当T趋于无穷大的时候，效率接近100%，也就是MTU的值越大，传输效率最高，但是基于上一点传输时间的问题，来个折中的选择吧，既然头加尾是18，那就凑个整来个1500，总大小就是1518，传输效率：</p>
+
+<pre><code>1500 / 1518 =  98.8%
+</code></pre>
+
+<p>100Mbps传输时间：</p>
+
+<pre><code>( 1518 * 8 ) / ( 100 * 1024 * 1024 ) * 1000 = 0.11(ms)
+</code></pre>
+
+<p>2Mbps传输时间：</p>
+
+<pre><code>( 1518 * 8 ) / ( 2 * 1024 * 1024 ) * 1000 = 5.79(ms)
+</code></pre>
+
+<p>总体上时间都还能接受
+因此，1500，是一个折中的结果而已，这就是为啥路由器上一般都设置成这个值。
+另外，如果使用PPPoE协议（ADSL）,就需要设置成更小的值，为啥呢，。
+PPPoE协议头信息为:</p>
+
+<pre><code>| VER(4bit) | TYPE(4bit) | CODE(8bit) | SESSION-ID(16bit) | LENGTH(16bit) |
+</code></pre>
+
+<p>这里总共是48位，也就是6个字节，那么另外2个字节是什么呢？答案是PPP协议的ID号，占用两个字节，所以在PPPoE环境下，最佳MTU值应该是：1500 - 4 - 2 = 1492
+说回来，MTU的值的计算，需要从1500中减去IP数据包包头的大小20Bytes和TCP数据段的包头20Bytes，最后就得到了1460。</p>
+
+<h2 id="四次挥手的原因">四次挥手的原因</h2>
+
+<p>TCP连接是全双工的，即一端接收到FIN报时，对端虽然不再能发送数据，但是可以接收数据，所以需要两边都关闭连接才算完全关闭了这条TCP连接。</p>
+
+<h2 id="time-wait状态">TIME-WAIT状态</h2>
+
+<p>主动关闭的一方收到对端发出的FIN报之后，就从FIN-WAIT-2状态切换到TIME-WAIT状态了，再等待2MSL时间才再切换到CLOSED状态。这么做的原因在于：</p>
+
+<p>确保被动关闭的一方有足够的时间收到ACK，如果没有收到会触发重传。
+有足够的时间，以让该连接不会与后面的连接混在一起。
+TIME-WAIT状态如果过多，会占用系统资源。Linux下有几个参数可以调整TIME-WAIT状态时间：</p>
+
+<p>net.ipv4.tcp_tw_reuse = 1 表示开启重用。允许将TIME-WAIT sockets重新用于新的TCP连接，默认为0，表示关闭。</p>
+
+<p>net.ipv4.tcp_tw_recycle = 1 表示开启TCP连接中TIME-WAIT sockets的快速回收，默认为0，表示关闭。</p>
+
+<p>net.ipv4.tcp_max_tw_buckets = 5000表示系统同时保持TIME_WAIT套接字的最大数量，如果超过这个数字，TIME_WAIT套接字将立刻被清除并打印警告信息。默认为180000，改为5000。</p>
+
+<p>然而，从TCP状态转换图可以看出，主动进行关闭的链接才会进入TIME-WAIT状态，所以最好的办法：尽量不要让服务器主动关闭链接，除非一些异常情况，如客户端协议错误、客户端超时等等。</p>
+
     </div>
+
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Anakin</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2019-05-14</span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="http://anakin.github.io/tags/tcp/">TCP</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+        
+          <a class="next" href="/post/golang-gc/">
+            <span class="next-text nav-default">Golang的GC学习</span>
+            <span class="prev-text nav-mobile">Next</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+
   
   
 
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+    
 
         </div>
       </div>

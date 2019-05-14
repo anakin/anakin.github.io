@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Tags - Anakin- 奔向NB的生活</title>
+  <title>Golang的GC学习 - Anakin- 奔向NB的生活</title>
   
 
 <meta name="renderer" content="webkit" />
@@ -23,7 +23,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="Anakin" />
-  <meta name="description" content="anakin sun golang github." />
+  <meta name="description" content="STW触发的时间 一次GC有两次触发STW，一次是GC的开始阶段，主要是开启写屏障和辅助GC等操作 另外就是表记完成之后，重新扫描部分根对象，禁" />
+
   <meta name="keywords" content="anakin, sun, github" />
 
 
@@ -34,8 +35,7 @@
 <meta name="generator" content="Hugo 0.55.5" />
 
 
-<link rel="canonical" href="http://anakin.github.io/tags/" />
-<link href="%7balternate%20%7bRSS%20application/rss&#43;xml%20%20index%20alternate%20%20false%20false%20true%20false%20false%200%7d%20/tags/index.xml%20http://anakin.github.io/tags/index.xml%7d" rel="alternate" type="application/rss+xml" title="Anakin- 奔向NB的生活" />
+<link rel="canonical" href="http://anakin.github.io/post/golang-gc/" />
 
 
 
@@ -57,19 +57,27 @@
 
 
 
-<meta property="og:title" content="Tags" />
-<meta property="og:description" content="anakin sun golang github." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="http://anakin.github.io/tags/" />
+<meta property="og:title" content="Golang的GC学习" />
+<meta property="og:description" content="STW触发的时间 一次GC有两次触发STW，一次是GC的开始阶段，主要是开启写屏障和辅助GC等操作 另外就是表记完成之后，重新扫描部分根对象，禁" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://anakin.github.io/post/golang-gc/" />
+<meta property="article:published_time" content="2019-05-12T23:05:48&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-12T23:05:48&#43;08:00"/>
 
-<meta property="og:updated_time" content="2019-05-14T12:34:43&#43;08:00"/>
+<meta itemprop="name" content="Golang的GC学习">
+<meta itemprop="description" content="STW触发的时间 一次GC有两次触发STW，一次是GC的开始阶段，主要是开启写屏障和辅助GC等操作 另外就是表记完成之后，重新扫描部分根对象，禁">
 
-<meta itemprop="name" content="Tags">
-<meta itemprop="description" content="anakin sun golang github.">
 
+<meta itemprop="datePublished" content="2019-05-12T23:05:48&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-12T23:05:48&#43;08:00" />
+<meta itemprop="wordCount" content="293">
+
+
+
+<meta itemprop="keywords" content="golang,gc," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Tags"/>
-<meta name="twitter:description" content="anakin sun golang github."/>
+<meta name="twitter:title" content="Golang的GC学习"/>
+<meta name="twitter:description" content="STW触发的时间 一次GC有两次触发STW，一次是GC的开始阶段，主要是开启写屏障和辅助GC等操作 另外就是表记完成之后，重新扫描部分根对象，禁"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -228,7 +236,7 @@
 
       </li>
     
-        <li class="menu-item active">
+        <li class="menu-item">
         
           
           
@@ -260,67 +268,143 @@
     <main id="main" class="main bg-llight">
       <div class="content-wrapper">
         <div id="content" class="content container">
-          
-  
-  
-  
-  
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">Golang的GC学习</h1>
+      
+      <div class="post-meta">
+        <time datetime="2019-05-12" class="post-time">
+          2019-05-12
+        </time>
+        
+        
 
-  
-  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <div class="tag-cloud" style="padding: 5px 15px">
-      <div class="tag-cloud-title">
-        3 Tags In Total
+        
+        
+
+        
+        
       </div>
-      <div class="tag-cloud-tags">
+    </header>
+
+    
+    
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Table of Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#stw触发的时间">STW触发的时间</a></li>
+<li><a href="#gc的触发条件">GC的触发条件</a></li>
+<li><a href="#三色标记的过程">三色标记的过程</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+
+    
+    <div class="post-content">
       
-        
-        
-        
-        
-        
-        
-        
-        <a href="http://anakin.github.io/tags/gc/"
-          style="font-size:1rem">gc</a>
-        
-      
-        
-        
-        
-        
-        
-        
-        
-        <a href="http://anakin.github.io/tags/golang/"
-          style="font-size:1rem">golang</a>
-        
-      
-        
-        
-        
-        
-        
-        
-        
-        <a href="http://anakin.github.io/tags/tcp/"
-          style="font-size:1rem">tcp</a>
-        
-      
-      </div>
+
+<h2 id="stw触发的时间">STW触发的时间</h2>
+
+<p>一次GC有两次触发STW，一次是GC的开始阶段，主要是开启写屏障和辅助GC等操作
+另外就是表记完成之后，重新扫描部分根对象，禁用写屏障</p>
+
+<h2 id="gc的触发条件">GC的触发条件</h2>
+
+<p>GC在满足一定条件后会被触发, 触发条件有以下几种:</p>
+
+<ul>
+<li>gcTriggerAlways: 强制触发GC</li>
+<li>gcTriggerHeap: 当前分配的内存达到一定值就触发GC</li>
+<li>gcTriggerTime: 当一定时间没有执行过GC就触发GC</li>
+<li>gcTriggerCycle: 要求启动新一轮的GC, 已启动则跳过, 手动触发GC的runtime.GC()会使用这个条件</li>
+</ul>
+
+<h2 id="三色标记的过程">三色标记的过程</h2>
+
+<ul>
+<li>所有对象最开始都是白色。</li>
+<li>从 root 开始找到所有可达对象，标记为灰色，放入待处理队列。</li>
+<li>遍历灰色对象队列，将其引用对象标记为灰色放入待处理队列，自身标记为黑色。</li>
+<li>处理完灰色对象队列，执行清扫工作。</li>
+</ul>
+
     </div>
+
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Anakin</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2019-05-12</span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="http://anakin.github.io/tags/golang/">golang</a>
+          <a href="http://anakin.github.io/tags/gc/">gc</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/post/tcp-detail/">
+            
+            <i class="iconfont">
+              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
+</svg>
+
+            </i>
+            <span class="prev-text nav-default">TCP协议细节学习</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+      </nav>
+    </footer>
+  </article>
+
   
   
 
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+    
 
         </div>
       </div>

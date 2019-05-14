@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Anakin- 奔向NB的生活</title>
+    <link>http://anakin.github.io/post/</link>
+    <description>Recent content in Posts on Anakin- 奔向NB的生活</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 14 May 2019 12:34:43 +0800</lastBuildDate>
+    
+	<atom:link href="http://anakin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>TCP协议细节学习</title>
+      <link>http://anakin.github.io/post/tcp-detail/</link>
+      <pubDate>Tue, 14 May 2019 12:34:43 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/tcp-detail/</guid>
+      <description>TCP协议中包含ip信息么 TCP协议中并不包含ip信息，ip信息是在第三层处理的，TCP中处理的是端口信息 MSS的值是如何计算的 TCP协议中</description>
+    </item>
+    
+    <item>
+      <title>Golang的GC学习</title>
+      <link>http://anakin.github.io/post/golang-gc/</link>
+      <pubDate>Sun, 12 May 2019 23:05:48 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/golang-gc/</guid>
+      <description>STW触发的时间 一次GC有两次触发STW，一次是GC的开始阶段，主要是开启写屏障和辅助GC等操作 另外就是表记完成之后，重新扫描部分根对象，禁</description>
+    </item>
+    
+  </channel>
+</rss>
