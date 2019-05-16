@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 14 May 2019 12:34:43 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 16 May 2019 20:11:09 +0800</lastBuildDate>
     
 	<atom:link href="http://anakin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Golang利用redis实现分布式锁</title>
+      <link>http://anakin.github.io/post/golang-redis-lock/</link>
+      <pubDate>Thu, 16 May 2019 20:11:09 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/golang-redis-lock/</guid>
+      <description>原理 使用SETNX命令(SET if Not eXists) SETNX key value 将 key 的值设为 value，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。 设置成功，返回 1 。</description>
+    </item>
     
     <item>
       <title>TCP协议细节学习</title>

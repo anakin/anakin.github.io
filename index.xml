@@ -6,10 +6,129 @@
     <description>Recent content on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 14 May 2019 12:34:43 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 16 May 2019 20:11:09 +0800</lastBuildDate>
     
         <atom:link href="http://anakin.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Golang利用redis实现分布式锁</title>
+      <link>http://anakin.github.io/post/golang-redis-lock/</link>
+      <pubDate>Thu, 16 May 2019 20:11:09 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/golang-redis-lock/</guid>
+      
+        <description>
+
+&lt;h2 id=&#34;原理&#34;&gt;原理&lt;/h2&gt;
+
+&lt;p&gt;使用SETNX命令(SET if Not eXists)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SETNX key value
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将 key 的值设为 value，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。&lt;/p&gt;
+
+&lt;p&gt;设置成功，返回 1 。&lt;/p&gt;
+
+&lt;p&gt;设置失败，返回 0 。&lt;/p&gt;
+
+&lt;p&gt;为防止获取锁之后，忘记删除，成功后再设置一个过期时间&lt;/p&gt;
+
+&lt;p&gt;以上就是利用redis实现分布式锁的原理&lt;/p&gt;
+
+&lt;h2 id=&#34;代码&#34;&gt;代码&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+import (
+	&amp;quot;fmt&amp;quot;
+	&amp;quot;github.com/gomodule/redigo/redis&amp;quot;
+	&amp;quot;log&amp;quot;
+	&amp;quot;time&amp;quot;
+)
+
+type Lock struct {
+	resource string
+	token    string
+	conn     redis.Conn
+	timeout  int
+}
+
+func (lock *Lock) tryLock() (ok bool, err error) {
+	_, err = redis.String(lock.conn.Do(&amp;quot;SET&amp;quot;, lock.key(), lock.token, &amp;quot;EX&amp;quot;, int(lock.timeout), &amp;quot;NX&amp;quot;))
+	if err == redis.ErrNil {
+		return false, nil
+	}
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+func (lock *Lock) Unlock() (err error) {
+	_, err = lock.conn.Do(&amp;quot;del&amp;quot;, lock.key())
+	return
+}
+
+func (lock *Lock) key() string {
+	return fmt.Sprintf(&amp;quot;redislock:%s&amp;quot;, lock.resource)
+}
+
+func (lock *Lock) AddTimeout(ex_time int64) (ok bool, err error) {
+	ttl_time, err := redis.Int64(lock.conn.Do(&amp;quot;TTL&amp;quot;, lock.key()))
+	fmt.Println(ttl_time)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if ttl_time &amp;gt; 0 {
+		fmt.Println(11)
+		_, err := redis.String(lock.conn.Do(&amp;quot;SET&amp;quot;, lock.key(), lock.token, &amp;quot;EX&amp;quot;, int(ttl_time+ex_time)))
+		if err == redis.ErrNil {
+			return false, nil
+		}
+		if err != nil {
+			return false, err
+		}
+	}
+	return false, nil
+}
+
+func TryLock(conn redis.Conn, resource string, token string, DefaultTimeout int) (lock *Lock, ok bool, err error) {
+	return TryLockWithTimeout(conn, resource, token, DefaultTimeout)
+}
+
+func TryLockWithTimeout(conn redis.Conn, resource string, token string, timeout int) (lock *Lock, ok bool, err error) {
+	lock = &amp;amp;Lock{resource: resource, token: token, conn: conn, timeout: timeout}
+	ok, err = lock.tryLock()
+	if !ok || err != nil {
+		lock = nil
+	}
+	return
+}
+
+func main() {
+	fmt.Println(&amp;quot;start&amp;quot;)
+	DefaultTimeout := 10
+	conn, err := redis.Dial(&amp;quot;tcp&amp;quot;, &amp;quot;localhost:6379&amp;quot;)
+	if err != nil {
+		log.Fatal(err)
+	}
+	lock, ok, err := TryLock(conn, &amp;quot;anakin.sun&amp;quot;, &amp;quot;token&amp;quot;, int(DefaultTimeout))
+	if err != nil {
+		log.Fatal(&amp;quot;error lock&amp;quot;)
+	}
+	if !ok {
+		log.Fatal(&amp;quot;lock fail&amp;quot;)
+	}
+	lock.AddTimeout(100)
+	time.Sleep(time.Duration(DefaultTimeout) * time.Second)
+	fmt.Println(&amp;quot;end&amp;quot;)
+	defer lock.Unlock()
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+      
+    </item>
     
     <item>
       <title>TCP协议细节学习</title>
