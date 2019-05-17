@@ -21,6 +21,18 @@
   </url>
   
   <url>
+    <loc>http://anakin.github.io/tags/</loc>
+    <lastmod>2019-05-17T13:22:22+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/redis/</loc>
+    <lastmod>2019-05-17T13:22:22+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://anakin.github.io/post/golang-redis-lock/</loc>
     <lastmod>2019-05-16T20:11:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -38,12 +50,6 @@
     <lastmod>2019-05-14T12:34:43+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://anakin.github.io/tags/</loc>
-    <lastmod>2019-05-14T12:34:43+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
