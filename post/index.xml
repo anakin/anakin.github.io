@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 16 May 2019 20:11:09 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 17 May 2019 13:22:22 +0800</lastBuildDate>
     
 	<atom:link href="http://anakin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Redis持久化</title>
+      <link>http://anakin.github.io/post/redis-rdb-aof/</link>
+      <pubDate>Fri, 17 May 2019 13:22:22 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/redis-rdb-aof/</guid>
+      <description>redis的持久化有两种方式，RDB和AOF ## RDB: 在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成</description>
+    </item>
     
     <item>
       <title>Golang利用redis实现分布式锁</title>

@@ -3,8 +3,21 @@
   
   <url>
     <loc>http://anakin.github.io/</loc>
-    <lastmod>2019-05-16T20:11:09+08:00</lastmod>
+    <lastmod>2019-05-17T13:22:22+08:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/post/</loc>
+    <lastmod>2019-05-17T13:22:22+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/post/redis-rdb-aof/</loc>
+    <lastmod>2019-05-17T13:22:22+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -12,12 +25,6 @@
     <lastmod>2019-05-16T20:11:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://anakin.github.io/post/</loc>
-    <lastmod>2019-05-16T20:11:09+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
