@@ -6,10 +6,65 @@
     <description>Recent content on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 17 May 2019 13:22:22 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 19 May 2019 22:52:01 +0800</lastBuildDate>
     
         <atom:link href="http://anakin.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Etcd实现MVCC的原理</title>
+      <link>http://anakin.github.io/post/etcd-mvcc/</link>
+      <pubDate>Sun, 19 May 2019 22:52:01 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/etcd-mvcc/</guid>
+      
+        <description>
+
+&lt;p&gt;etcd满足的是CAP理论中的CP，实现了最终的强一致，使用Raft协议，Quorum机制（大多数同意原则）,&lt;/p&gt;
+
+&lt;h2 id=&#34;mvcc的意思&#34;&gt;MVCC的意思&lt;/h2&gt;
+
+&lt;p&gt;Multi-Version Concurrency Control 多版本并发控制，目的是为了实现并发访问&lt;/p&gt;
+
+&lt;h2 id=&#34;实现原理&#34;&gt;实现原理&lt;/h2&gt;
+
+&lt;p&gt;在etcd中，MVCC是如何实现的呢，先来看一下相关的代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;type revision struct {
+main int64
+sub int64
+} 
+
+type generation struct {
+ver     int64
+created revision 
+revs    []revision
+} 
+
+type keyIndex struct {
+key         []byte
+modified    revision 
+generations []generation
+} 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;根据代码，可以看出：
+* 每个tx事务有唯一事务ID，在etcd中叫做main ID，全局递增不重复。
+* 一个tx可以包含多个修改操作（put和delete），每一个操作叫做一个revision（修订），共享同一个main ID。
+* 一个tx内连续的多个修改操作会被从0递增编号，这个编号叫做sub ID。
+* 每个revision由（main ID，sub ID）唯一标识。
+* 多个版本的修改历史，保存在generations中&lt;/p&gt;
+
+&lt;p&gt;每一次操作行为都被单独记录下来，用户value保存到bbolt中。&lt;/p&gt;
+
+&lt;p&gt;在bbolt中，每个revision将作为key，即序列化（revision.main+revision.sub）作为key。因此，我们先通过内存btree在keyIndex.generations[0].revs中找到最后一条revision，即可去bbolt中读取对应的数据。&lt;/p&gt;
+
+&lt;p&gt;相应的，etcd支持按key前缀查询，其实也就是遍历btree的同时根据revision去bbolt中获取用户的value。&lt;/p&gt;
+
+&lt;p&gt;总结一下就是，内存btree维护的是用户key =&amp;gt; keyIndex的映射，keyIndex内维护多版本的revision信息，而revision可以映射到磁盘bbolt中的用户value。&lt;/p&gt;
+</description>
+      
+    </item>
     
     <item>
       <title>Redis持久化</title>

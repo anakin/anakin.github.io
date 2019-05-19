@@ -3,13 +3,38 @@
   
   <url>
     <loc>http://anakin.github.io/</loc>
-    <lastmod>2019-05-17T13:22:22+08:00</lastmod>
+    <lastmod>2019-05-19T22:52:01+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
+    <loc>http://anakin.github.io/post/etcd-mvcc/</loc>
+    <lastmod>2019-05-19T22:52:01+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>http://anakin.github.io/post/</loc>
-    <lastmod>2019-05-17T13:22:22+08:00</lastmod>
+    <lastmod>2019-05-19T22:52:01+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/</loc>
+    <lastmod>2019-05-19T22:52:01+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/etcd/</loc>
+    <lastmod>2019-05-19T22:52:01+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/mvcc/</loc>
+    <lastmod>2019-05-19T22:52:01+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -18,12 +43,6 @@
     <lastmod>2019-05-17T13:22:22+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://anakin.github.io/tags/</loc>
-    <lastmod>2019-05-17T13:22:22+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
