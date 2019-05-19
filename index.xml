@@ -49,11 +49,17 @@ generations []generation
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;根据代码，可以看出：
-* 每个tx事务有唯一事务ID，在etcd中叫做main ID，全局递增不重复。
-* 一个tx可以包含多个修改操作（put和delete），每一个操作叫做一个revision（修订），共享同一个main ID。
-* 一个tx内连续的多个修改操作会被从0递增编号，这个编号叫做sub ID。
-* 每个revision由（main ID，sub ID）唯一标识。
-* 多个版本的修改历史，保存在generations中&lt;/p&gt;
+* 每个tx事务有唯一事务ID，在etcd中叫做main ID，全局递增不重复。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;一个tx可以包含多个修改操作（put和delete），每一个操作叫做一个revision（修订），共享同一个main ID。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;一个tx内连续的多个修改操作会被从0递增编号，这个编号叫做sub ID。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;每个revision由（main ID，sub ID）唯一标识。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;多个版本的修改历史，保存在generations中&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;每一次操作行为都被单独记录下来，用户value保存到bbolt中。&lt;/p&gt;
 
