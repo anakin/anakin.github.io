@@ -6,10 +6,397 @@
     <description>Recent content on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 20 May 2019 10:57:16 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 20 May 2019 15:18:19 +0800</lastBuildDate>
     
         <atom:link href="http://anakin.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>手动搭建kubernetes集群（二）</title>
+      <link>http://anakin.github.io/post/create-k8s-2/</link>
+      <pubDate>Mon, 20 May 2019 15:18:19 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/create-k8s-2/</guid>
+      
+        <description>
+
+&lt;p&gt;根据前文准备好的环境，我们现在来一步步的搭建一个基础的k8s集群&lt;br&gt;
+&lt;code&gt;注意，这里的配置信息都是按照我自己的虚拟环境来写的。&lt;/code&gt;&lt;br&gt;
+把server01作为master节点，server02和server03作为worker节点&lt;br&gt;
+各个节点需要配置的服务和命令如下：&lt;br&gt;
+master节点上需要部署的服务包括：&lt;code&gt;etcd服务&lt;/code&gt;、&lt;code&gt;APIServer服务&lt;/code&gt;、&lt;code&gt;Scheduler服务&lt;/code&gt;、&lt;code&gt;ControllerManager服务&lt;/code&gt;、&lt;code&gt;CalicoNode服务&lt;/code&gt;、&lt;code&gt;kube-proxy服务&lt;/code&gt;、&lt;code&gt;kubectl命令&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;worker节点上需要部署的服务包括：&lt;code&gt;CalicoNode服务&lt;/code&gt;、&lt;code&gt;kubelet服务&lt;/code&gt;、&lt;code&gt;kube-proxy服务&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;步骤1-准备文件&#34;&gt;步骤1：准备文件&lt;/h2&gt;
+
+&lt;p&gt;安装k8s集群有几种方式可以选择，比如容器化的方式，比如用kubeadmin的方式，这次我们打算尝试的是使用二进制文件的方式。&lt;br&gt;
+1. 登录到master虚拟机上（server01），从github上下载安装文件的压缩包，我们使用的是1.13.6版本：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    wget https://github.com/kubernetes/kubernetes/releases/download/v1.13.6/kubernetes.tar.gz
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;解压缩&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;tar zxvf kubernetes.tar.gz
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;下载文件，进入刚刚解压好的文件夹&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd kubernetes
+./cluster/get-kube-binaries.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这个步骤因为涉及到从官网下载文件，由于墙的原因会非常缓慢或者失败，请自行上网解决。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;步骤2-master环境部署&#34;&gt;步骤2：master环境部署&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;etcd部署：&lt;br&gt;
+编写etcd服务的启动配置文件etcd.service，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=Etcd Server
+After=network.target
+After=network-online.target
+Wants=network-online.target
+Documentation=https://github.com/coreos
+
+[Service]
+Type=notify
+WorkingDirectory=/var/lib/etcd/
+ExecStart=/home/anakin/bin/etcd \
+--name=192.168.32.131 \
+--listen-client-urls=http://192.168.32.131:2379,http://127.0.0.1:2379 \
+--advertise-client-urls=http://192.168.32.131:2379 \
+--data-dir=/var/lib/etcd
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;然后执行以下命令：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cp etcd.service /lib/systemd/system/
+systemctl enable etcd.service
+mkdir -p /var/lib/etcd
+service etcd start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果没有问题的话，etcd服务应该已经跑起来了。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;APIServer部署&lt;br&gt;
+编写kube-apiserver.service文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=Kubernetes API Server
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=network.target
+[Service]
+ExecStart=/home/anakin/bin/kube-apiserver \
+--admission-control=NamespaceLifecycle,LimitRanger,DefaultStorageClass,ResourceQuota,NodeRestriction \
+--insecure-bind-address=0.0.0.0 \
+--kubelet-https=false \
+--service-cluster-ip-range=10.68.0.0/16 \
+--service-node-port-range=20000-40000 \
+--etcd-servers=http://192.168.32.131:2379 \
+--enable-swagger-ui=true \
+--allow-privileged=true \
+--audit-log-maxage=30 \
+--audit-log-maxbackup=3 \
+--audit-log-maxsize=100 \
+--audit-log-path=/var/lib/audit.log \
+--event-ttl=1h \
+--v=2
+Restart=on-failure
+RestartSec=5
+Type=notify
+LimitNOFILE=65536
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后执行和启动etcd类似的命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cp kube-apiserver.service /lib/systemd/system/
+systemctl enable kube-apiserver.service
+service kube-apiserver start
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;ControllerManager部署&lt;br&gt;
+编写kube-controller-manager.service文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=Kubernetes Controller Manager
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+[Service]
+ExecStart=/home/anakin/bin/kube-controller-manager \
+--address=127.0.0.1 \
+--master=http://127.0.0.1:8080 \
+--allocate-node-cidrs=true \
+--service-cluster-ip-range=10.68.0.0/16 \
+--cluster-cidr=172.20.0.0/16 \
+--cluster-name=kubernetes \
+--leader-elect=true \
+--cluster-signing-cert-file= \
+--cluster-signing-key-file= \
+--v=2
+Restart=on-failure
+RestartSec=5
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后，同样的方式启动服务:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cp kube-controller-manager.service /lib/systemd/system/
+systemctl enable kube-controller-manager.service
+service kube-controller-manager start
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Scheduler部署&lt;br&gt;
+编写kube-scheduler.service文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=Kubernetes Scheduler
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+
+[Service]
+ExecStart=/home/anakin/bin/kube-scheduler \
+--address=127.0.0.1 \
+--master=http://127.0.0.1:8080 \
+--leader-elect=true \
+--v=2
+Restart=on-failure
+RestartSec=5
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;然后，继续上面的启动方式:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cp kube-scheduler.service /lib/systemd/system/
+systemctl enable kube-scheduler.service
+service kube-scheduler start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;CalicoNode部署
+编写kube-calico.service文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=calico node
+After=docker.service
+Requires=docker.service
+
+[Service]
+User=root
+PermissionsStartOnly=true
+ExecStart=/usr/bin/docker run --net=host --privileged --name=calico-node \
+-e ETCD_ENDPOINTS=http://192.168.32.131:2379 \
+-e CALICO_LIBNETWORK_ENABLED=true \
+-e CALICO_NETWORKING_BACKEND=bird \
+-e CALICO_DISABLE_FILE_LOGGING=true \
+-e CALICO_IPV4POOL_CIDR=172.20.0.0/16 \
+-e CALICO_IPV4POOL_IPIP=off \
+-e FELIX_DEFAULTENDPOINTTOHOSTACTION=ACCEPT \
+-e FELIX_IPV6SUPPORT=false \
+-e FELIX_LOGSEVERITYSCREEN=info \
+-e FELIX_IPINIPMTU=1440 \
+-e FELIX_HEALTHENABLED=true \
+-e IP=192.168.32.131 \
+-v /var/run/calico:/var/run/calico \
+-v /lib/modules:/lib/modules \
+-v /run/docker/plugins:/run/docker/plugins \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-v /var/log/calico:/var/log/calico \
+registry.anakin.sun.com/k8s/calico-node:v2.6.2
+ExecStop=/usr/bin/docker rm -f calico-node
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;同样的方式启动：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cp kube-calico.service /lib/systemd/system/
+systemctl enable kube-calico.service
+service kube-calico start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;kubectl命令配置
+执行以下命令(root)：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl config set-cluster kubernetes  --server=http://192.168.1.102:8080
+kubectl config set-context kubernetes --cluster=kubernetes
+kubectl config use-context kubernetes
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果有问题，可以手动修改配置文件：~/.kube/config&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;kube-proxy服务部署
+编写kube-proxy.service文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=Kubernetes Kube-Proxy Server
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=network.target
+[Service]
+WorkingDirectory=/var/lib/kube-proxy
+ExecStart=/home/anakin/bin/kube-proxy \
+--bind-address=192.168.32.131 \
+--hostname-override=192.168.32.131 \
+--kubeconfig=/etc/kubernetes/kube-proxy.kubeconfig \
+--logtostderr=true \
+--v=2
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;编写kube-proxy.kubeconfig文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apiVersion: v1
+clusters:
+- cluster:
+    server: http://192.168.32.131:8080
+  name: kubernetes
+contexts:
+- context:
+    cluster: kubernetes
+  name: default
+current-context: default
+kind: Config
+preferences: {}
+users: []
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后执行如下命令：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir -p /var/lib/kube-proxy
+cp kube-proxy.service /lib/systemd/system/
+cp kube-proxy.kubeconfig /etc/kubernetes/
+systemctl enable kube-proxy.service
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;OK,至此，master节点应该已经配置完成了。&lt;/p&gt;
+
+&lt;h2 id=&#34;步骤3-worker环境部署&#34;&gt;步骤3：worker环境部署&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;CalicoNode部署&lt;br&gt;
+参考master部分的内容&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;kube-proxy服务部署&lt;br&gt;
+参考master部分的内容&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;kubelet服务配置&lt;br&gt;
+编写kubelet.service文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=Kubernetes Kubelet
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=docker.service
+Requires=docker.service
+
+[Service]
+WorkingDirectory=/var/lib/kubelet
+ExecStart=/home/anakin/bin/kubelet \
+--address=192.168.32.131 \
+--hostname-override=192.168.32.131 \
+--pod-infra-container-image=registry.anakin.sun.com/imooc/pause-amd64:3.0 \
+--kubeconfig=/etc/kubernetes/kubelet.kubeconfig \
+--network-plugin=cni \
+--cni-conf-dir=/etc/cni/net.d \
+--cni-bin-dir=/home/anakin/bin \
+--cluster-dns=10.68.0.2 \
+--cluster-domain=cluster.local. \
+--allow-privileged=true \
+--fail-swap-on=false \
+--logtostderr=true \
+--v=2
+ExecStartPost=/sbin/iptables -A INPUT -s 10.0.0.0/8 -p tcp --dport 4194 -j ACCEPT
+ExecStartPost=/sbin/iptables -A INPUT -s 172.16.0.0/12 -p tcp --dport 4194 -j ACCEPT
+ExecStartPost=/sbin/iptables -A INPUT -s 192.168.0.0/16 -p tcp --dport 4194 -j ACCEPT
+ExecStartPost=/sbin/iptables -A INPUT -p tcp --dport 4194 -j DROP
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;编写kubelet.kubeconfig文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apiVersion: v1
+clusters:
+- cluster:
+    insecure-skip-tls-verify: true
+    server: http://192.168.32.131:8080
+  name: kubernetes
+contexts:
+- context:
+    cluster: kubernetes
+    user: &amp;quot;&amp;quot;
+  name: system:node:kube-master
+current-context: system:node:kube-master
+kind: Config
+preferences: {}
+users: []
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编写10-calico.conf文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+    &amp;quot;name&amp;quot;: &amp;quot;calico-k8s-network&amp;quot;,
+    &amp;quot;cniVersion&amp;quot;: &amp;quot;0.1.0&amp;quot;,
+    &amp;quot;type&amp;quot;: &amp;quot;calico&amp;quot;,
+    &amp;quot;etcd_endpoints&amp;quot;: &amp;quot;http://192.168.32.131:2379&amp;quot;,
+    &amp;quot;log_level&amp;quot;: &amp;quot;info&amp;quot;,
+    &amp;quot;ipam&amp;quot;: {
+        &amp;quot;type&amp;quot;: &amp;quot;calico-ipam&amp;quot;
+    },
+    &amp;quot;kubernetes&amp;quot;: {
+        &amp;quot;k8s_api_root&amp;quot;: &amp;quot;http://192.168.32.131:8080&amp;quot;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后，执行如下命令：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir -p /var/lib/kubelet
+mkdir -p /etc/kubernetes
+mkdir -p /etc/cni/net.d
+
+cp kubelet.service /lib/systemd/system/
+cp kubelet.kubeconfig /etc/kubernetes/
+cp 10-calico.conf /etc/cni/net.d/
+
+systemctl enable kubelet.service
+service kubelet start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;至此，整个集群应该已经搭建好了，如果中间遇到什么问题，可以通过查看系统日志，或者google解决。&lt;/p&gt;
+</description>
+      
+    </item>
     
     <item>
       <title>手动搭建kubernetes集群（一）</title>

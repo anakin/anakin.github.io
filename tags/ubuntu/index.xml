@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ubuntu on Anakin- 奔向NB的生活</title>
+    <link>http://anakin.github.io/tags/ubuntu/</link>
+    <description>Recent content in ubuntu on Anakin- 奔向NB的生活</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 20 May 2019 15:18:19 +0800</lastBuildDate>
+    
+	<atom:link href="http://anakin.github.io/tags/ubuntu/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>手动搭建kubernetes集群（二）</title>
+      <link>http://anakin.github.io/post/create-k8s-2/</link>
+      <pubDate>Mon, 20 May 2019 15:18:19 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/create-k8s-2/</guid>
+      <description>根据前文准备好的环境，我们现在来一步步的搭建一个基础的k8s集群 注意，这里的配置信息都是按照我自己的虚拟环境来写的。 把server01作为m</description>
+    </item>
+    
+    <item>
+      <title>手动搭建kubernetes集群（一）</title>
+      <link>http://anakin.github.io/post/create-k8s/</link>
+      <pubDate>Mon, 20 May 2019 10:57:16 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/create-k8s/</guid>
+      <description>最近在看有关k8s的一些知识，想手动搭建一套环境来体验一下，本文详细记录一下搭建的过程。 环境 三台Ubuntu系统的虚拟机，其中一台作为mas</description>
+    </item>
+    
+  </channel>
+</rss>

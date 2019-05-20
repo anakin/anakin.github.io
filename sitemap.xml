@@ -3,14 +3,39 @@
   
   <url>
     <loc>http://anakin.github.io/</loc>
-    <lastmod>2019-05-20T10:57:16+08:00</lastmod>
+    <lastmod>2019-05-20T15:18:19+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://anakin.github.io/post/</loc>
-    <lastmod>2019-05-20T10:57:16+08:00</lastmod>
+    <lastmod>2019-05-20T15:18:19+08:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/</loc>
+    <lastmod>2019-05-20T15:18:19+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/kubernetes/</loc>
+    <lastmod>2019-05-20T15:18:19+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/ubuntu/</loc>
+    <lastmod>2019-05-20T15:18:19+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/post/create-k8s-2/</loc>
+    <lastmod>2019-05-20T15:18:19+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -25,12 +50,6 @@
     <lastmod>2019-05-19T22:52:01+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://anakin.github.io/tags/</loc>
-    <lastmod>2019-05-19T22:52:01+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
