@@ -75,9 +75,20 @@
 &lt;pre&gt;&lt;code&gt;sudo apt install docker-ce
 &lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;p&gt;检查一下是否已经在运行&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;接受所有ip的数据包转发&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo systemctl status docker
+&lt;pre&gt;&lt;code&gt;vi /lib/systemd/system/docker.service
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;找到ExecStart，在这上面加入下面一行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ExecStartPost=/sbin/iptables -I FORWARD -s 0.0.0.0/0 -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;重启&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo systemctl daemon-reload
+sudo service docker restart
 &lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
 &lt;/ol&gt;
 

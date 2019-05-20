@@ -32,7 +32,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.5" />
+<meta name="generator" content="Hugo 0.55.6" />
 
 
 <link rel="canonical" href="http://anakin.github.io/post/create-k8s/" />
@@ -70,7 +70,7 @@
 
 <meta itemprop="datePublished" content="2019-05-20T10:57:16&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-20T10:57:16&#43;08:00" />
-<meta itemprop="wordCount" content="885">
+<meta itemprop="wordCount" content="922">
 
 
 
@@ -368,9 +368,20 @@
 <pre><code>sudo apt install docker-ce
 </code></pre></li>
 
-<li><p>检查一下是否已经在运行</p>
+<li><p>接受所有ip的数据包转发</p>
 
-<pre><code>sudo systemctl status docker
+<pre><code>vi /lib/systemd/system/docker.service
+</code></pre>
+
+<p>找到ExecStart，在这上面加入下面一行</p>
+
+<pre><code>ExecStartPost=/sbin/iptables -I FORWARD -s 0.0.0.0/0 -j ACCEPT
+</code></pre></li>
+
+<li><p>重启</p>
+
+<pre><code>sudo systemctl daemon-reload
+sudo service docker restart
 </code></pre></li>
 </ol>
 
