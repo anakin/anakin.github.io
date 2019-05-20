@@ -6,10 +6,153 @@
     <description>Recent content on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 19 May 2019 22:52:01 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 20 May 2019 10:57:16 +0800</lastBuildDate>
     
         <atom:link href="http://anakin.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>手动搭建kubernetes集群（一）</title>
+      <link>http://anakin.github.io/post/create-k8s/</link>
+      <pubDate>Mon, 20 May 2019 10:57:16 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/create-k8s/</guid>
+      
+        <description>
+
+&lt;p&gt;最近在看有关k8s的一些知识，想手动搭建一套环境来体验一下，本文详细记录一下搭建的过程。&lt;/p&gt;
+
+&lt;h2 id=&#34;环境&#34;&gt;环境&lt;/h2&gt;
+
+&lt;p&gt;三台Ubuntu系统的虚拟机，其中一台作为master，另外两台作为worker节点&lt;/p&gt;
+
+&lt;h2 id=&#34;步骤1-安装虚拟机&#34;&gt;步骤1:安装虚拟机&lt;/h2&gt;
+
+&lt;p&gt;我的笔记本是一台Macbook Pro，首选安装一个虚拟机软件Vmware Fusion，过程略。&lt;br&gt;
+1. 下载好Ubuntu镜像，我选择的是&lt;code&gt;19.04&lt;/code&gt;版本。&lt;br&gt;
+2. 打开Fusion，选择New，然后选择“Install from disk or image”,continue
+3. 设置好用户名和密码，中间还可以修改使用的硬盘空间等等，这个过程就不详述了。
+4. 安装好之后，进入系统，找到“terminal”，安装net-tools和ssh server
+    &lt;code&gt;
+    sudo apt install net-tools ssh
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;步骤2-安装docker&#34;&gt;步骤2：安装docker&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;更新包列表：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt update
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;让apt支持https方式&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt install apt-transport-https ca-certificates curl software-properties-common
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;添加GPG密钥&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;添加docker源&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo add-apt-repository &amp;quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;再次更新apt&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt update
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;确保从Docker repo安装而不是默认的Ubuntu repo&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apt-cache policy docker-ce
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;开始安装docker&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt install docker-ce
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;检查一下是否已经在运行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo systemctl status docker
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;步骤3-系统设置&#34;&gt;步骤3：系统设置&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;关闭防火墙&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ufw disable
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;设置系统转发参数&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cat &amp;lt;&amp;lt;EOF &amp;gt; /etc/sysctl.d/k8s.conf
+net.ipv4.ip_forward = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.conf.all.rp_filter = 0
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;sysctl -p /etc/sysctl.d/k8s.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;安装ntp服务，同步时钟&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt install ntp
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;步骤4-复制虚拟机&#34;&gt;步骤4：复制虚拟机&lt;/h2&gt;
+
+&lt;p&gt;使用fusion的复制功能，复制出另外两台虚拟机&lt;br&gt;
+关掉刚装好的虚拟机，选择Fusion菜单Virtual Machine下面的Create Full Clone，Fusion就会clone出一个一模一样的虚拟机出来，是不是很方便&lt;/p&gt;
+
+&lt;h2 id=&#34;步骤5-设置免登陆和hosts文件&#34;&gt;步骤5：设置免登陆和hosts文件&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;打开三台虚拟机，进入terminal，执行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ifconfig
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;找到各自的ip地址&lt;br&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;打开Mac的terminal，输入下面的命令生成ssh公钥&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ssh-keygen -t rsa
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;将公钥分别拷贝到三台虚拟机上&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;scp .ssh/id_rsa.pub user@xxx.xxx.xxx.xxx:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;user是虚拟机上的用户名，xxx代表各自的ip地址&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;在虚拟机上将公钥追加到.ssh/authorized_keys文件，并修改权限&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cat id_rsa.pub &amp;gt;&amp;gt; .ssh/authorized_keys
+chmod 600 authorized_keys
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;分别修改每台虚拟机上的hosts文件，用vim编辑器打开/etc/hosts,添加三台虚拟机的hosts信息，下面是我自己的host信息：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;192.168.32.131 server01
+192.168.32.132 server02
+192.168.32.133 server03
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;ok，到现在为止，基本的安装环境应该是准备好了。&lt;/p&gt;
+</description>
+      
+    </item>
     
     <item>
       <title>Etcd实现MVCC的原理</title>
