@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Fusion on Anakin- 奔向NB的生活</title>
+    <link>http://anakin.github.io/tags/fusion/</link>
+    <description>Recent content in Fusion on Anakin- 奔向NB的生活</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 21 May 2019 18:11:37 +0800</lastBuildDate>
+    
+	<atom:link href="http://anakin.github.io/tags/fusion/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>给Mac上的Fusion虚拟机设置固定ip地址</title>
+      <link>http://anakin.github.io/post/fusion-static-ip/</link>
+      <pubDate>Tue, 21 May 2019 18:11:37 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/fusion-static-ip/</guid>
+      <description>因为最近需要安装k8s的本地测试环境，所以使用Mac上的Vmware Fusion安装了几台ubuntu系统的虚拟机，某次重启的时候发现ssh</description>
+    </item>
+    
+  </channel>
+</rss>

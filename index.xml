@@ -6,10 +6,141 @@
     <description>Recent content on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 20 May 2019 15:18:19 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 21 May 2019 18:11:37 +0800</lastBuildDate>
     
         <atom:link href="http://anakin.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>给Mac上的Fusion虚拟机设置固定ip地址</title>
+      <link>http://anakin.github.io/post/fusion-static-ip/</link>
+      <pubDate>Tue, 21 May 2019 18:11:37 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/fusion-static-ip/</guid>
+      
+        <description>&lt;p&gt;因为最近需要安装k8s的本地测试环境，所以使用Mac上的Vmware Fusion安装了几台ubuntu系统的虚拟机，某次重启的时候发现ssh登录不上去了，打开虚拟机看了一下，发现是ip地址发生了变化，研究了半天，找到了解决的方法如下：&lt;br&gt;
+在Mac的Terminal上编辑下面这个文件：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo vi /Library/Preferences/VMware\ Fusion/vmnet8/dhcpd.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最后一行是下面的内容：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; ####### VMNET DHCP Configuration. End of &amp;quot;DO NOT MODIFY SECTION&amp;quot; #######
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在这行的下面，添加虚拟机的ip信息如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;host host1 {
+    hardware ethernet 00:0c:29:dd:a5:67;
+    fixed-address 192.168.32.131;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中:&lt;br&gt;
+&lt;code&gt;host1&lt;/code&gt;是在Vmware Fusion中看到的虚拟机列表里的名称；&lt;br&gt;
+&lt;code&gt;00:0c:29:dd:a5:67&lt;/code&gt;是这台虚拟机的网卡MAC地址，进入虚拟机的terminal里执行&lt;code&gt;ifconfig&lt;/code&gt;就可以找到&lt;br&gt;
+&lt;code&gt;192.168.32.131&lt;/code&gt;是你要设置的固定ip的地址。&lt;/p&gt;
+
+&lt;p&gt;设置好之后，执行下面的刷新操作:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo /Applications/VMware\ Fusion.app/Contents/Library/vmnet-cli --configure
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后，&lt;code&gt;重新启动你的Mac&lt;/code&gt;，就可以生效了。&lt;/p&gt;
+
+&lt;p&gt;亲测。&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>手动搭建kubernetes集群（三）</title>
+      <link>http://anakin.github.io/post/create-k8s-3/</link>
+      <pubDate>Tue, 21 May 2019 16:46:07 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/create-k8s-3/</guid>
+      
+        <description>
+
+&lt;p&gt;本文是这个系列的第三篇文章，前两篇记录了搭建一个k8s集群的过程，但是之前搭建好的集群少了很重要的一个部分，就是安全相关的功能，包括认证、授权等机制。&lt;br&gt;
+什么是认证，什么又是授权呢，可以简单的理解为，认证的目的是知道用户是谁，授权的目的是知道用户可以做什么。先认证，知道是谁，再授权知道能做什么。&lt;br&gt;
+所谓的安全，主要是针对apiserver所说的，因为k8s通过apiserver提供RESTFUL接口，所以如果有人知道你的apiserver地址，就可以修改你的集群信息了。
+首先了解一下相关的基础知识，包括SSL、JWT、RBAC等等。&lt;br&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;ssl介绍&#34;&gt;SSL介绍&lt;/h2&gt;
+
+&lt;p&gt;SSL是一个协议，https中的s，代表的就是SSL。
+网上关于SSL的介绍很多也很详细，我这里只说一下我的理解。为了保证网络传输过程中的安全，传输的信息需要进行加密处理。 加密可以分为两类，对称加密和非对称加密。
+1. 对称加密&lt;br&gt;
+所谓对称加密， 就是说加密和解密的方法是对称的，加密方怎么加密，解密方就怎么反过来解密。举个例子：&lt;br&gt;
+Client端通过对称的加密算法md5以及一个秘钥，加密一段信息，并将加密后的信息通过请求发送给server端：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;secret = md5(key+info)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;server端为了验证请求的来源合法性，采用同样的方式重新加密，并将结果和client端发来的加密结果对比，如果一致，就认为请求是合法的。
+这个过程中，双方需要持有相同的key，并使用相同的加密方法。
+2. 非对称加密&lt;br&gt;
+理解了对称加密，很容易想到，非对称加密就是双方的操作不一致。以常用的RSA加密来举例子：&lt;br&gt;
+server端事先会生成一对key，一个可以公开的叫公钥，一个不能公开的叫私钥。公钥的内容任何人可见，但是只能用来加密，私钥用来解密（具体的原理请参考相关资料，基本思想就是质数分解）。所以上面的请求过程就变成了client端用server端给的公钥，把请求信息加密，然后发送给server，server端在收到请求后，用自己的私钥就可以解密从而获得请求信息。&lt;br&gt;
+3. 对比&lt;br&gt;
+使用对称加密的时候，双方都需要知道key，这就存在key被泄露的风险，而非对称加密则不存在这个问题，公钥谁都可以看，私钥不存在传输给别人的过程，安全程度大大加强。&lt;br&gt;
+但是非对称加密的问题是，运算速度比较慢，效率相对比较低。&lt;br&gt;
+4. SSL&lt;br&gt;
+说了这么多，终于回到SSL了，SSL大概就是结合了上面说的对称和非对称加密，利用了两者的优势，具体的操作大概是这样的：&lt;br&gt;
+非对称加密不是慢么？对称加密不是容易泄露key么？那好，用非对称的方式来传输对称加密使用的key，两个问题就都解决了。大致的工作流程如下：&lt;br&gt;
+* client向server发起请求，拿到server端的公钥
+* client用公钥把自己生成的key加密，然后发送给server
+* server用私钥解密，获得了client的key
+* 两端可以愉快的用这个key通过对称加密的方式通信了。&lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;当然实际的请求流程比我这个要复杂的多，各位自行了解吧~~&lt;/p&gt;
+
+&lt;h2 id=&#34;jwt介绍&#34;&gt;JWT介绍&lt;/h2&gt;
+
+&lt;p&gt;JWT的全称是json web token，是一个标准，主要用于授权和信息交换。&lt;br&gt;
+看名字就知道，这货就是个token，具体来说，是一个由“.”分割的三个部分组成的字符串，这三个部分分别是：
+* header
+* playload
+* signature&lt;/p&gt;
+
+&lt;p&gt;看起来就是这样的aaaaaa.bbbb.cccc，这个字符串本身包含了一些信息，例如可以保存用户的ID等，这样服务端在接收到token之后，通过解密就直接拿到ID，不用再去数据库里查询了。token里同时还包括使用的签名算法等。具体的使用流程就是，server收到client请求的时候，用一个自己的secret使用某种加密算法生成一个这样的Token，然后发送给client，client获得token之后，每次请求都要在Authorization header里带上获得的token，header看起来是这样的：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Authorization: Bearer &amp;lt;token&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;server端每次都会验证这个token是不是自己签发的那个有效的token，从而实现无状态http服务的状态，是不是感觉作用和session有些类似？其实还是有些差异的，比如： session存储在服务端，JWT存储在客户端。&lt;/p&gt;
+
+&lt;h2 id=&#34;rbac介绍&#34;&gt;RBAC介绍&lt;/h2&gt;
+
+&lt;p&gt;RBAC的全称是Role-Based Access Control，基于角色的访问控制。&lt;br&gt;
+下面是我粗浅的理解：&lt;br&gt;
+把系统的操作权限拆分成一个个的小单位，多个小单位赋予某个角色，然后让用户属于某个角色，这样就可以灵活的控制用户对系统的访问控制了。还是举个例子：&lt;br&gt;
+某个管理后台里有很多功能，比如用户管理、订单管理、商品管理、用户留言管理，然后定义几个角色：超级管理员有所有权限，运营管理员有用户管理和留言管理权限，财务管理员有订单管理权限。ok，这样一个用户进来这个后台的时候，根据需要给他赋予某个角色，他就有了对应的管理权限，一个角色可以有多个用户，多个角色可以有相同的权限，也可以随时调整角色和权限的关系，非常灵活。不知道我说清楚了没有。具体的还请查阅相关文档。&lt;/p&gt;
+
+&lt;h2 id=&#34;kubernetes的认证和授权&#34;&gt;kubernetes的认证和授权&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;认证&lt;br&gt;
+kubernetes支持三种方式的认证：&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;HTTPS证书认证：基于CA根证书签名的双向数字证书认证方式，用到的就是前面说的SSL；&lt;/li&gt;
+&lt;li&gt;HTTP Token认证：通过一个Token来识别合法用户，可以是普通token也可以是前面说过的JWT token；&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;HTTP Base认证：通过用户名+密码的方式认证；&lt;br&gt;
+apiserver支持设置一种或多种认证方式，如果设置了多种，那么通过其中任何一种，都认为是认证成功了。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;授权&lt;br&gt;
+apiserver支持多种授权模式，例如Node,RBAC,Webhook等，可以在apiserver启动的时候指定授权模式，同样也可以指定一种或者多种，如果指定了多种，通过其中的某一种就认为是授权成功了，和认证类似。&lt;br&gt;
+客户端访问apiserver的时候，发起的http request中带有各种属性，例如user,group,path等，授权过程就是将这些属性与配置好的授权模式去比较，从而判断是否可以授权对应的操作。&lt;br&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;絮絮叨叨的总算写完了，说的再多，都不如撸起袖子加油干，接下来就在之前搭建好的基础版集群环境里去试验一下吧~~~&lt;/p&gt;
+</description>
+      
+    </item>
     
     <item>
       <title>手动搭建kubernetes集群（二）</title>

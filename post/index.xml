@@ -6,10 +6,28 @@
     <description>Recent content in Posts on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 20 May 2019 15:18:19 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 21 May 2019 18:11:37 +0800</lastBuildDate>
     
 	<atom:link href="http://anakin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>给Mac上的Fusion虚拟机设置固定ip地址</title>
+      <link>http://anakin.github.io/post/fusion-static-ip/</link>
+      <pubDate>Tue, 21 May 2019 18:11:37 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/fusion-static-ip/</guid>
+      <description>因为最近需要安装k8s的本地测试环境，所以使用Mac上的Vmware Fusion安装了几台ubuntu系统的虚拟机，某次重启的时候发现ssh</description>
+    </item>
+    
+    <item>
+      <title>手动搭建kubernetes集群（三）</title>
+      <link>http://anakin.github.io/post/create-k8s-3/</link>
+      <pubDate>Tue, 21 May 2019 16:46:07 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/create-k8s-3/</guid>
+      <description>本文是这个系列的第三篇文章，前两篇记录了搭建一个k8s集群的过程，但是之前搭建好的集群少了很重要的一个部分，就是安全相关的功能，包括认证、授</description>
+    </item>
     
     <item>
       <title>手动搭建kubernetes集群（二）</title>
