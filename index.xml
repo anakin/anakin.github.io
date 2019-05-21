@@ -90,10 +90,10 @@ server端事先会生成一对key，一个可以公开的叫公钥，一个不�
 4. &lt;strong&gt;SSL&lt;/strong&gt;&lt;br&gt;
 说了这么多，终于回到SSL了，SSL大概就是结合了上面说的对称和非对称加密，利用了两者的优势，具体的操作大概是这样的：&lt;br&gt;
 非对称加密不是慢么？对称加密不是容易泄露key么？那好，用非对称的方式来传输对称加密使用的key，两个问题就都解决了。大致的工作流程如下：&lt;br&gt;
-- client向server发起请求，拿到server端的公钥
-- client用公钥把自己生成的key加密，然后发送给server
-- server用私钥解密，获得了client的key
-- 两端可以愉快的用这个key通过对称加密的方式通信了。&lt;br&gt;&lt;/p&gt;
++ client向server发起请求，拿到server端的公钥
++ client用公钥把自己生成的key加密，然后发送给server
++ server用私钥解密，获得了client的key
++ 两端可以愉快的用这个key通过对称加密的方式通信了。&lt;br&gt;&lt;/p&gt;
 
 &lt;p&gt;当然实际的请求流程比我这个要复杂的多，各位自行了解吧~~&lt;/p&gt;
 
@@ -101,9 +101,9 @@ server端事先会生成一对key，一个可以公开的叫公钥，一个不�
 
 &lt;p&gt;JWT的全称是json web token，是一个标准，主要用于授权和信息交换。&lt;br&gt;
 看名字就知道，这货就是个token，具体来说，是一个由“.”分割的三个部分组成的字符串，这三个部分分别是：
-- header
-- playload
-- signature&lt;/p&gt;
++ header
++ playload
++ signature&lt;/p&gt;
 
 &lt;p&gt;看起来就是这样的aaaaaa.bbbb.cccc，这个字符串本身包含了一些信息，例如可以保存用户的ID等，这样服务端在接收到token之后，通过解密就直接拿到ID，不用再去数据库里查询了。token里同时还包括使用的签名算法等。具体的使用流程就是，server收到client请求的时候，用一个自己的secret使用某种加密算法生成一个这样的Token，然后发送给client，client获得token之后，每次请求都要在Authorization header里带上获得的token，header看起来是这样的：&lt;/p&gt;
 
