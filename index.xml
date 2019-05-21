@@ -72,7 +72,7 @@
 
 &lt;p&gt;SSL是一个协议，https中的s，代表的就是SSL。
 网上关于SSL的介绍很多也很详细，我这里只说一下我的理解。为了保证网络传输过程中的安全，传输的信息需要进行加密处理。 加密可以分为两类，对称加密和非对称加密。
-1. 对称加密&lt;br&gt;
+1. &lt;strong&gt;对称加密&lt;/strong&gt;&lt;br&gt;
 所谓对称加密， 就是说加密和解密的方法是对称的，加密方怎么加密，解密方就怎么反过来解密。举个例子：&lt;br&gt;
 Client端通过对称的加密算法md5以及一个秘钥，加密一段信息，并将加密后的信息通过请求发送给server端：&lt;/p&gt;
 
@@ -81,19 +81,19 @@ Client端通过对称的加密算法md5以及一个秘钥，加密一段信息�
 
 &lt;p&gt;server端为了验证请求的来源合法性，采用同样的方式重新加密，并将结果和client端发来的加密结果对比，如果一致，就认为请求是合法的。
 这个过程中，双方需要持有相同的key，并使用相同的加密方法。
-2. 非对称加密&lt;br&gt;
+2. &lt;strong&gt;非对称加密&lt;/strong&gt;&lt;br&gt;
 理解了对称加密，很容易想到，非对称加密就是双方的操作不一致。以常用的RSA加密来举例子：&lt;br&gt;
 server端事先会生成一对key，一个可以公开的叫公钥，一个不能公开的叫私钥。公钥的内容任何人可见，但是只能用来加密，私钥用来解密（具体的原理请参考相关资料，基本思想就是质数分解）。所以上面的请求过程就变成了client端用server端给的公钥，把请求信息加密，然后发送给server，server端在收到请求后，用自己的私钥就可以解密从而获得请求信息。&lt;br&gt;
-3. 对比&lt;br&gt;
+3. &lt;strong&gt;对比&lt;/strong&gt;&lt;br&gt;
 使用对称加密的时候，双方都需要知道key，这就存在key被泄露的风险，而非对称加密则不存在这个问题，公钥谁都可以看，私钥不存在传输给别人的过程，安全程度大大加强。&lt;br&gt;
 但是非对称加密的问题是，运算速度比较慢，效率相对比较低。&lt;br&gt;
-4. SSL&lt;br&gt;
+4. &lt;strong&gt;SSL&lt;/strong&gt;&lt;br&gt;
 说了这么多，终于回到SSL了，SSL大概就是结合了上面说的对称和非对称加密，利用了两者的优势，具体的操作大概是这样的：&lt;br&gt;
 非对称加密不是慢么？对称加密不是容易泄露key么？那好，用非对称的方式来传输对称加密使用的key，两个问题就都解决了。大致的工作流程如下：&lt;br&gt;
-* client向server发起请求，拿到server端的公钥
-* client用公钥把自己生成的key加密，然后发送给server
-* server用私钥解密，获得了client的key
-* 两端可以愉快的用这个key通过对称加密的方式通信了。&lt;br&gt;&lt;/p&gt;
+- client向server发起请求，拿到server端的公钥
+- client用公钥把自己生成的key加密，然后发送给server
+- server用私钥解密，获得了client的key
+- 两端可以愉快的用这个key通过对称加密的方式通信了。&lt;br&gt;&lt;/p&gt;
 
 &lt;p&gt;当然实际的请求流程比我这个要复杂的多，各位自行了解吧~~&lt;/p&gt;
 
@@ -101,9 +101,9 @@ server端事先会生成一对key，一个可以公开的叫公钥，一个不�
 
 &lt;p&gt;JWT的全称是json web token，是一个标准，主要用于授权和信息交换。&lt;br&gt;
 看名字就知道，这货就是个token，具体来说，是一个由“.”分割的三个部分组成的字符串，这三个部分分别是：
-* header
-* playload
-* signature&lt;/p&gt;
+- header
+- playload
+- signature&lt;/p&gt;
 
 &lt;p&gt;看起来就是这样的aaaaaa.bbbb.cccc，这个字符串本身包含了一些信息，例如可以保存用户的ID等，这样服务端在接收到token之后，通过解密就直接拿到ID，不用再去数据库里查询了。token里同时还包括使用的签名算法等。具体的使用流程就是，server收到client请求的时候，用一个自己的secret使用某种加密算法生成一个这样的Token，然后发送给client，client获得token之后，每次请求都要在Authorization header里带上获得的token，header看起来是这样的：&lt;/p&gt;
 
@@ -122,7 +122,7 @@ server端事先会生成一对key，一个可以公开的叫公钥，一个不�
 &lt;h2 id=&#34;kubernetes的认证和授权&#34;&gt;kubernetes的认证和授权&lt;/h2&gt;
 
 &lt;ol&gt;
-&lt;li&gt;认证&lt;br&gt;
+&lt;li&gt;&lt;strong&gt;认证&lt;/strong&gt;&lt;br&gt;
 kubernetes支持三种方式的认证：&lt;br&gt;&lt;/li&gt;
 &lt;li&gt;HTTPS证书认证：基于CA根证书签名的双向数字证书认证方式，用到的就是前面说的SSL；&lt;/li&gt;
 &lt;li&gt;HTTP Token认证：通过一个Token来识别合法用户，可以是普通token也可以是前面说过的JWT token；&lt;/li&gt;
@@ -130,7 +130,7 @@ kubernetes支持三种方式的认证：&lt;br&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;HTTP Base认证：通过用户名+密码的方式认证；&lt;br&gt;
 apiserver支持设置一种或多种认证方式，如果设置了多种，那么通过其中任何一种，都认为是认证成功了。&lt;/p&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;p&gt;授权&lt;br&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;授权&lt;/strong&gt;&lt;br&gt;
 apiserver支持多种授权模式，例如Node,RBAC,Webhook等，可以在apiserver启动的时候指定授权模式，同样也可以指定一种或者多种，如果指定了多种，通过其中的某一种就认为是授权成功了，和认证类似。&lt;br&gt;
 客户端访问apiserver的时候，发起的http request中带有各种属性，例如user,group,path等，授权过程就是将这些属性与配置好的授权模式去比较，从而判断是否可以授权对应的操作。&lt;br&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
