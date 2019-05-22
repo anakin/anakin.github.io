@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Golang利用redis实现分布式锁 - Anakin- 奔向NB的生活</title>
+  <title>Goang通过ETCD实现分布式锁 - Anakin- 奔向NB的生活</title>
   
 
 <meta name="renderer" content="webkit" />
@@ -23,7 +23,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="Anakin" />
-  <meta name="description" content="原理 使用SETNX命令(SET if Not eXists) SETNX key value 将 key 的值设为 value，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。 设置成功，返回 1 。" />
+  <meta name="description" content="之前写过用redis实现的分布式锁，这次用etcd来实现一个。 原理 首先获取一个etcd的租约，拿着这个租约用etcd的事务操作去设置一个ke" />
 
   <meta name="keywords" content="anakin, sun, github" />
 
@@ -35,7 +35,7 @@
 <meta name="generator" content="Hugo 0.55.6" />
 
 
-<link rel="canonical" href="http://anakin.github.io/post/golang-redis-lock/" />
+<link rel="canonical" href="http://anakin.github.io/post/golang-etcd-lock/" />
 
 
 
@@ -57,27 +57,27 @@
 
 
 
-<meta property="og:title" content="Golang利用redis实现分布式锁" />
-<meta property="og:description" content="原理 使用SETNX命令(SET if Not eXists) SETNX key value 将 key 的值设为 value，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。 设置成功，返回 1 。" />
+<meta property="og:title" content="Goang通过ETCD实现分布式锁" />
+<meta property="og:description" content="之前写过用redis实现的分布式锁，这次用etcd来实现一个。 原理 首先获取一个etcd的租约，拿着这个租约用etcd的事务操作去设置一个ke" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://anakin.github.io/post/golang-redis-lock/" />
-<meta property="article:published_time" content="2019-05-16T20:11:09&#43;08:00"/>
-<meta property="article:modified_time" content="2019-05-16T20:11:09&#43;08:00"/>
+<meta property="og:url" content="http://anakin.github.io/post/golang-etcd-lock/" />
+<meta property="article:published_time" content="2019-05-22T16:09:11&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-22T16:09:11&#43;08:00"/>
 
-<meta itemprop="name" content="Golang利用redis实现分布式锁">
-<meta itemprop="description" content="原理 使用SETNX命令(SET if Not eXists) SETNX key value 将 key 的值设为 value，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。 设置成功，返回 1 。">
-
-
-<meta itemprop="datePublished" content="2019-05-16T20:11:09&#43;08:00" />
-<meta itemprop="dateModified" content="2019-05-16T20:11:09&#43;08:00" />
-<meta itemprop="wordCount" content="387">
+<meta itemprop="name" content="Goang通过ETCD实现分布式锁">
+<meta itemprop="description" content="之前写过用redis实现的分布式锁，这次用etcd来实现一个。 原理 首先获取一个etcd的租约，拿着这个租约用etcd的事务操作去设置一个ke">
 
 
+<meta itemprop="datePublished" content="2019-05-22T16:09:11&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-22T16:09:11&#43;08:00" />
+<meta itemprop="wordCount" content="406">
 
-<meta itemprop="keywords" content="golang,redis,lock," />
+
+
+<meta itemprop="keywords" content="golang,etcd,lock," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Golang利用redis实现分布式锁"/>
-<meta name="twitter:description" content="原理 使用SETNX命令(SET if Not eXists) SETNX key value 将 key 的值设为 value，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。 设置成功，返回 1 。"/>
+<meta name="twitter:title" content="Goang通过ETCD实现分布式锁"/>
+<meta name="twitter:description" content="之前写过用redis实现的分布式锁，这次用etcd来实现一个。 原理 首先获取一个etcd的租约，拿着这个租约用etcd的事务操作去设置一个ke"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -271,11 +271,11 @@
           <article class="post bg-white">
     
     <header class="post-header">
-      <h1 class="post-title">Golang利用redis实现分布式锁</h1>
+      <h1 class="post-title">Goang通过ETCD实现分布式锁</h1>
       
       <div class="post-meta">
-        <time datetime="2019-05-16" class="post-time">
-          2019-05-16
+        <time datetime="2019-05-22" class="post-time">
+          2019-05-22
         </time>
         
         
@@ -298,7 +298,6 @@
 <li>
 <ul>
 <li><a href="#原理">原理</a></li>
-<li><a href="#代码">代码</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -309,110 +308,81 @@
     <div class="post-content">
       
 
+<p>之前写过用redis实现的分布式锁，这次用etcd来实现一个。</p>
+
 <h2 id="原理">原理</h2>
 
-<p>使用SETNX命令(SET if Not eXists)</p>
-
-<pre><code>SETNX key value
-</code></pre>
-
-<p>将 key 的值设为 value，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。</p>
-
-<p>设置成功，返回 1 。</p>
-
-<p>设置失败，返回 0 。</p>
-
-<p>为防止获取锁之后，忘记删除，成功后再设置一个过期时间</p>
-
-<p>以上就是利用redis实现分布式锁的原理</p>
-
-<h2 id="代码">代码</h2>
+<p>首先获取一个etcd的租约，拿着这个租约用etcd的事务操作去设置一个key，如果设置成功，就表示抢到了锁，否则抢索失败。租约的作用就是实现抢到锁之后的释放功能，防止长期占用。<br>
+etcd的txn事务比较特别，是一个IF-THEN-ELSE的形式，其中IF接收的参数是一个比较操作。多说无益，看代码吧。<br></p>
 
 <pre><code>package main
 
 import (
+	&quot;context&quot;
 	&quot;fmt&quot;
-	&quot;github.com/gomodule/redigo/redis&quot;
-	&quot;log&quot;
+	&quot;go.etcd.io/etcd/clientv3&quot;
 	&quot;time&quot;
 )
 
-type Lock struct {
-	resource string
-	token    string
-	conn     redis.Conn
-	timeout  int
-}
-
-func (lock *Lock) tryLock() (ok bool, err error) {
-	_, err = redis.String(lock.conn.Do(&quot;SET&quot;, lock.key(), lock.token, &quot;EX&quot;, int(lock.timeout), &quot;NX&quot;))
-	if err == redis.ErrNil {
-		return false, nil
-	}
-	if err != nil {
-		return false, err
-	}
-	return true, nil
-}
-func (lock *Lock) Unlock() (err error) {
-	_, err = lock.conn.Do(&quot;del&quot;, lock.key())
-	return
-}
-
-func (lock *Lock) key() string {
-	return fmt.Sprintf(&quot;redislock:%s&quot;, lock.resource)
-}
-
-func (lock *Lock) AddTimeout(ex_time int64) (ok bool, err error) {
-	ttl_time, err := redis.Int64(lock.conn.Do(&quot;TTL&quot;, lock.key()))
-	fmt.Println(ttl_time)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if ttl_time &gt; 0 {
-		fmt.Println(11)
-		_, err := redis.String(lock.conn.Do(&quot;SET&quot;, lock.key(), lock.token, &quot;EX&quot;, int(ttl_time+ex_time)))
-		if err == redis.ErrNil {
-			return false, nil
-		}
-		if err != nil {
-			return false, err
-		}
-	}
-	return false, nil
-}
-
-func TryLock(conn redis.Conn, resource string, token string, DefaultTimeout int) (lock *Lock, ok bool, err error) {
-	return TryLockWithTimeout(conn, resource, token, DefaultTimeout)
-}
-
-func TryLockWithTimeout(conn redis.Conn, resource string, token string, timeout int) (lock *Lock, ok bool, err error) {
-	lock = &amp;Lock{resource: resource, token: token, conn: conn, timeout: timeout}
-	ok, err = lock.tryLock()
-	if !ok || err != nil {
-		lock = nil
-	}
-	return
-}
-
 func main() {
-	fmt.Println(&quot;start&quot;)
-	DefaultTimeout := 10
-	conn, err := redis.Dial(&quot;tcp&quot;, &quot;localhost:6379&quot;)
+	config := clientv3.Config{
+		Endpoints:   []string{&quot;127.0.0.1:2379&quot;},
+		DialTimeout: 5 * time.Second,
+	}
+	client, err := clientv3.New(config)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Print(err)
 	}
-	lock, ok, err := TryLock(conn, &quot;anakin.sun&quot;, &quot;token&quot;, int(DefaultTimeout))
+	lease := clientv3.NewLease(client)
+	leaseResp, err := lease.Grant(context.TODO(), 5)
 	if err != nil {
-		log.Fatal(&quot;error lock&quot;)
+		fmt.Println(err)
 	}
-	if !ok {
-		log.Fatal(&quot;lock fail&quot;)
+	leaseID := leaseResp.ID
+	ctx, cancelFunc := context.WithCancel(context.TODO())
+
+    //两个defer用于释放锁
+	defer cancelFunc()
+	defer lease.Revoke(context.TODO(), leaseID)
+    
+    //抢锁和占用期间，需要不停的续租，续租方法返回一个只读的channel
+	keepChan, err := lease.KeepAlive(ctx, leaseID)
+	if err != nil {
+		fmt.Println(err)
 	}
-	lock.AddTimeout(100)
-	time.Sleep(time.Duration(DefaultTimeout) * time.Second)
-	fmt.Println(&quot;end&quot;)
-	defer lock.Unlock()
+    //处理续租返回的信息
+	go func() {
+		for {
+			select {
+			case keepResp := &lt;-keepChan:
+				if keepChan == nil {
+					fmt.Println(&quot;lease out&quot;)
+					goto END
+				} else {
+					fmt.Println(&quot;get resp&quot;, keepResp.ID)
+				}
+			}
+		}
+	END:
+	}()
+	kv := clientv3.NewKV(client)
+	txn := kv.Txn(context.TODO())
+    //开始抢锁事务操作
+	txn.If(clientv3.Compare(clientv3.CreateRevision(&quot;/lock/9&quot;), &quot;=&quot;, 0)).Then(clientv3.OpPut(&quot;/lock/9&quot;, &quot;&quot;, clientv3.WithLease(leaseID))).Else(clientv3.OpGet(&quot;/lock/9&quot;))
+    //提交事务
+	txnResp, err := txn.Commit()
+    
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+    //如果抢锁成功
+	if txnResp.Succeeded {
+		fmt.Println(&quot;success&quot;)
+	} else {
+		fmt.Println(&quot;fail&quot;)
+	}
+	time.Sleep(5 * time.Second)
 }
 </code></pre>
 
@@ -427,7 +397,7 @@ func main() {
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
-    <span class="item-content">2019-05-16</span>
+    <span class="item-content">2019-05-22</span>
   </p>
   
   <p class="copyright-item">
@@ -443,7 +413,7 @@ func main() {
     <footer class="post-footer">
       <div class="post-tags">
           <a href="http://anakin.github.io/tags/golang/">golang</a>
-          <a href="http://anakin.github.io/tags/redis/">redis</a>
+          <a href="http://anakin.github.io/tags/etcd/">etcd</a>
           <a href="http://anakin.github.io/tags/lock/">lock</a>
           
         </div>
@@ -451,22 +421,9 @@ func main() {
       
       <nav class="post-nav">
         
-          <a class="prev" href="/post/redis-rdb-aof/">
-            
-            <i class="iconfont">
-              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
-  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  width="18" height="18">
-  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
-</svg>
-
-            </i>
-            <span class="prev-text nav-default">Redis持久化</span>
-            <span class="prev-text nav-mobile">Prev</span>
-          </a>
         
-          <a class="next" href="/post/tcp-detail/">
-            <span class="next-text nav-default">TCP协议细节学习</span>
+          <a class="next" href="/post/fusion-static-ip/">
+            <span class="next-text nav-default">给Mac上的Fusion虚拟机设置固定ip地址</span>
             <span class="prev-text nav-mobile">Next</span>
             
             <i class="iconfont">

@@ -6,10 +6,37 @@
     <description>Recent content in Tags on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 21 May 2019 18:11:37 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 22 May 2019 16:09:11 +0800</lastBuildDate>
     
 	<atom:link href="http://anakin.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>etcd</title>
+      <link>http://anakin.github.io/tags/etcd/</link>
+      <pubDate>Wed, 22 May 2019 16:09:11 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/tags/etcd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>golang</title>
+      <link>http://anakin.github.io/tags/golang/</link>
+      <pubDate>Wed, 22 May 2019 16:09:11 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/tags/golang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lock</title>
+      <link>http://anakin.github.io/tags/lock/</link>
+      <pubDate>Wed, 22 May 2019 16:09:11 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/tags/lock/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Fusion</title>
@@ -57,15 +84,6 @@
     </item>
     
     <item>
-      <title>etcd</title>
-      <link>http://anakin.github.io/tags/etcd/</link>
-      <pubDate>Sun, 19 May 2019 22:52:01 +0800</pubDate>
-      
-      <guid>http://anakin.github.io/tags/etcd/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>mvcc</title>
       <link>http://anakin.github.io/tags/mvcc/</link>
       <pubDate>Sun, 19 May 2019 22:52:01 +0800</pubDate>
@@ -98,15 +116,6 @@
       <pubDate>Sun, 12 May 2019 23:05:48 +0800</pubDate>
       
       <guid>http://anakin.github.io/tags/gc/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>golang</title>
-      <link>http://anakin.github.io/tags/golang/</link>
-      <pubDate>Sun, 12 May 2019 23:05:48 +0800</pubDate>
-      
-      <guid>http://anakin.github.io/tags/golang/</guid>
       <description></description>
     </item>
     

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>golang on Anakin- 奔向NB的生活</title>
-    <link>http://anakin.github.io/tags/golang/</link>
-    <description>Recent content in golang on Anakin- 奔向NB的生活</description>
+    <title>lock on Anakin- 奔向NB的生活</title>
+    <link>http://anakin.github.io/tags/lock/</link>
+    <description>Recent content in lock on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Wed, 22 May 2019 16:09:11 +0800</lastBuildDate>
     
-	<atom:link href="http://anakin.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://anakin.github.io/tags/lock/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -27,15 +27,6 @@
       
       <guid>http://anakin.github.io/post/golang-redis-lock/</guid>
       <description>原理 使用SETNX命令(SET if Not eXists) SETNX key value 将 key 的值设为 value，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。 设置成功，返回 1 。</description>
-    </item>
-    
-    <item>
-      <title>Golang的GC学习</title>
-      <link>http://anakin.github.io/post/golang-gc/</link>
-      <pubDate>Sun, 12 May 2019 23:05:48 +0800</pubDate>
-      
-      <guid>http://anakin.github.io/post/golang-gc/</guid>
-      <description>STW触发的时间 一次GC有两次触发STW，一次是GC的开始阶段，主要是开启写屏障和辅助GC等操作 另外就是表记完成之后，重新扫描部分根对象，禁</description>
     </item>
     
   </channel>

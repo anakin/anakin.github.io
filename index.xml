@@ -6,10 +6,100 @@
     <description>Recent content on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 21 May 2019 18:11:37 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 22 May 2019 16:09:11 +0800</lastBuildDate>
     
         <atom:link href="http://anakin.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Goang通过ETCD实现分布式锁</title>
+      <link>http://anakin.github.io/post/golang-etcd-lock/</link>
+      <pubDate>Wed, 22 May 2019 16:09:11 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/golang-etcd-lock/</guid>
+      
+        <description>
+
+&lt;p&gt;之前写过用redis实现的分布式锁，这次用etcd来实现一个。&lt;/p&gt;
+
+&lt;h2 id=&#34;原理&#34;&gt;原理&lt;/h2&gt;
+
+&lt;p&gt;首先获取一个etcd的租约，拿着这个租约用etcd的事务操作去设置一个key，如果设置成功，就表示抢到了锁，否则抢索失败。租约的作用就是实现抢到锁之后的释放功能，防止长期占用。&lt;br&gt;
+etcd的txn事务比较特别，是一个IF-THEN-ELSE的形式，其中IF接收的参数是一个比较操作。多说无益，看代码吧。&lt;br&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+import (
+	&amp;quot;context&amp;quot;
+	&amp;quot;fmt&amp;quot;
+	&amp;quot;go.etcd.io/etcd/clientv3&amp;quot;
+	&amp;quot;time&amp;quot;
+)
+
+func main() {
+	config := clientv3.Config{
+		Endpoints:   []string{&amp;quot;127.0.0.1:2379&amp;quot;},
+		DialTimeout: 5 * time.Second,
+	}
+	client, err := clientv3.New(config)
+	if err != nil {
+		fmt.Print(err)
+	}
+	lease := clientv3.NewLease(client)
+	leaseResp, err := lease.Grant(context.TODO(), 5)
+	if err != nil {
+		fmt.Println(err)
+	}
+	leaseID := leaseResp.ID
+	ctx, cancelFunc := context.WithCancel(context.TODO())
+
+    //两个defer用于释放锁
+	defer cancelFunc()
+	defer lease.Revoke(context.TODO(), leaseID)
+    
+    //抢锁和占用期间，需要不停的续租，续租方法返回一个只读的channel
+	keepChan, err := lease.KeepAlive(ctx, leaseID)
+	if err != nil {
+		fmt.Println(err)
+	}
+    //处理续租返回的信息
+	go func() {
+		for {
+			select {
+			case keepResp := &amp;lt;-keepChan:
+				if keepChan == nil {
+					fmt.Println(&amp;quot;lease out&amp;quot;)
+					goto END
+				} else {
+					fmt.Println(&amp;quot;get resp&amp;quot;, keepResp.ID)
+				}
+			}
+		}
+	END:
+	}()
+	kv := clientv3.NewKV(client)
+	txn := kv.Txn(context.TODO())
+    //开始抢锁事务操作
+	txn.If(clientv3.Compare(clientv3.CreateRevision(&amp;quot;/lock/9&amp;quot;), &amp;quot;=&amp;quot;, 0)).Then(clientv3.OpPut(&amp;quot;/lock/9&amp;quot;, &amp;quot;&amp;quot;, clientv3.WithLease(leaseID))).Else(clientv3.OpGet(&amp;quot;/lock/9&amp;quot;))
+    //提交事务
+	txnResp, err := txn.Commit()
+    
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+    //如果抢锁成功
+	if txnResp.Succeeded {
+		fmt.Println(&amp;quot;success&amp;quot;)
+	} else {
+		fmt.Println(&amp;quot;fail&amp;quot;)
+	}
+	time.Sleep(5 * time.Second)
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+      
+    </item>
     
     <item>
       <title>给Mac上的Fusion虚拟机设置固定ip地址</title>
@@ -41,6 +131,8 @@
 &lt;code&gt;host1&lt;/code&gt;是在Vmware Fusion中看到的虚拟机列表里的名称；&lt;br&gt;
 &lt;code&gt;00:0c:29:dd:a5:67&lt;/code&gt;是这台虚拟机的网卡MAC地址，进入虚拟机的terminal里执行&lt;code&gt;ifconfig&lt;/code&gt;就可以找到&lt;br&gt;
 &lt;code&gt;192.168.32.131&lt;/code&gt;是你要设置的固定ip的地址。&lt;/p&gt;
+
+&lt;p&gt;如果有多个虚拟主机，顺序填写就可以了。&lt;/p&gt;
 
 &lt;p&gt;设置好之后，执行下面的刷新操作:&lt;/p&gt;
 

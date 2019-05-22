@@ -6,10 +6,19 @@
     <description>Recent content in etcd on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 19 May 2019 22:52:01 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 22 May 2019 16:09:11 +0800</lastBuildDate>
     
 	<atom:link href="http://anakin.github.io/tags/etcd/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Goang通过ETCD实现分布式锁</title>
+      <link>http://anakin.github.io/post/golang-etcd-lock/</link>
+      <pubDate>Wed, 22 May 2019 16:09:11 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/golang-etcd-lock/</guid>
+      <description>之前写过用redis实现的分布式锁，这次用etcd来实现一个。 原理 首先获取一个etcd的租约，拿着这个租约用etcd的事务操作去设置一个ke</description>
+    </item>
     
     <item>
       <title>Etcd实现MVCC的原理</title>

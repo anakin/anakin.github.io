@@ -3,7 +3,44 @@
   
   <url>
     <loc>http://anakin.github.io/</loc>
-    <lastmod>2019-05-21T18:11:37+08:00</lastmod>
+    <lastmod>2019-05-22T16:09:11+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/post/golang-etcd-lock/</loc>
+    <lastmod>2019-05-22T16:09:11+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/post/</loc>
+    <lastmod>2019-05-22T16:09:11+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/</loc>
+    <lastmod>2019-05-22T16:09:11+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/etcd/</loc>
+    <lastmod>2019-05-22T16:09:11+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/golang/</loc>
+    <lastmod>2019-05-22T16:09:11+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/lock/</loc>
+    <lastmod>2019-05-22T16:09:11+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -15,18 +52,6 @@
   
   <url>
     <loc>http://anakin.github.io/tags/mac/</loc>
-    <lastmod>2019-05-21T18:11:37+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://anakin.github.io/post/</loc>
-    <lastmod>2019-05-21T18:11:37+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://anakin.github.io/tags/</loc>
     <lastmod>2019-05-21T18:11:37+08:00</lastmod>
     <priority>0</priority>
   </url>
@@ -85,12 +110,6 @@
   </url>
   
   <url>
-    <loc>http://anakin.github.io/tags/etcd/</loc>
-    <lastmod>2019-05-19T22:52:01+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://anakin.github.io/tags/mvcc/</loc>
     <lastmod>2019-05-19T22:52:01+08:00</lastmod>
     <priority>0</priority>
@@ -138,12 +157,6 @@
   
   <url>
     <loc>http://anakin.github.io/tags/gc/</loc>
-    <lastmod>2019-05-12T23:05:48+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://anakin.github.io/tags/golang/</loc>
     <lastmod>2019-05-12T23:05:48+08:00</lastmod>
     <priority>0</priority>
   </url>
