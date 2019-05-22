@@ -70,7 +70,7 @@
 
 <meta itemprop="datePublished" content="2019-05-22T16:09:11&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-22T16:09:11&#43;08:00" />
-<meta itemprop="wordCount" content="406">
+<meta itemprop="wordCount" content="408">
 
 
 
@@ -298,6 +298,7 @@
 <li>
 <ul>
 <li><a href="#原理">原理</a></li>
+<li><a href="#代码">代码</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -314,6 +315,8 @@
 
 <p>首先获取一个etcd的租约，拿着这个租约用etcd的事务操作去设置一个key，如果设置成功，就表示抢到了锁，否则抢索失败。租约的作用就是实现抢到锁之后的释放功能，防止长期占用。<br>
 etcd的txn事务比较特别，是一个IF-THEN-ELSE的形式，其中IF接收的参数是一个比较操作。多说无益，看代码吧。<br></p>
+
+<h2 id="代码">代码</h2>
 
 <pre><code>package main
 

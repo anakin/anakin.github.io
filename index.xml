@@ -27,6 +27,8 @@
 &lt;p&gt;首先获取一个etcd的租约，拿着这个租约用etcd的事务操作去设置一个key，如果设置成功，就表示抢到了锁，否则抢索失败。租约的作用就是实现抢到锁之后的释放功能，防止长期占用。&lt;br&gt;
 etcd的txn事务比较特别，是一个IF-THEN-ELSE的形式，其中IF接收的参数是一个比较操作。多说无益，看代码吧。&lt;br&gt;&lt;/p&gt;
 
+&lt;h2 id=&#34;代码&#34;&gt;代码&lt;/h2&gt;
+
 &lt;pre&gt;&lt;code&gt;package main
 
 import (
