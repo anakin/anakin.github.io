@@ -6,10 +6,716 @@
     <description>Recent content on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 22 May 2019 16:09:11 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 23 May 2019 10:24:06 +0800</lastBuildDate>
     
         <atom:link href="http://anakin.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>手动搭建k8s集群（四）</title>
+      <link>http://anakin.github.io/post/create-k8s-4/</link>
+      <pubDate>Thu, 23 May 2019 10:24:06 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/create-k8s-4/</guid>
+      
+        <description>
+
+&lt;p&gt;开始改造我们之前搭建的基础集群，加上安全机制。&lt;/p&gt;
+
+&lt;h2 id=&#34;准备工作&#34;&gt;准备工作&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;1. 停止master节点的所有服务&lt;/strong&gt;&lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;查看已有的service&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl get services
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;删除service（例如有一个叫xxx的service）&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl delete service xxx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;查看已有的deployments&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl get deploy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;删除deployments&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl delete deploy xxx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;停止master的服务&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;service kube-calico stop
+service kube-scheduler stop
+service kube-controller-manager stop
+service kube-apiserver stop
+service etcd stop &amp;amp;&amp;amp; rm -fr /var/lib/etcd/*
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;2. 停止worker节点的所有服务&lt;/strong&gt;&lt;br&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;service kubelet stop 
+rm -fr /var/lib/kubelet/*
+service kube-proxy stop 
+rm -fr /var/lib/kube-proxy/*
+service kube-calico stop
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;3. 安装需要的工具&lt;/strong&gt;&lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;在所有节点上安装cfssl:&lt;/strong&gt;&lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;CFSSL是CloudFlare开源的一款PKI/TLS工具。 CFSSL 包含一个命令行工具 和一个用于 签名，验证并且捆绑TLS证书的 HTTP API 服务。 用Go写的。具体相关信息自行google。
+下载&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wget -q --show-progress --https-only --timestamping \
+  https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 \
+  https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;修改权限&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;chmod +x cfssl_linux-amd64 cfssljson_linux-amd64
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;放到可执行目录&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mv cfssl_linux-amd64 /usr/local/bin/cfssl
+mv cfssljson_linux-amd64 /usr/local/bin/cfssljson  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;在worker节点上安装conntrack&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apt install conntrack
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;4.在master上生成根证书&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir -p /etc/kubernetes/ca
+cd /etc/kubernetes/ca
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编辑ca-config.json文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;signing&amp;quot;: {
+    &amp;quot;default&amp;quot;: {
+      &amp;quot;expiry&amp;quot;: &amp;quot;87600h&amp;quot;
+    },
+    &amp;quot;profiles&amp;quot;: {
+      &amp;quot;kubernetes&amp;quot;: {
+        &amp;quot;usages&amp;quot;: [
+            &amp;quot;signing&amp;quot;,
+            &amp;quot;key encipherment&amp;quot;,
+            &amp;quot;server auth&amp;quot;,
+            &amp;quot;client auth&amp;quot;
+        ],
+        &amp;quot;expiry&amp;quot;: &amp;quot;87600h&amp;quot;
+      }
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编辑ca-csr.json文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;CN&amp;quot;: &amp;quot;kubernetes&amp;quot;,
+  &amp;quot;key&amp;quot;: {
+    &amp;quot;algo&amp;quot;: &amp;quot;rsa&amp;quot;,
+    &amp;quot;size&amp;quot;: 2048
+  },
+  &amp;quot;names&amp;quot;: [
+    {
+      &amp;quot;C&amp;quot;: &amp;quot;CN&amp;quot;,
+      &amp;quot;ST&amp;quot;: &amp;quot;Beijing&amp;quot;,
+      &amp;quot;L&amp;quot;: &amp;quot;XS&amp;quot;,
+      &amp;quot;O&amp;quot;: &amp;quot;k8s&amp;quot;,
+      &amp;quot;OU&amp;quot;: &amp;quot;System&amp;quot;
+    }
+  ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;执行生成证书的命令：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cfssl gencert -initca ca-csr.json | cfssljson -bare ca
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;OK。&lt;/p&gt;
+
+&lt;h2 id=&#34;master节点设置&#34;&gt;master节点设置&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;1. etcd设置&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;编辑/lib/systemd/system/etcd.service，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=Etcd Server
+After=network.target
+After=network-online.target
+Wants=network-online.target
+Documentation=https://github.com/coreos
+
+[Service]
+Type=notify
+WorkingDirectory=/var/lib/etcd/
+ExecStart=/home/anakin/bin/etcd \
+  --name=192.168.32.131 \
+  --listen-client-urls=https://192.168.32.131:2379,http://127.0.0.1:2379 \
+  --advertise-client-urls=https://192.168.32.131:2379 \
+  --data-dir=/var/lib/etcd \
+  --listen-peer-urls=https://192.168.32.131:2380 \
+  --initial-advertise-peer-urls=https://192.168.32.131:2380 \
+  --cert-file=/etc/kubernetes/ca/etcd/etcd.pem \
+  --key-file=/etc/kubernetes/ca/etcd/etcd-key.pem \
+  --peer-cert-file=/etc/kubernetes/ca/etcd/etcd.pem \
+  --peer-key-file=/etc/kubernetes/ca/etcd/etcd-key.pem \
+  --trusted-ca-file=/etc/kubernetes/ca/ca.pem \
+  --peer-trusted-ca-file=/etc/kubernetes/ca/ca.pem
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后启动服务：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;systemctl daemon-reload
+service etcd start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;2. apiserver设置&lt;/strong&gt;&lt;br&gt;
+创建一个存放证书的目录：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir -p /etc/kubernetes/ca/kubernetes
+cd /etc/kubernetes/ca/kubernetes/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编辑kubernetes-csr.json文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;CN&amp;quot;: &amp;quot;kubernetes&amp;quot;,
+  &amp;quot;hosts&amp;quot;: [
+    &amp;quot;127.0.0.1&amp;quot;,
+    &amp;quot;192.168.32.131&amp;quot;,
+    &amp;quot;10.68.0.1&amp;quot;,
+    &amp;quot;kubernetes&amp;quot;,
+    &amp;quot;kubernetes.default&amp;quot;,
+    &amp;quot;kubernetes.default.svc&amp;quot;,
+    &amp;quot;kubernetes.default.svc.cluster&amp;quot;,
+    &amp;quot;kubernetes.default.svc.cluster.local&amp;quot;
+  ],
+  &amp;quot;key&amp;quot;: {
+    &amp;quot;algo&amp;quot;: &amp;quot;rsa&amp;quot;,
+    &amp;quot;size&amp;quot;: 2048
+  },
+  &amp;quot;names&amp;quot;: [
+    {
+      &amp;quot;C&amp;quot;: &amp;quot;CN&amp;quot;,
+      &amp;quot;ST&amp;quot;: &amp;quot;Beijing&amp;quot;,
+      &amp;quot;L&amp;quot;: &amp;quot;XS&amp;quot;,
+      &amp;quot;O&amp;quot;: &amp;quot;k8s&amp;quot;,
+      &amp;quot;OU&amp;quot;: &amp;quot;System&amp;quot;
+    }
+  ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;签发证书：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cfssl gencert \
+        -ca=/etc/kubernetes/ca/ca.pem \
+        -ca-key=/etc/kubernetes/ca/ca-key.pem \
+        -config=/etc/kubernetes/ca/ca-config.json \
+        -profile=kubernetes kubernetes-csr.json | cfssljson -bare kubernetes 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;生成一个token文件：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;head -c 16 /dev/urandom | od -An -t x | tr -d &#39; &#39;
+c81fb8ce5502f19d510d159ff8a1cf12
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;把这个token存入文件：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo &amp;quot;c81fb8ce5502f19d510d159ff8a1cf12,kubelet-bootstrap,10001,\&amp;quot;system:kubelet-bootstrap\&amp;quot;&amp;quot; &amp;gt; /etc/kubernetes/ca/kubernetes/token.csv
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编辑/lib/systemd/system/kube-apiserver.service，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=Kubernetes API Server
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=network.target
+[Service]
+ExecStart=/home/anakin/bin/kube-apiserver \
+  --admission-control=NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota,NodeRestriction \
+  --insecure-bind-address=127.0.0.1 \
+  --kubelet-https=true \
+  --bind-address=192.168.32.131 \
+  --authorization-mode=Node,RBAC \
+  --runtime-config=rbac.authorization.k8s.io/v1 \
+  --enable-bootstrap-token-auth \
+  --token-auth-file=/etc/kubernetes/ca/kubernetes/token.csv \
+  --tls-cert-file=/etc/kubernetes/ca/kubernetes/kubernetes.pem \
+  --tls-private-key-file=/etc/kubernetes/ca/kubernetes/kubernetes-key.pem \
+  --client-ca-file=/etc/kubernetes/ca/ca.pem \
+  --service-account-key-file=/etc/kubernetes/ca/ca-key.pem \
+  --etcd-cafile=/etc/kubernetes/ca/ca.pem \
+  --etcd-certfile=/etc/kubernetes/ca/kubernetes/kubernetes.pem \
+  --etcd-keyfile=/etc/kubernetes/ca/kubernetes/kubernetes-key.pem \
+  --service-cluster-ip-range=10.68.0.0/16 \
+  --service-node-port-range=20000-40000 \
+  --etcd-servers=https://192.168.32.131:2379 \
+  --enable-swagger-ui=true \
+  --allow-privileged=true \
+  --audit-log-maxage=30 \
+  --audit-log-maxbackup=3 \
+  --audit-log-maxsize=100 \
+  --audit-log-path=/var/lib/audit.log \
+  --event-ttl=1h \
+  --v=2
+Restart=on-failure
+RestartSec=5
+Type=notify
+LimitNOFILE=65536
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后启动服务：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;systemctl daemon-reload
+service kube-apiserver start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;3. controller-manager设置&lt;/strong&gt;&lt;br&gt;
+编辑/lib/systemd/system/kube-controller-manager.service文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=Kubernetes Controller Manager
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+[Service]
+ExecStart=/home/anakin/bin/kube-controller-manager \
+  --address=127.0.0.1 \
+  --master=http://127.0.0.1:8080 \
+  --allocate-node-cidrs=true \
+  --service-cluster-ip-range=10.68.0.0/16 \
+  --cluster-cidr=172.20.0.0/16 \
+  --cluster-name=kubernetes \
+  --leader-elect=true \
+  --cluster-signing-cert-file=/etc/kubernetes/ca/ca.pem \
+  --cluster-signing-key-file=/etc/kubernetes/ca/ca-key.pem \
+  --service-account-private-key-file=/etc/kubernetes/ca/ca-key.pem \
+  --root-ca-file=/etc/kubernetes/ca/ca.pem \
+  --v=2
+Restart=on-failure
+RestartSec=5
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;启动服务&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;systemctl daemon-reload
+service kube-controller-manager start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;4. scheduler设置&lt;/strong&gt;&lt;br&gt;
+scheduler不需要重新设置，直接启动就ok了。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;5. kubectl设置&lt;/strong&gt;&lt;br&gt;
+先创建一个叫做admin的系统管理员：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir -p /etc/kubernetes/ca/admin
+cd /etc/kubernetes/ca/admin/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编辑admin-csr.json文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;CN&amp;quot;: &amp;quot;admin&amp;quot;,
+  &amp;quot;hosts&amp;quot;: [],
+  &amp;quot;key&amp;quot;: {
+    &amp;quot;algo&amp;quot;: &amp;quot;rsa&amp;quot;,
+    &amp;quot;size&amp;quot;: 2048
+  },
+  &amp;quot;names&amp;quot;: [
+    {
+      &amp;quot;C&amp;quot;: &amp;quot;CN&amp;quot;,
+      &amp;quot;ST&amp;quot;: &amp;quot;Beijing&amp;quot;,
+      &amp;quot;L&amp;quot;: &amp;quot;XS&amp;quot;,
+      &amp;quot;O&amp;quot;: &amp;quot;system:masters&amp;quot;,
+      &amp;quot;OU&amp;quot;: &amp;quot;System&amp;quot;
+    }
+  ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;签发证书：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cfssl gencert \
+        -ca=/etc/kubernetes/ca/ca.pem \
+        -ca-key=/etc/kubernetes/ca/ca-key.pem \
+        -config=/etc/kubernetes/ca/ca-config.json \
+        -profile=kubernetes admin-csr.json | cfssljson -bare admin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后开始设置kubectl&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl config set-cluster kubernetes \
+        --certificate-authority=/etc/kubernetes/ca/ca.pem \
+        --embed-certs=true \
+        --server=https://192.168.32.131:6443
+
+kubectl config set-credentials admin \
+        --client-certificate=/etc/kubernetes/ca/admin/admin.pem \
+        --embed-certs=true \
+        --client-key=/etc/kubernetes/ca/admin/admin-key.pem
+
+kubectl config set-context kubernetes \
+        --cluster=kubernetes --user=admin
+    
+kubectl config use-context kubernetes
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;6. calico设置&lt;/strong&gt;&lt;br&gt;
+生成证书：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir -p /etc/kubernetes/ca/calico
+cd /etc/kubernetes/ca/calico/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编辑calico-csr.json文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;CN&amp;quot;: &amp;quot;calico&amp;quot;,
+  &amp;quot;hosts&amp;quot;: [],
+  &amp;quot;key&amp;quot;: {
+    &amp;quot;algo&amp;quot;: &amp;quot;rsa&amp;quot;,
+    &amp;quot;size&amp;quot;: 2048
+  },
+  &amp;quot;names&amp;quot;: [
+    {
+      &amp;quot;C&amp;quot;: &amp;quot;CN&amp;quot;,
+      &amp;quot;ST&amp;quot;: &amp;quot;Beijing&amp;quot;,
+      &amp;quot;L&amp;quot;: &amp;quot;XS&amp;quot;,
+      &amp;quot;O&amp;quot;: &amp;quot;k8s&amp;quot;,
+      &amp;quot;OU&amp;quot;: &amp;quot;System&amp;quot;
+    }
+  ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;签发证书：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cfssl gencert \
+        -ca=/etc/kubernetes/ca/ca.pem \
+        -ca-key=/etc/kubernetes/ca/ca-key.pem \
+        -config=/etc/kubernetes/ca/ca-config.json \
+        -profile=kubernetes calico-csr.json | cfssljson -bare calico
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编辑/lib/systemd/system/kube-calico.service文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=calico node
+After=docker.service
+Requires=docker.service
+
+[Service]
+User=root
+PermissionsStartOnly=true
+ExecStart=/usr/bin/docker run --net=host --privileged --name=calico-node \
+  -e NODENAME=&amp;quot;calico1&amp;quot; \
+  -e ETCD_ENDPOINTS=https://192.168.32.131:2379 \
+  -e ETCD_CA_CERT_FILE=/etc/kubernetes/ca/ca.pem \
+  -e ETCD_CERT_FILE=/etc/kubernetes/ca/calico/calico.pem \
+  -e ETCD_KEY_FILE=/etc/kubernetes/ca/calico/calico-key.pem \
+  -e CALICO_LIBNETWORK_ENABLED=true \
+  -e CALICO_NETWORKING_BACKEND=bird \
+  -e CALICO_DISABLE_FILE_LOGGING=true \
+  -e CALICO_IPV4POOL_CIDR=172.20.0.0/16 \
+  -e CALICO_IPV4POOL_IPIP=off \
+  -e FELIX_DEFAULTENDPOINTTOHOSTACTION=ACCEPT \
+  -e FELIX_IPV6SUPPORT=false \
+  -e FELIX_LOGSEVERITYSCREEN=info \
+  -e FELIX_IPINIPMTU=1440 \
+  -e FELIX_HEALTHENABLED=true \
+  -e IP=192.168.32.131 \
+  -v /etc/kubernetes/ca:/etc/kubernetes/ca \
+  -v /var/run/calico:/var/run/calico \
+  -v /lib/modules:/lib/modules \
+  -v /run/docker/plugins:/run/docker/plugins \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /var/log/calico:/var/log/calico \
+  calico/node:release-v2.6
+ExecStop=/usr/bin/docker rm -f calico-node
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;启动服务：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;systemctl daemon-reload
+service kube-calico start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;还有一步，就是把/etc/kubernetes/ca/calico目录下的这几个证书拷贝到worker节点对应的位置上去备用&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;7. 设置kubelet的角色绑定&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl -n kube-system get clusterrole
+kubectl create clusterrolebinding kubelet-bootstrap \
+         --clusterrole=system:node-bootstrapper --user=kubelet-bootstrap
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;worker节点设置&#34;&gt;worker节点设置&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;1. calico设置&lt;/strong&gt;&lt;br&gt;
+编辑/lib/systemd/system/kube-calico.service文件，参考master节点的内容，只需要修改一下NODENAME就可以了，然后启动服务&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2. kubelet设置&lt;/strong&gt;&lt;br&gt;
+设置kubelet参数：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl config set-cluster kubernetes \
+        --certificate-authority=/etc/kubernetes/ca/ca.pem \
+        --embed-certs=true \
+        --server=https://192.168.32.131:6443 \
+        --kubeconfig=bootstrap.kubeconfig
+
+kubectl config set-credentials kubelet-bootstrap \
+        --token=c81fb8ce5502f19d510d159ff8a1cf12\
+        --kubeconfig=bootstrap.kubeconfig
+
+kubectl config set-context default \
+        --cluster=kubernetes \
+        --user=kubelet-bootstrap \
+        --kubeconfig=bootstrap.kubeconfig
+
+kubectl config use-context default --kubeconfig=bootstrap.kubeconfig
+
+mv bootstrap.kubeconfig /etc/kubernetes/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;设置cni：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /etc/cni/net.d/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编辑10-calico.conf文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+    &amp;quot;name&amp;quot;: &amp;quot;calico-k8s-network&amp;quot;,
+    &amp;quot;cniVersion&amp;quot;: &amp;quot;0.1.0&amp;quot;,
+    &amp;quot;type&amp;quot;: &amp;quot;calico&amp;quot;,
+    &amp;quot;etcd_endpoints&amp;quot;: &amp;quot;https://192.168.32.131:2379&amp;quot;,
+    &amp;quot;etcd_key_file&amp;quot;: &amp;quot;/etc/kubernetes/ca/calico/calico-key.pem&amp;quot;,
+    &amp;quot;etcd_cert_file&amp;quot;: &amp;quot;/etc/kubernetes/ca/calico/calico.pem&amp;quot;,
+    &amp;quot;etcd_ca_cert_file&amp;quot;: &amp;quot;/etc/kubernetes/ca/ca.pem&amp;quot;,
+    &amp;quot;log_level&amp;quot;: &amp;quot;info&amp;quot;,
+    &amp;quot;ipam&amp;quot;: {
+        &amp;quot;type&amp;quot;: &amp;quot;calico-ipam&amp;quot;
+    },
+    &amp;quot;kubernetes&amp;quot;: {
+        &amp;quot;kubeconfig&amp;quot;: &amp;quot;/etc/kubernetes/kubelet.kubeconfig&amp;quot;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编辑/lib/systemd/system/kubelet.service文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=Kubernetes Kubelet
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=docker.service
+Requires=docker.service
+
+[Service]
+WorkingDirectory=/var/lib/kubelet
+ExecStart=/home/anakin/bin/kubelet \
+  --address=192.168.32.132 \
+  --hostname-override=192.168.32.132 \
+  --pod-infra-container-image=registry.cn-hangzhou.aliyuncs.com/imooc/pause-amd64:3.0 \
+  --kubeconfig=/etc/kubernetes/kubelet.kubeconfig \
+  --experimental-bootstrap-kubeconfig=/etc/kubernetes/bootstrap.kubeconfig \
+  --cert-dir=/etc/kubernetes/ca \
+  --hairpin-mode hairpin-veth \
+  --network-plugin=cni \
+  --cni-conf-dir=/etc/cni/net.d \
+  --cni-bin-dir=/home/anakin/bin \
+  --cluster-dns=10.68.0.2 \
+  --cluster-domain=cluster.local. \
+  --allow-privileged=true \
+  --fail-swap-on=false \
+  --logtostderr=true \
+  --v=2
+#kubelet cAdvisor 默认在所有接口监听 4194 端口的请求, 以下iptables限制内网访问
+ExecStartPost=/sbin/iptables -A INPUT -s 10.0.0.0/8 -p tcp --dport 4194 -j ACCEPT
+ExecStartPost=/sbin/iptables -A INPUT -s 172.16.0.0/12 -p tcp --dport 4194 -j ACCEPT
+ExecStartPost=/sbin/iptables -A INPUT -s 192.168.0.0/16 -p tcp --dport 4194 -j ACCEPT
+ExecStartPost=/sbin/iptables -A INPUT -p tcp --dport 4194 -j DROP
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;启动服务：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;systemctl daemon-reload
+service kubelet start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;启动之后，需要去master节点进行授权操作：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl get csr|grep &#39;Pending&#39; | awk &#39;{print $1}&#39;| xargs kubectl certificate approve
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;3. kube-proxy设置&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;准备证书：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir -p /etc/kubernetes/ca/kube-proxy
+cd /etc/kubernetes/ca/kube-proxy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编辑kube-proxy-csr.json文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;CN&amp;quot;: &amp;quot;system:kube-proxy&amp;quot;,
+  &amp;quot;hosts&amp;quot;: [],
+  &amp;quot;key&amp;quot;: {
+    &amp;quot;algo&amp;quot;: &amp;quot;rsa&amp;quot;,
+    &amp;quot;size&amp;quot;: 2048
+  },
+  &amp;quot;names&amp;quot;: [
+    {
+      &amp;quot;C&amp;quot;: &amp;quot;CN&amp;quot;,
+      &amp;quot;ST&amp;quot;: &amp;quot;Beijing&amp;quot;,
+      &amp;quot;L&amp;quot;: &amp;quot;XS&amp;quot;,
+      &amp;quot;O&amp;quot;: &amp;quot;k8s&amp;quot;,
+      &amp;quot;OU&amp;quot;: &amp;quot;System&amp;quot;
+    }
+  ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;签发证书：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cfssl gencert \
+        -ca=/etc/kubernetes/ca/ca.pem \
+        -ca-key=/etc/kubernetes/ca/ca-key.pem \
+        -config=/etc/kubernetes/ca/ca-config.json \
+        -profile=kubernetes kube-proxy-csr.json | cfssljson -bare kube-proxy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;生成各种配置文件：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl config set-cluster kubernetes \
+        --certificate-authority=/etc/kubernetes/ca/ca.pem \
+        --embed-certs=true \
+        --server=https://192.168.32.131:6443 \
+        --kubeconfig=kube-proxy.kubeconfig
+
+kubectl config set-credentials kube-proxy \
+        --client-certificate=/etc/kubernetes/ca/kube-proxy/kube-proxy.pem \
+        --client-key=/etc/kubernetes/ca/kube-proxy/kube-proxy-key.pem \
+        --embed-certs=true \
+        --kubeconfig=kube-proxy.kubeconfig
+
+kubectl config set-context default \
+        --cluster=kubernetes \
+        --user=kube-proxy \
+        --kubeconfig=kube-proxy.kubeconfig
+
+kubectl config use-context default --kubeconfig=kube-proxy.kubeconfig
+
+mv kube-proxy.kubeconfig /etc/kubernetes/kube-proxy.kubeconfig
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编辑/lib/systemd/system/kube-proxy.service文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=Kubernetes Kube-Proxy Server
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=network.target
+[Service]
+WorkingDirectory=/var/lib/kube-proxy
+ExecStart=/home/anakin/bin/kube-proxy \
+  --bind-address=192.168.32.132 \
+  --hostname-override=192.168.32.132 \
+  --kubeconfig=/etc/kubernetes/kube-proxy.kubeconfig \
+  --logtostderr=true \
+  --v=2
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;启动服务：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;systemctl daemon-reload
+service kube-proxy start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;中间可能会遇到的问题：
+1. calico&lt;/p&gt;
+
+&lt;p&gt;calico是以docker的方式运行的，有时候重启服务的时候，之前的container还没杀死，日志里会报错误：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Error response from daemon: Conflict. The container name &amp;quot;/aaa&amp;quot; is already in use by conta
+iner &amp;quot;xxx&amp;quot;.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这时候只要删除这个container就可以了:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker rm -f xxx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果是报node的名字被占用的错误，到master节点删除就ok了：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;calicoctl delete node
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;一些常用的命令:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;查看集群节点：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl get nodes
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;查看calico节点：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;calicoctl node status
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;每个服务启动之后，都可以用下面的命令查看服务的日志信息：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;journalctl -f -u xxx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ok。写的好累。&lt;/p&gt;
+</description>
+      
+    </item>
     
     <item>
       <title>Golang通过ETCD实现分布式锁</title>
