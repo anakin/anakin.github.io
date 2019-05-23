@@ -70,7 +70,7 @@
 
 <meta itemprop="datePublished" content="2019-05-23T10:24:06&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-23T10:24:06&#43;08:00" />
-<meta itemprop="wordCount" content="2422">
+<meta itemprop="wordCount" content="2516">
 
 
 
@@ -441,6 +441,45 @@ cd /etc/kubernetes/ca
 <h2 id="master节点设置">master节点设置</h2>
 
 <p><strong>1. etcd设置</strong></p>
+
+<p>设置etcd的证书：</p>
+
+<pre><code>mkdir -p /etc/kubernetes/ca/etcd
+cd /etc/kubernetes/ca/etcd 
+</code></pre>
+
+<p>编辑etcd-csr.json文件，内容如下：</p>
+
+<pre><code>{
+  &quot;CN&quot;: &quot;etcd&quot;,
+  &quot;hosts&quot;: [
+    &quot;127.0.0.1&quot;,
+    &quot;{{NODE_IP}}&quot;
+  ],
+  &quot;key&quot;: {
+    &quot;algo&quot;: &quot;rsa&quot;,
+    &quot;size&quot;: 2048
+  },
+  &quot;names&quot;: [
+    {
+      &quot;C&quot;: &quot;CN&quot;,
+      &quot;ST&quot;: &quot;Beijing&quot;,
+      &quot;L&quot;: &quot;XS&quot;,
+      &quot;O&quot;: &quot;k8s&quot;,
+      &quot;OU&quot;: &quot;System&quot;
+    }
+  ]
+}
+</code></pre>
+
+<p>执行签发证书的命令：</p>
+
+<pre><code>cfssl gencert \
+        -ca=/etc/kubernetes/ca/ca.pem \
+        -ca-key=/etc/kubernetes/ca/ca-key.pem \
+        -config=/etc/kubernetes/ca/ca-config.json \
+        -profile=kubernetes etcd-csr.json | cfssljson -bare etcd
+</code></pre>
 
 <p>编辑/lib/systemd/system/etcd.service，内容如下：</p>
 

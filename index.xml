@@ -151,6 +151,45 @@ cd /etc/kubernetes/ca
 
 &lt;p&gt;&lt;strong&gt;1. etcd设置&lt;/strong&gt;&lt;/p&gt;
 
+&lt;p&gt;设置etcd的证书：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir -p /etc/kubernetes/ca/etcd
+cd /etc/kubernetes/ca/etcd 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编辑etcd-csr.json文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;CN&amp;quot;: &amp;quot;etcd&amp;quot;,
+  &amp;quot;hosts&amp;quot;: [
+    &amp;quot;127.0.0.1&amp;quot;,
+    &amp;quot;{{NODE_IP}}&amp;quot;
+  ],
+  &amp;quot;key&amp;quot;: {
+    &amp;quot;algo&amp;quot;: &amp;quot;rsa&amp;quot;,
+    &amp;quot;size&amp;quot;: 2048
+  },
+  &amp;quot;names&amp;quot;: [
+    {
+      &amp;quot;C&amp;quot;: &amp;quot;CN&amp;quot;,
+      &amp;quot;ST&amp;quot;: &amp;quot;Beijing&amp;quot;,
+      &amp;quot;L&amp;quot;: &amp;quot;XS&amp;quot;,
+      &amp;quot;O&amp;quot;: &amp;quot;k8s&amp;quot;,
+      &amp;quot;OU&amp;quot;: &amp;quot;System&amp;quot;
+    }
+  ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;执行签发证书的命令：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cfssl gencert \
+        -ca=/etc/kubernetes/ca/ca.pem \
+        -ca-key=/etc/kubernetes/ca/ca-key.pem \
+        -config=/etc/kubernetes/ca/ca-config.json \
+        -profile=kubernetes etcd-csr.json | cfssljson -bare etcd
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;编辑/lib/systemd/system/etcd.service，内容如下：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;[Unit]
