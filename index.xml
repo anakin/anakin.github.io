@@ -163,7 +163,7 @@ cd /etc/kubernetes/ca/etcd
   &amp;quot;CN&amp;quot;: &amp;quot;etcd&amp;quot;,
   &amp;quot;hosts&amp;quot;: [
     &amp;quot;127.0.0.1&amp;quot;,
-    &amp;quot;{{NODE_IP}}&amp;quot;
+    &amp;quot;192.168.32.131&amp;quot;
   ],
   &amp;quot;key&amp;quot;: {
     &amp;quot;algo&amp;quot;: &amp;quot;rsa&amp;quot;,
