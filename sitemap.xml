@@ -3,19 +3,38 @@
   
   <url>
     <loc>http://anakin.github.io/</loc>
-    <lastmod>2019-05-23T10:24:06+08:00</lastmod>
+    <lastmod>2019-05-27T23:14:16+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
+    <loc>http://anakin.github.io/post/gokit-example/</loc>
+    <lastmod>2019-05-27T23:14:16+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>http://anakin.github.io/post/</loc>
-    <lastmod>2019-05-23T10:24:06+08:00</lastmod>
+    <lastmod>2019-05-27T23:14:16+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://anakin.github.io/tags/</loc>
-    <lastmod>2019-05-23T10:24:06+08:00</lastmod>
+    <lastmod>2019-05-27T23:14:16+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/gokit/</loc>
+    <lastmod>2019-05-27T23:14:16+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/golang/</loc>
+    <lastmod>2019-05-27T23:14:16+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -47,12 +66,6 @@
   
   <url>
     <loc>http://anakin.github.io/tags/etcd/</loc>
-    <lastmod>2019-05-22T16:09:11+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://anakin.github.io/tags/golang/</loc>
     <lastmod>2019-05-22T16:09:11+08:00</lastmod>
     <priority>0</priority>
   </url>

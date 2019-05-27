@@ -6,10 +6,19 @@
     <description>Recent content in golang on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 22 May 2019 16:09:11 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 27 May 2019 23:14:16 +0800</lastBuildDate>
     
 	<atom:link href="http://anakin.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Gokit创建微服务的例子(翻译)</title>
+      <link>http://anakin.github.io/post/gokit-example/</link>
+      <pubDate>Mon, 27 May 2019 23:14:16 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/gokit-example/</guid>
+      <description>第一原理 让我们创建一个Go kit 服务，我们暂时只用一个main.go文件。 你的事务逻辑 你的服务从你的事务逻辑开始。在Go kit里，我们用一个in</description>
+    </item>
     
     <item>
       <title>Golang通过ETCD实现分布式锁</title>
