@@ -17,7 +17,7 @@
       <pubDate>Fri, 31 May 2019 12:58:45 +0800</pubDate>
       
       <guid>http://anakin.github.io/post/php-laravel-grpc/</guid>
-      <description>最近需要用Laravel实现一个Rest的API，后端调用Golang的RPC服务，记录一下整合的过程。 环境准备 php安装grpc和ptot</description>
+      <description>最近需要用Laravel实现一个Rest的API，后端调用Golang的RPC服务，记录一下整合的过程。 环境准备 php安装grpc和prot</description>
     </item>
     
     <item>

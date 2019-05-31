@@ -25,7 +25,7 @@
 &lt;h2 id=&#34;环境准备&#34;&gt;环境准备&lt;/h2&gt;
 
 &lt;ol&gt;
-&lt;li&gt;&lt;p&gt;php安装grpc和ptotobuf扩展&lt;br&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;php安装grpc和protobuf扩展&lt;br&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;pecl install grpc
 pecl install protobuf
