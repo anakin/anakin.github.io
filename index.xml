@@ -6,10 +6,390 @@
     <description>Recent content on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 31 May 2019 12:58:45 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 31 May 2019 21:30:05 +0800</lastBuildDate>
     
         <atom:link href="http://anakin.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Docker部署完整的PHP-RPC-Golang环境</title>
+      <link>http://anakin.github.io/post/docker-golang-php/</link>
+      <pubDate>Fri, 31 May 2019 21:30:05 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/docker-golang-php/</guid>
+      
+        <description>
+
+&lt;p&gt;完全基于docker部署一个php通过rpc访问golang的环境。&lt;/p&gt;
+
+&lt;h2 id=&#34;基本架构&#34;&gt;基本架构&lt;/h2&gt;
+
+&lt;p&gt;我们用PHP的Laravel框架来实现一个用户登录的Restful Api，地址为：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;POST /user/login
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;返回信息为用户Id以及JWT token。&lt;/p&gt;
+
+&lt;p&gt;Golang用来实现两个服务，一个是用户信息服务，一个是登录的统计服务，PHP通过gRPC与Golang通讯。&lt;/p&gt;
+
+&lt;p&gt;最终部署完成后，共有4个docker的container，分别是：
+1. Nginx服务
+2. PHP-FPM服务
+3. 用户信息服务
+4. 登录统计服务&lt;/p&gt;
+
+&lt;h2 id=&#34;详细步骤&#34;&gt;详细步骤&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;本地环境准备
+我的home目录是/home/anakin&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apt install protobuf
+apt install composer
+mkdir -p www/demo
+mkdir www/conf.d
+mkdir www/phpini
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;进入www目录，下载protobuf的代码，我们要用到其中的一个工具：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git clone https://github.com/grpc/grpc.git
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;进入www/demo目录，创建Laravel项目：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;composer create-project laravel/laravel demo
+composer require grpc/grpc
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;稍后我们再来写业务代码。&lt;/p&gt;
+
+&lt;p&gt;进入www/conf.d，编写nginx-host.conf，用来解析PHP的服务，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;server {
+        listen  80;
+                server_name 192.168.32.131;
+                set $root_path &#39;/var/www/html/public&#39;;
+                root $root_path;
+
+                index index.php index.html index.htm;
+
+                try_files $uri $uri/ @rewrite;
+
+                location @rewrite {
+                        rewrite ^/(.*)$ /index.php?_url=/$1;
+                }
+
+                location ~ \.php {
+                        fastcgi_pass 192.168.32.131:9000;
+                        # fastcgi_pass unix:///run/php/php7.2-fpm.sock;
+                        fastcgi_index /index.php;
+                        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+                        fastcgi_param PATH_INFO       $fastcgi_path_info;
+                        fastcgi_param PATH_TRANSLATED $document_root$fastcgi_path_info;
+                        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                        include                       fastcgi_params;
+                }
+
+                location ~* ^/(css|img|js|flv|swf|download)/(.+)$ {
+                        root $root_path;
+                }
+
+                location ~ /\.ht {
+                        deny all;
+                }
+                error_log  /tmp/error.anakin.com.log    error;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中，192.168.32.131，是宿主机的ip地址。
+进入www/phpini，编写custom.ini文件，用来加载php需要的扩展，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;extension=grpc.so
+extension=protobuf.so
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;运行PHP的container&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir www/phpdocker
+cd www/phpdocker
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;编写Dockerfile，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;FROM php:7.2-fpm
+RUN apt-get update &amp;amp;&amp;amp; apt-get install -y \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
+        libpng-dev \
+        procps \
+    &amp;amp;&amp;amp; docker-php-ext-install -j$(nproc) iconv \
+    &amp;amp;&amp;amp; docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    &amp;amp;&amp;amp; docker-php-ext-install -j$(nproc) gd \
+    &amp;amp;&amp;amp; docker-php-ext-install pdo_mysql \
+    &amp;amp;&amp;amp; docker-php-ext-install zip \
+    &amp;amp;&amp;amp; pecl install grpc\
+    &amp;amp;&amp;amp; pecl install protobuf
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+        &amp;amp;&amp;amp; composer config -g repo.packagist composer https://packagist.phpcomposer.com
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;创建image：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker build . -t php-fpm:v1.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;运行起来：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker run -d -p 9000:9000 -v /home/anakin/www/demo:/var/www/html -v /home/anakin/www/phpini:/usr/local/etc/php/conf.d --name php-fpm php72:v1.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;映射了我们保持Laravel项目代码的目录进去。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;运行Nginx的container&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker run -d --name nginx -p 80:80 -v /home/anakin/www/demo:/var/www/html -v /home/anakin/www/conf.d:/etc/nginx/conf.d --link php-fpm:php-fpm nginx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;映射了我们刚才存放host文件的目录进去&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;准备rpc服务
+首先编写用户信息服务的userrpc.proto文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;syntax = &amp;quot;proto3&amp;quot;;
+package App.UserRpc;
+
+
+service User{   
+rpc UserLogin(LoginInfo) returns (UserInfo) {}
+}
+
+message LoginInfo{
+string loginname= 1;
+string password= 2;
+}
+
+
+message UserInfo{    
+int32 code= 1;
+string err_msg= 2;
+string token= 3;
+int32 userid= 4;
+string username= 5;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;然后编写用于统计服务的trace.proto文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;syntax = &amp;quot;proto3&amp;quot;;
+package App.Trace;
+
+
+service Trace{   
+  rpc Event(EventInfo) returns (TraceResult) {}
+}
+
+message EventInfo{
+  string eventtype= 1;
+  int32 userid= 2;
+  int32 timestamp= 3;
+}
+
+
+message TraceResult{    
+  bool succ= 1;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;生成PHP的客户端代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;protoc --php_out=./ --grpc_out=./ --plugin=protoc-gen-grpc=/home/aaa/grpc/bins/opt/grpc_php_plugin userrpc.proto
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;生成golang服务端代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;protoc --go_out=./ userrpc.proto
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;trace的类似。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;开发golang服务&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;在GOPATH下面创建一个user目录，user下面再创建一个userrpc目录，将刚刚生成的userrpc.pb.go放到userrpc目录中。
+在user目录下编写main.go，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+import (
+	&amp;quot;context&amp;quot;
+	pb &amp;quot;github.com/anakin/user/userrpc&amp;quot;
+	&amp;quot;github.com/dgrijalva/jwt-go&amp;quot;
+	&amp;quot;google.golang.org/grpc&amp;quot;
+	&amp;quot;log&amp;quot;
+	&amp;quot;net&amp;quot;
+	&amp;quot;time&amp;quot;
+)
+
+const (
+	port = &amp;quot;:50052&amp;quot;
+)
+
+type User struct {
+}
+
+func (u *User) UserLogin(ctx context.Context, req *pb.LoginInfo) (*pb.UserInfo, error) {
+	log.Printf(&amp;quot;received login_name:%v;password:%v&amp;quot;, req.Loginname, req.Password)
+	//mock data
+	userId:=123
+	userName := &amp;quot;anakin&amp;quot;
+
+	//make jwt token
+	claim := jwt.MapClaims{
+		&amp;quot;id&amp;quot;:       userId,
+		&amp;quot;username&amp;quot;: userName,
+		&amp;quot;nbf&amp;quot;:      time.Now().Unix(),
+		&amp;quot;iat&amp;quot;:      time.Now().Unix(),
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256,claim)
+	tokenString,err  := token.SignedString([]byte(&amp;quot;token.secret&amp;quot;))
+	if err !=nil{
+		log.Printf(&amp;quot;signed error&amp;quot;)
+	}
+	return &amp;amp;pb.UserInfo{Code: 200, ErrMsg: &amp;quot;sss&amp;quot;, Userid: 1, Token: tokenString, Username: &amp;quot;anakin&amp;quot;}, nil
+}
+
+func main() {
+	listener, err := net.Listen(&amp;quot;tcp&amp;quot;, port)
+	if err != nil {
+		log.Fatalf(&amp;quot;failed to listen:%v&amp;quot;, err)
+	}
+	s := grpc.NewServer()
+	pb.RegisterUserServer(s, &amp;amp;User{})
+	s.Serve(listener)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编译&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;GOOS=linux GOARCH=amd64 go build -o UserRpcService
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;新建一个目录，把编译好的UserRpcService文件放进去，然后编写一个golang的Dockerfile，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;FROM golang
+WORKDIR /go/src/
+COPY . .
+EXPOSE 50051
+CMD [&amp;quot;/go/src/UserRpcService&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;把这个目录放到宿主机的某个位置，然后进入目录，执行创建image的操作：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker build .  -t userrpc:v1.0 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;运行服务：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker run  -p 50051:50051 -d userrpc:v1.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;trace服务和这个步骤完全一样，就不复述了。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;开发php服务&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;进入www/demo目录，把上面生成的rpc客户端代码加入到Laravl项目中，首先把生成的GPBMetadata目录拷贝到www/demo目录，然后把生成的App下面的UserRpc目录拷贝到www/demo/app目录。&lt;/p&gt;
+
+&lt;p&gt;打开www/demo目录下的composer.json，在classmap下添加一行：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;GPBMetadata
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后执行：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;composer dump-autoload
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编辑www/demo/routes/web.php文件，添加下面一行：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Route::post(&#39;user/login&#39;,&#39;UserController@login&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在www/demo/config目录下创建constants.php文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+return [
+    &amp;quot;USER_RPC_SERVICE&amp;quot;=&amp;gt;&amp;quot;192.168.32.131:50051&amp;quot;,
+    &amp;quot;TRACE_RPC_SERVICE&amp;quot;=&amp;gt;&amp;quot;192.168.32.131:50052&amp;quot;,
+];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在app/Http/Controllers目录下创建UserController.php文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Log;
+use Config;
+
+class UserController extends Controller
+{
+        //
+        public function login(Request $request){
+                $loginname = $request-&amp;gt;input(&amp;quot;loginname&amp;quot;);
+                $password = (string)$request-&amp;gt;input(&amp;quot;password&amp;quot;);
+                if($loginname == &amp;quot;&amp;quot; || $password == &amp;quot;&amp;quot;){
+                        return response()-&amp;gt;json([&amp;quot;code&amp;quot;=&amp;gt;400,&amp;quot;msg&amp;quot;=&amp;gt;&amp;quot;param error&amp;quot;,&amp;quot;data&amp;quot;=&amp;gt;[]]);
+                }
+                $user_rpc_service= Config::get(&#39;constants.USER_RPC_SERVICE&#39;);
+                $userrpc = new \App\UserRpc\UserClient($user_rpc_service,[
+                                &#39;credentials&#39; =&amp;gt; \Grpc\ChannelCredentials::createInsecure()
+                ]);
+                $request = new \App\UserRpc\LoginInfo();
+                $request-&amp;gt;setLoginname($loginname);
+                $request-&amp;gt;setPassword($password);
+                list($recv,$status) = $userrpc-&amp;gt;UserLogin($request)-&amp;gt;wait();
+                $code = $recv-&amp;gt;getCode();
+                $msg = $recv-&amp;gt;getErrMsg();
+                $token = $recv-&amp;gt;getToken();
+                $user_id = $recv-&amp;gt;getUserid();
+                $username = $recv-&amp;gt;getUsername();
+                if(200 !=$code){
+                        return response()-&amp;gt;json([&amp;quot;code&amp;quot;=&amp;gt;$code,&amp;quot;msg&amp;quot;=&amp;gt;$msg,&amp;quot;data&amp;quot;=&amp;gt;[]]);
+                }
+                   $trace_rpc_service = Config::get(&#39;constants.TRACE_RPC_SERVICE&#39;);
+                $tracerpc = new \App\Trace\TraceClient($trace_rpc_service,[
+                                &#39;credentials&#39; =&amp;gt; \Grpc\ChannelCredentials::createInsecure()
+                ]);
+                $info = new \App\Trace\EventInfo();
+                $info-&amp;gt;setEventtype(&amp;quot;user_login&amp;quot;);
+                $info-&amp;gt;setUserid(&amp;quot;1&amp;quot;);
+                $info-&amp;gt;setTimestamp(time());
+                list($recv,$status) = $tracerpc-&amp;gt;Event($info)-&amp;gt;wait();
+                $trace_succ = $recv-&amp;gt;getSucc();
+                $trace_res = $trace_succ == 1 ? &amp;quot;succ&amp;quot; : &amp;quot;fail&amp;quot;;
+                Log::info(&amp;quot;trace result:&amp;quot;.$trace_res);
+                return response()-&amp;gt;json([&amp;quot;code&amp;quot;=&amp;gt;200,&amp;quot;data&amp;quot;=&amp;gt;[&amp;quot;token&amp;quot;=&amp;gt;$token,&amp;quot;userid&amp;quot; =&amp;gt;$user_id,&amp;quot;username&amp;quot;=&amp;gt;$username]]);
+        }
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;现在，你可以POST宿主机ip上的80端口，来看看是不是可以访问了。希望我没有遗漏什么步骤。&lt;/p&gt;
+</description>
+      
+    </item>
     
     <item>
       <title>Laravel整合gRPC</title>

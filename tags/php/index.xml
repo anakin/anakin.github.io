@@ -6,10 +6,19 @@
     <description>Recent content in PHP on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 31 May 2019 12:58:45 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 31 May 2019 21:30:05 +0800</lastBuildDate>
     
 	<atom:link href="http://anakin.github.io/tags/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Docker部署完整的PHP-RPC-Golang环境</title>
+      <link>http://anakin.github.io/post/docker-golang-php/</link>
+      <pubDate>Fri, 31 May 2019 21:30:05 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/docker-golang-php/</guid>
+      <description>完全基于docker部署一个php通过rpc访问golang的环境。 基本架构 我们用PHP的Laravel框架来实现一个用户登录的Restfu</description>
+    </item>
     
     <item>
       <title>Laravel整合gRPC</title>
