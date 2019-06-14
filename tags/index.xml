@@ -6,17 +6,26 @@
     <description>Recent content in Tags on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 31 May 2019 21:30:05 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 14 Jun 2019 09:22:14 +0800</lastBuildDate>
     
 	<atom:link href="http://anakin.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>PHP</title>
+      <title>php</title>
       <link>http://anakin.github.io/tags/php/</link>
-      <pubDate>Fri, 31 May 2019 21:30:05 +0800</pubDate>
+      <pubDate>Fri, 14 Jun 2019 09:22:14 +0800</pubDate>
       
       <guid>http://anakin.github.io/tags/php/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>yaf</title>
+      <link>http://anakin.github.io/tags/yaf/</link>
+      <pubDate>Fri, 14 Jun 2019 09:22:14 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/tags/yaf/</guid>
       <description></description>
     </item>
     

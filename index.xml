@@ -6,10 +6,79 @@
     <description>Recent content on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 31 May 2019 21:30:05 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 14 Jun 2019 09:22:14 +0800</lastBuildDate>
     
         <atom:link href="http://anakin.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>php的Yaf框架类加载顺序研究</title>
+      <link>http://anakin.github.io/post/php-yaf-library/</link>
+      <pubDate>Fri, 14 Jun 2019 09:22:14 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/php-yaf-library/</guid>
+      
+        <description>
+
+&lt;h2 id=&#34;代码&#34;&gt;代码&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;注册ini设置到global_library变量（yaf.c）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;STD_PHP_INI_ENTRY(&amp;quot;yaf.library&amp;quot;, &amp;quot;&amp;quot;,  PHP_INI_ALL, OnUpdateString, global_library, zend_yaf_globals, yaf_globals)
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;把global_library和local_library都传递给了loader的初始化方法（yaf_application.c）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if (YAF_G(local_library)) {
+		zend_string *global_library = strlen(YAF_G(global_library))?
+			zend_string_init(YAF_G(global_library), strlen(YAF_G(global_library)), 0) : NULL;
+		loader = yaf_loader_instance(&amp;amp;zloader, YAF_G(local_library), global_library);
+		if (global_library) {
+			zend_string_release(global_library);
+		}
+	} else {
+		zend_string *local_library, *global_library;
+		local_library = strpprintf(0, &amp;quot;%s%c%s&amp;quot;, ZSTR_VAL(YAF_G(directory)), DEFAULT_SLASH, YAF_LIBRARY_DIRECTORY_NAME);
+		global_library = strlen(YAF_G(global_library))?
+			zend_string_init(YAF_G(global_library), strlen(YAF_G(global_library)), 0) : NULL;
+		loader = yaf_loader_instance(&amp;amp;zloader, local_library, global_library);
+		zend_string_release(local_library);
+		if (global_library) {
+			zend_string_release(global_library);
+		}
+	}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里的local_library指的是application.ini文件中设置的application.library 的值&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;如果没有设置application.library，就用application目录下的library作为local_library，就是常量YAF_LIBRARY_DIRECTORY_NAME定义的目录。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;yaf_loader_instance逻辑(yaf_loader.c)
+yaf_loader_instance有三个参数，loader的指针，本地类地址和全局类地址&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if (library_path) {
+			zend_update_property_str(yaf_loader_ce,
+					instance, ZEND_STRL(YAF_LOADER_PROPERTY_NAME_LIBRARY), library_path);
+		}
+
+		if (global_path) {
+			zend_update_property_str(yaf_loader_ce,
+					instance, ZEND_STRL(YAF_LOADER_PROPERTY_NAME_GLOBAL_LIB), global_path);
+		}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;两个地址一起注册到yaf_loader_ce。&lt;/p&gt;
+
+&lt;h2 id=&#34;conclusion&#34;&gt;conclusion&lt;/h2&gt;
+
+&lt;p&gt;定义的位置不影响加载效率。&lt;/p&gt;
+</description>
+      
+    </item>
     
     <item>
       <title>Docker部署完整的PHP-RPC-Golang环境</title>

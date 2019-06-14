@@ -3,7 +3,38 @@
   
   <url>
     <loc>http://anakin.github.io/</loc>
-    <lastmod>2019-05-31T21:30:05+08:00</lastmod>
+    <lastmod>2019-06-14T09:22:14+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/post/</loc>
+    <lastmod>2019-06-14T09:22:14+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/</loc>
+    <lastmod>2019-06-14T09:22:14+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/php/</loc>
+    <lastmod>2019-06-14T09:22:14+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/post/php-yaf-library/</loc>
+    <lastmod>2019-06-14T09:22:14+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/yaf/</loc>
+    <lastmod>2019-06-14T09:22:14+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -12,24 +43,6 @@
     <lastmod>2019-05-31T21:30:05+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://anakin.github.io/tags/php/</loc>
-    <lastmod>2019-05-31T21:30:05+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://anakin.github.io/post/</loc>
-    <lastmod>2019-05-31T21:30:05+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://anakin.github.io/tags/</loc>
-    <lastmod>2019-05-31T21:30:05+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>

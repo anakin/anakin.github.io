@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 31 May 2019 21:30:05 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 14 Jun 2019 09:22:14 +0800</lastBuildDate>
     
 	<atom:link href="http://anakin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>php的Yaf框架类加载顺序研究</title>
+      <link>http://anakin.github.io/post/php-yaf-library/</link>
+      <pubDate>Fri, 14 Jun 2019 09:22:14 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/php-yaf-library/</guid>
+      <description>代码 注册ini设置到global_library变量（yaf.c） STD_PHP_INI_ENTRY(&amp;quot;yaf.library&amp;quot;, &amp;quot;&amp;quot;, PHP_INI_ALL, OnUpdateString, global_library, zend_yaf_globals, yaf_globals) 把global_library和local_library都</description>
+    </item>
     
     <item>
       <title>Docker部署完整的PHP-RPC-Golang环境</title>
