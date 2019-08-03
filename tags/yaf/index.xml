@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>yaf on Anakin- 奔向NB的生活</title>
-    <link>http://anakin.github.io/tags/yaf/</link>
+    <link>http://localhost:1313/tags/yaf/</link>
     <description>Recent content in yaf on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Fri, 14 Jun 2019 09:22:14 +0800</lastBuildDate>
     
-	<atom:link href="http://anakin.github.io/tags/yaf/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://localhost:1313/tags/yaf/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>php的Yaf框架类加载顺序研究</title>
-      <link>http://anakin.github.io/post/php-yaf-library/</link>
+      <link>http://localhost:1313/post/php-yaf-library/</link>
       <pubDate>Fri, 14 Jun 2019 09:22:14 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/php-yaf-library/</guid>
+      <guid>http://localhost:1313/post/php-yaf-library/</guid>
       <description>代码 注册ini设置到global_library变量（yaf.c） STD_PHP_INI_ENTRY(&amp;quot;yaf.library&amp;quot;, &amp;quot;&amp;quot;, PHP_INI_ALL, OnUpdateString, global_library, zend_yaf_globals, yaf_globals) 把global_library和local_library都</description>
     </item>
     

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>gc on Anakin- 奔向NB的生活</title>
-    <link>http://anakin.github.io/tags/gc/</link>
+    <link>http://localhost:1313/tags/gc/</link>
     <description>Recent content in gc on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Sun, 12 May 2019 23:05:48 +0800</lastBuildDate>
     
-	<atom:link href="http://anakin.github.io/tags/gc/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://localhost:1313/tags/gc/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Golang的GC学习</title>
-      <link>http://anakin.github.io/post/golang-gc/</link>
+      <link>http://localhost:1313/post/golang-gc/</link>
       <pubDate>Sun, 12 May 2019 23:05:48 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/golang-gc/</guid>
+      <guid>http://localhost:1313/post/golang-gc/</guid>
       <description>STW触发的时间 一次GC有两次触发STW，一次是GC的开始阶段，主要是开启写屏障和辅助GC等操作 另外就是表记完成之后，重新扫描部分根对象，禁</description>
     </item>
     

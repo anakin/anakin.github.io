@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>lock on Anakin- 奔向NB的生活</title>
-    <link>http://anakin.github.io/tags/lock/</link>
+    <link>http://localhost:1313/tags/lock/</link>
     <description>Recent content in lock on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Wed, 22 May 2019 16:09:11 +0800</lastBuildDate>
     
-	<atom:link href="http://anakin.github.io/tags/lock/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://localhost:1313/tags/lock/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Golang通过ETCD实现分布式锁</title>
-      <link>http://anakin.github.io/post/golang-etcd-lock/</link>
+      <link>http://localhost:1313/post/golang-etcd-lock/</link>
       <pubDate>Wed, 22 May 2019 16:09:11 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/golang-etcd-lock/</guid>
+      <guid>http://localhost:1313/post/golang-etcd-lock/</guid>
       <description>之前写过用redis实现的分布式锁，这次用etcd来实现一个。 原理 首先获取一个etcd的租约，拿着这个租约用etcd的事务操作去设置一个ke</description>
     </item>
     
     <item>
       <title>Golang利用redis实现分布式锁</title>
-      <link>http://anakin.github.io/post/golang-redis-lock/</link>
+      <link>http://localhost:1313/post/golang-redis-lock/</link>
       <pubDate>Thu, 16 May 2019 20:11:09 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/golang-redis-lock/</guid>
+      <guid>http://localhost:1313/post/golang-redis-lock/</guid>
       <description>原理 使用SETNX命令(SET if Not eXists) SETNX key value 将 key 的值设为 value，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。 设置成功，返回 1 。</description>
     </item>
     

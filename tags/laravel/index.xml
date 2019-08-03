@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Laravel on Anakin- 奔向NB的生活</title>
-    <link>http://anakin.github.io/tags/laravel/</link>
+    <link>http://localhost:1313/tags/laravel/</link>
     <description>Recent content in Laravel on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Fri, 31 May 2019 12:58:45 +0800</lastBuildDate>
     
-	<atom:link href="http://anakin.github.io/tags/laravel/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://localhost:1313/tags/laravel/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Laravel整合gRPC</title>
-      <link>http://anakin.github.io/post/php-laravel-grpc/</link>
+      <link>http://localhost:1313/post/php-laravel-grpc/</link>
       <pubDate>Fri, 31 May 2019 12:58:45 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/php-laravel-grpc/</guid>
+      <guid>http://localhost:1313/post/php-laravel-grpc/</guid>
       <description>最近需要用Laravel实现一个Rest的API，后端调用Golang的RPC服务，记录一下整合的过程。 环境准备 php安装grpc和prot</description>
     </item>
     

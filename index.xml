@@ -2,21 +2,195 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Anakin- 奔向NB的生活</title>
-    <link>http://anakin.github.io/</link>
+    <link>http://localhost:1313/</link>
     <description>Recent content on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 14 Jun 2019 09:22:14 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 03 Aug 2019 22:30:44 +0800</lastBuildDate>
     
-        <atom:link href="http://anakin.github.io/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>在kubernetes上部署Go Micro代码(一)</title>
+      <link>http://localhost:1313/post/go-micro-k8s-1/</link>
+      <pubDate>Sat, 03 Aug 2019 22:30:44 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/go-micro-k8s-1/</guid>
+      
+        <description>
+
+&lt;h2 id=&#34;环境准备&#34;&gt;环境准备&lt;/h2&gt;
+
+&lt;p&gt;用kubeadm安装好kubernetes环境，我用的测试环境是单节点的，master node和worker node部署在同一台机器上。具体的安装过程就不详述了，坑还是有一些的。
+首先，init的时候需要制定pod的网络环境：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubeadm init --pod-network-cidr 10.244.0.0/16
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其次，由于是单节点，因此需要设置允许master作为worker node&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl taint nodes --all node-role.kubernetes.io/master-
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;同时，由于需要采用ingress作为保留http服务的工具，还需要在k8s上提前安装好ingress。
+使用官方提供的mandatory.yaml文件即可：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl apply mandatory.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后安装ingress service 绑定服务器的公网IP地址，yaml如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-nginx
+  namespace: ingress-nginx
+spec:
+  externalIPs:
+  - server ip here~~~
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: 443
+    protocol: TCP
+  selector:
+    app: ingress-nginx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;部署代码&#34;&gt;部署代码&lt;/h2&gt;
+
+&lt;p&gt;首先，基于go-micro的代码是在docker-compose环境下测试通过的，整体的架构是micro作为api gateway，然后后面是api层，再然后是service层。service层会请求具体的资源。在dokcer-compose方式部署的情况下，服务发现使用的是consul，部署到k8s的过程中，为了避免部署consul集群的复杂性，服务发现采用了k8s自己提供的功能。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;部署gateway&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;我采用的是自己编译的micro，没有用官方的image，因此在go build完成之后，需要先用docker打包镜像，Dockerfile如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;FROM alpine:latest
+RUN apk --no-cache add ca-certificates
+COPY micro /micro
+EXPOSE 8080 81
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后build docker镜像：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker build . -t micro:latest
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;docker build 之后，采用docker save的方式上传到服务器，当然这只是临时的解决方案，正式生产环境部署的时候，需要结合CI/CD的工具以及私有镜像仓库来完成这个部分的功能。先在本地save:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker save micro:latest|gzip &amp;gt; micro.tar.gz
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;把生成的tar包上传到服务器，然后在服务器执行：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker load -i micro.tar.gz
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样，镜像就算是加入到服务器环境的docker本地镜像库了。&lt;/p&gt;
+
+&lt;p&gt;可以看到，并没有在Dockerfile中指定micro服务需要的环境变量，也没有设置ENTRYPOINT，由于这些和环境相关，因此更倾向于写在k8s的yaml文件中。也可以根据自己情况选择。&lt;/p&gt;
+
+&lt;p&gt;接下来编写部署到k8s需要用到的yaml文件，首先是deployment:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: kube-apps
+  name: micro-gateway
+spec:
+  replicas: 2
+  selector:
+   matchLabels:
+     name: micro-gateway
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        name: micro-gateway
+    spec:
+      containers:
+        - name: api
+          image: micro:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: gateway-port
+          command: [
+                    &amp;quot;/micro&amp;quot;,
+                    &amp;quot;--registry=kubernetes&amp;quot;,
+                    &amp;quot;--api_handler=http&amp;quot;,
+                    &amp;quot;--api_namespace=go.micro.api&amp;quot;,
+                    &amp;quot;--enable_stats&amp;quot;,
+                    &amp;quot;api&amp;quot;,
+          ]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后是service:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apiVersion: v1
+kind: Service
+metadata:
+  name: micro-gateway
+  namespace: kube-apps
+  labels:
+    app: micro
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+      name: gateway-port
+  selector:
+    name: micro-gateway
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;由于gateway需要暴露http服务，因此还需要ingress文件：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: gateway-ingress
+  namespace: kube-apps
+spec:
+  rules:
+    - host: k8s.anakinsun.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: micro-gateway
+              servicePort: gateway-port
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里需要注意一下，不同版本的k8s，ingress对应的api版本不一样，具体可以查阅一下官方的文档。这里是最新的版本，整合到了networking.k8s.io/v1beta1中。&lt;/p&gt;
+
+&lt;p&gt;依次运行k8s的apply或者create命令，不出意外的话，gateway应该已经部署完成了。可以通过命令查看一下pod和service的情况：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl get pod -n kube-apps
+kubectl get svc -n kube-apps
+kubectl get ingress -n kube-apps
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;现在还不能访问，因为还没有代理任何服务。&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
       <title>php的Yaf框架类加载顺序研究</title>
-      <link>http://anakin.github.io/post/php-yaf-library/</link>
+      <link>http://localhost:1313/post/php-yaf-library/</link>
       <pubDate>Fri, 14 Jun 2019 09:22:14 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/php-yaf-library/</guid>
+      <guid>http://localhost:1313/post/php-yaf-library/</guid>
       
         <description>
 
@@ -82,10 +256,10 @@ yaf_loader_instance有三个参数，loader的指针，本地类地址和全局�
     
     <item>
       <title>Docker部署完整的PHP-RPC-Golang环境</title>
-      <link>http://anakin.github.io/post/docker-golang-php/</link>
+      <link>http://localhost:1313/post/docker-golang-php/</link>
       <pubDate>Fri, 31 May 2019 21:30:05 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/docker-golang-php/</guid>
+      <guid>http://localhost:1313/post/docker-golang-php/</guid>
       
         <description>
 
@@ -462,10 +636,10 @@ class UserController extends Controller
     
     <item>
       <title>Laravel整合gRPC</title>
-      <link>http://anakin.github.io/post/php-laravel-grpc/</link>
+      <link>http://localhost:1313/post/php-laravel-grpc/</link>
       <pubDate>Fri, 31 May 2019 12:58:45 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/php-laravel-grpc/</guid>
+      <guid>http://localhost:1313/post/php-laravel-grpc/</guid>
       
         <description>
 
@@ -587,10 +761,10 @@ message UserInfo{
     
     <item>
       <title>Gokit创建微服务的例子(翻译)</title>
-      <link>http://anakin.github.io/post/gokit-example/</link>
+      <link>http://localhost:1313/post/gokit-example/</link>
       <pubDate>Mon, 27 May 2019 23:14:16 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/gokit-example/</guid>
+      <guid>http://localhost:1313/post/gokit-example/</guid>
       
         <description>
 
@@ -1206,10 +1380,10 @@ listen=:8080 caller=logging.go:28 method=uppercase input=baz output=BAZ err=null
     
     <item>
       <title>手动搭建kubernetes集群（四）</title>
-      <link>http://anakin.github.io/post/create-k8s-4/</link>
+      <link>http://localhost:1313/post/create-k8s-4/</link>
       <pubDate>Thu, 23 May 2019 10:24:06 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/create-k8s-4/</guid>
+      <guid>http://localhost:1313/post/create-k8s-4/</guid>
       
         <description>
 
@@ -1954,10 +2128,10 @@ iner &amp;quot;xxx&amp;quot;.
     
     <item>
       <title>Golang通过ETCD实现分布式锁</title>
-      <link>http://anakin.github.io/post/golang-etcd-lock/</link>
+      <link>http://localhost:1313/post/golang-etcd-lock/</link>
       <pubDate>Wed, 22 May 2019 16:09:11 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/golang-etcd-lock/</guid>
+      <guid>http://localhost:1313/post/golang-etcd-lock/</guid>
       
         <description>
 
@@ -2046,10 +2220,10 @@ func main() {
     
     <item>
       <title>给Mac上的Fusion虚拟机设置固定ip地址</title>
-      <link>http://anakin.github.io/post/fusion-static-ip/</link>
+      <link>http://localhost:1313/post/fusion-static-ip/</link>
       <pubDate>Tue, 21 May 2019 18:11:37 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/fusion-static-ip/</guid>
+      <guid>http://localhost:1313/post/fusion-static-ip/</guid>
       
         <description>&lt;p&gt;因为最近需要安装k8s的本地测试环境，所以使用Mac上的Vmware Fusion安装了几台ubuntu系统的虚拟机，某次重启的时候发现ssh登录不上去了，打开虚拟机看了一下，发现是ip地址发生了变化，研究了半天，找到了解决的方法如下：&lt;br&gt;
 在Mac的Terminal上编辑下面这个文件：&lt;/p&gt;
@@ -2091,10 +2265,10 @@ func main() {
     
     <item>
       <title>手动搭建kubernetes集群（三）</title>
-      <link>http://anakin.github.io/post/create-k8s-3/</link>
+      <link>http://localhost:1313/post/create-k8s-3/</link>
       <pubDate>Tue, 21 May 2019 16:46:07 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/create-k8s-3/</guid>
+      <guid>http://localhost:1313/post/create-k8s-3/</guid>
       
         <description>
 
@@ -2179,10 +2353,10 @@ apiserver支持多种授权模式，例如Node,RBAC,Webhook等，可以在apiser
     
     <item>
       <title>手动搭建kubernetes集群（二）</title>
-      <link>http://anakin.github.io/post/create-k8s-2/</link>
+      <link>http://localhost:1313/post/create-k8s-2/</link>
       <pubDate>Mon, 20 May 2019 15:18:19 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/create-k8s-2/</guid>
+      <guid>http://localhost:1313/post/create-k8s-2/</guid>
       
         <description>
 
@@ -2566,10 +2740,10 @@ service kubelet start
     
     <item>
       <title>手动搭建kubernetes集群（一）</title>
-      <link>http://anakin.github.io/post/create-k8s/</link>
+      <link>http://localhost:1313/post/create-k8s/</link>
       <pubDate>Mon, 20 May 2019 10:57:16 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/create-k8s/</guid>
+      <guid>http://localhost:1313/post/create-k8s/</guid>
       
         <description>
 
@@ -2720,10 +2894,10 @@ chmod 600 authorized_keys
     
     <item>
       <title>Etcd实现MVCC的原理</title>
-      <link>http://anakin.github.io/post/etcd-mvcc/</link>
+      <link>http://localhost:1313/post/etcd-mvcc/</link>
       <pubDate>Sun, 19 May 2019 22:52:01 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/etcd-mvcc/</guid>
+      <guid>http://localhost:1313/post/etcd-mvcc/</guid>
       
         <description>
 
@@ -2781,10 +2955,10 @@ generations []generation
     
     <item>
       <title>Redis持久化</title>
-      <link>http://anakin.github.io/post/redis-rdb-aof/</link>
+      <link>http://localhost:1313/post/redis-rdb-aof/</link>
       <pubDate>Fri, 17 May 2019 13:22:22 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/redis-rdb-aof/</guid>
+      <guid>http://localhost:1313/post/redis-rdb-aof/</guid>
       
         <description>
 
@@ -2841,10 +3015,10 @@ AOF备份所有的操作，数据更完整，但是效率略差，文件相对�
     
     <item>
       <title>Golang利用redis实现分布式锁</title>
-      <link>http://anakin.github.io/post/golang-redis-lock/</link>
+      <link>http://localhost:1313/post/golang-redis-lock/</link>
       <pubDate>Thu, 16 May 2019 20:11:09 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/golang-redis-lock/</guid>
+      <guid>http://localhost:1313/post/golang-redis-lock/</guid>
       
         <description>
 
@@ -2960,10 +3134,10 @@ func main() {
     
     <item>
       <title>TCP协议细节学习</title>
-      <link>http://anakin.github.io/post/tcp-detail/</link>
+      <link>http://localhost:1313/post/tcp-detail/</link>
       <pubDate>Tue, 14 May 2019 12:34:43 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/tcp-detail/</guid>
+      <guid>http://localhost:1313/post/tcp-detail/</guid>
       
         <description>
 
@@ -3049,10 +3223,10 @@ TIME-WAIT状态如果过多，会占用系统资源。Linux下有几个参数可
     
     <item>
       <title>Golang的GC学习</title>
-      <link>http://anakin.github.io/post/golang-gc/</link>
+      <link>http://localhost:1313/post/golang-gc/</link>
       <pubDate>Sun, 12 May 2019 23:05:48 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/golang-gc/</guid>
+      <guid>http://localhost:1313/post/golang-gc/</guid>
       
         <description>
 

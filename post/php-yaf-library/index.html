@@ -32,10 +32,10 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.56.3" />
 
 
-<link rel="canonical" href="http://anakin.github.io/post/php-yaf-library/" />
+<link rel="canonical" href="http://localhost:1313/post/php-yaf-library/" />
 
 
 
@@ -60,10 +60,9 @@
 <meta property="og:title" content="php的Yaf框架类加载顺序研究" />
 <meta property="og:description" content="代码 注册ini设置到global_library变量（yaf.c） STD_PHP_INI_ENTRY(&quot;yaf.library&quot;, &quot;&quot;, PHP_INI_ALL, OnUpdateString, global_library, zend_yaf_globals, yaf_globals) 把global_library和local_library都" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://anakin.github.io/post/php-yaf-library/" />
-<meta property="article:published_time" content="2019-06-14T09:22:14&#43;08:00"/>
-<meta property="article:modified_time" content="2019-06-14T09:22:14&#43;08:00"/>
-
+<meta property="og:url" content="http://localhost:1313/post/php-yaf-library/" />
+<meta property="article:published_time" content="2019-06-14T09:22:14+08:00" />
+<meta property="article:modified_time" content="2019-06-14T09:22:14+08:00" />
 <meta itemprop="name" content="php的Yaf框架类加载顺序研究">
 <meta itemprop="description" content="代码 注册ini设置到global_library变量（yaf.c） STD_PHP_INI_ENTRY(&quot;yaf.library&quot;, &quot;&quot;, PHP_INI_ALL, OnUpdateString, global_library, zend_yaf_globals, yaf_globals) 把global_library和local_library都">
 
@@ -109,28 +108,28 @@
         
           
           
-            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
+            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
+            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
+            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
+            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
           
         
       </li>
@@ -218,7 +217,7 @@
         
           
           
-            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
+            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
           
 
         
@@ -229,7 +228,7 @@
         
           
           
-            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
+            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
           
 
         
@@ -240,7 +239,7 @@
         
           
           
-            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
+            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
           
 
         
@@ -251,7 +250,7 @@
         
           
           
-            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
+            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
           
 
         
@@ -392,14 +391,27 @@ yaf_loader_instance有三个参数，loader的指针，本地类地址和全局�
 
     <footer class="post-footer">
       <div class="post-tags">
-          <a href="http://anakin.github.io/tags/php/">php</a>
-          <a href="http://anakin.github.io/tags/yaf/">yaf</a>
+          <a href="http://localhost:1313/tags/php/">php</a>
+          <a href="http://localhost:1313/tags/yaf/">yaf</a>
           
         </div>
 
       
       <nav class="post-nav">
         
+          <a class="prev" href="/post/go-micro-k8s-1/">
+            
+            <i class="iconfont">
+              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
+</svg>
+
+            </i>
+            <span class="prev-text nav-default">在kubernetes上部署Go Micro代码(一)</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
         
           <a class="next" href="/post/docker-golang-php/">
             <span class="next-text nav-default">Docker部署完整的PHP-RPC-Golang环境</span>
@@ -467,7 +479,7 @@ yaf_loader_instance有三个参数，loader的指针，本地类地址和全局�
     </a>
 
 
-<a href="http://anakin.github.io/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+<a href="http://localhost:1313/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
     class="iconfont" title="rss" target="_blank">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"

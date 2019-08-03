@@ -2,147 +2,156 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Anakin- 奔向NB的生活</title>
-    <link>http://anakin.github.io/post/</link>
+    <link>http://localhost:1313/post/</link>
     <description>Recent content in Posts on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 14 Jun 2019 09:22:14 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 03 Aug 2019 22:30:44 +0800</lastBuildDate>
     
-	<atom:link href="http://anakin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>在kubernetes上部署Go Micro代码(一)</title>
+      <link>http://localhost:1313/post/go-micro-k8s-1/</link>
+      <pubDate>Sat, 03 Aug 2019 22:30:44 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/go-micro-k8s-1/</guid>
+      <description>环境准备 用kubeadm安装好kubernetes环境，我用的测试环境是单节点的，master node和worker node部署在同一台机器</description>
+    </item>
+    
+    <item>
       <title>php的Yaf框架类加载顺序研究</title>
-      <link>http://anakin.github.io/post/php-yaf-library/</link>
+      <link>http://localhost:1313/post/php-yaf-library/</link>
       <pubDate>Fri, 14 Jun 2019 09:22:14 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/php-yaf-library/</guid>
+      <guid>http://localhost:1313/post/php-yaf-library/</guid>
       <description>代码 注册ini设置到global_library变量（yaf.c） STD_PHP_INI_ENTRY(&amp;quot;yaf.library&amp;quot;, &amp;quot;&amp;quot;, PHP_INI_ALL, OnUpdateString, global_library, zend_yaf_globals, yaf_globals) 把global_library和local_library都</description>
     </item>
     
     <item>
       <title>Docker部署完整的PHP-RPC-Golang环境</title>
-      <link>http://anakin.github.io/post/docker-golang-php/</link>
+      <link>http://localhost:1313/post/docker-golang-php/</link>
       <pubDate>Fri, 31 May 2019 21:30:05 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/docker-golang-php/</guid>
+      <guid>http://localhost:1313/post/docker-golang-php/</guid>
       <description>完全基于docker部署一个php通过rpc访问golang的环境。 基本架构 我们用PHP的Laravel框架来实现一个用户登录的Restfu</description>
     </item>
     
     <item>
       <title>Laravel整合gRPC</title>
-      <link>http://anakin.github.io/post/php-laravel-grpc/</link>
+      <link>http://localhost:1313/post/php-laravel-grpc/</link>
       <pubDate>Fri, 31 May 2019 12:58:45 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/php-laravel-grpc/</guid>
+      <guid>http://localhost:1313/post/php-laravel-grpc/</guid>
       <description>最近需要用Laravel实现一个Rest的API，后端调用Golang的RPC服务，记录一下整合的过程。 环境准备 php安装grpc和prot</description>
     </item>
     
     <item>
       <title>Gokit创建微服务的例子(翻译)</title>
-      <link>http://anakin.github.io/post/gokit-example/</link>
+      <link>http://localhost:1313/post/gokit-example/</link>
       <pubDate>Mon, 27 May 2019 23:14:16 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/gokit-example/</guid>
+      <guid>http://localhost:1313/post/gokit-example/</guid>
       <description>第一原理 让我们创建一个Go kit 服务，我们暂时只用一个main.go文件。 你的事务逻辑 你的服务从你的事务逻辑开始。在Go kit里，我们用一个in</description>
     </item>
     
     <item>
       <title>手动搭建kubernetes集群（四）</title>
-      <link>http://anakin.github.io/post/create-k8s-4/</link>
+      <link>http://localhost:1313/post/create-k8s-4/</link>
       <pubDate>Thu, 23 May 2019 10:24:06 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/create-k8s-4/</guid>
+      <guid>http://localhost:1313/post/create-k8s-4/</guid>
       <description>开始改造我们之前搭建的基础集群，加上安全机制。 准备工作 1. 停止master节点的所有服务 查看已有的service kubectl get services 删除service（例如</description>
     </item>
     
     <item>
       <title>Golang通过ETCD实现分布式锁</title>
-      <link>http://anakin.github.io/post/golang-etcd-lock/</link>
+      <link>http://localhost:1313/post/golang-etcd-lock/</link>
       <pubDate>Wed, 22 May 2019 16:09:11 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/golang-etcd-lock/</guid>
+      <guid>http://localhost:1313/post/golang-etcd-lock/</guid>
       <description>之前写过用redis实现的分布式锁，这次用etcd来实现一个。 原理 首先获取一个etcd的租约，拿着这个租约用etcd的事务操作去设置一个ke</description>
     </item>
     
     <item>
       <title>给Mac上的Fusion虚拟机设置固定ip地址</title>
-      <link>http://anakin.github.io/post/fusion-static-ip/</link>
+      <link>http://localhost:1313/post/fusion-static-ip/</link>
       <pubDate>Tue, 21 May 2019 18:11:37 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/fusion-static-ip/</guid>
+      <guid>http://localhost:1313/post/fusion-static-ip/</guid>
       <description>因为最近需要安装k8s的本地测试环境，所以使用Mac上的Vmware Fusion安装了几台ubuntu系统的虚拟机，某次重启的时候发现ssh</description>
     </item>
     
     <item>
       <title>手动搭建kubernetes集群（三）</title>
-      <link>http://anakin.github.io/post/create-k8s-3/</link>
+      <link>http://localhost:1313/post/create-k8s-3/</link>
       <pubDate>Tue, 21 May 2019 16:46:07 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/create-k8s-3/</guid>
+      <guid>http://localhost:1313/post/create-k8s-3/</guid>
       <description>本文是这个系列的第三篇文章，前两篇记录了搭建一个k8s集群的过程，但是之前搭建好的集群少了很重要的一个部分，就是安全相关的功能，包括认证、授</description>
     </item>
     
     <item>
       <title>手动搭建kubernetes集群（二）</title>
-      <link>http://anakin.github.io/post/create-k8s-2/</link>
+      <link>http://localhost:1313/post/create-k8s-2/</link>
       <pubDate>Mon, 20 May 2019 15:18:19 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/create-k8s-2/</guid>
+      <guid>http://localhost:1313/post/create-k8s-2/</guid>
       <description>根据前文准备好的环境，我们现在来一步步的搭建一个基础的k8s集群 注意，这里的配置信息都是按照我自己的虚拟环境来写的。 把server01作为m</description>
     </item>
     
     <item>
       <title>手动搭建kubernetes集群（一）</title>
-      <link>http://anakin.github.io/post/create-k8s/</link>
+      <link>http://localhost:1313/post/create-k8s/</link>
       <pubDate>Mon, 20 May 2019 10:57:16 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/create-k8s/</guid>
+      <guid>http://localhost:1313/post/create-k8s/</guid>
       <description>最近在看有关k8s的一些知识，想手动搭建一套环境来体验一下，本文详细记录一下搭建的过程。 环境 三台Ubuntu系统的虚拟机，其中一台作为mas</description>
     </item>
     
     <item>
       <title>Etcd实现MVCC的原理</title>
-      <link>http://anakin.github.io/post/etcd-mvcc/</link>
+      <link>http://localhost:1313/post/etcd-mvcc/</link>
       <pubDate>Sun, 19 May 2019 22:52:01 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/etcd-mvcc/</guid>
+      <guid>http://localhost:1313/post/etcd-mvcc/</guid>
       <description>etcd满足的是CAP理论中的CP，实现了最终的强一致，使用Raft协议，Quorum机制（大多数同意原则）, MVCC的意思 Multi-Version Concurrency Control 多版本并发</description>
     </item>
     
     <item>
       <title>Redis持久化</title>
-      <link>http://anakin.github.io/post/redis-rdb-aof/</link>
+      <link>http://localhost:1313/post/redis-rdb-aof/</link>
       <pubDate>Fri, 17 May 2019 13:22:22 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/redis-rdb-aof/</guid>
+      <guid>http://localhost:1313/post/redis-rdb-aof/</guid>
       <description>redis的持久化有两种方式，RDB和AOF ## RDB: 在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成</description>
     </item>
     
     <item>
       <title>Golang利用redis实现分布式锁</title>
-      <link>http://anakin.github.io/post/golang-redis-lock/</link>
+      <link>http://localhost:1313/post/golang-redis-lock/</link>
       <pubDate>Thu, 16 May 2019 20:11:09 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/golang-redis-lock/</guid>
+      <guid>http://localhost:1313/post/golang-redis-lock/</guid>
       <description>原理 使用SETNX命令(SET if Not eXists) SETNX key value 将 key 的值设为 value，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。 设置成功，返回 1 。</description>
     </item>
     
     <item>
       <title>TCP协议细节学习</title>
-      <link>http://anakin.github.io/post/tcp-detail/</link>
+      <link>http://localhost:1313/post/tcp-detail/</link>
       <pubDate>Tue, 14 May 2019 12:34:43 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/tcp-detail/</guid>
+      <guid>http://localhost:1313/post/tcp-detail/</guid>
       <description>TCP协议中包含ip信息么 TCP协议中并不包含ip信息，ip信息是在第三层处理的，TCP中处理的是端口信息 MSS的值是如何计算的 TCP协议中</description>
     </item>
     
     <item>
       <title>Golang的GC学习</title>
-      <link>http://anakin.github.io/post/golang-gc/</link>
+      <link>http://localhost:1313/post/golang-gc/</link>
       <pubDate>Sun, 12 May 2019 23:05:48 +0800</pubDate>
       
-      <guid>http://anakin.github.io/post/golang-gc/</guid>
+      <guid>http://localhost:1313/post/golang-gc/</guid>
       <description>STW触发的时间 一次GC有两次触发STW，一次是GC的开始阶段，主要是开启写屏障和辅助GC等操作 另外就是表记完成之后，重新扫描部分根对象，禁</description>
     </item>
     
