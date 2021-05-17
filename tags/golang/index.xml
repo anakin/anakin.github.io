@@ -1,58 +1,54 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>golang on Anakin- 奔向NB的生活</title>
-    <link>http://localhost:1313/tags/golang/</link>
+    <link>http://anakin.github.io/tags/golang/</link>
     <description>Recent content in golang on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 31 May 2019 21:30:05 +0800</lastBuildDate>
-    
-	<atom:link href="http://localhost:1313/tags/golang/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 31 May 2019 21:30:05 +0800</lastBuildDate><atom:link href="http://anakin.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Docker部署完整的PHP-RPC-Golang环境</title>
-      <link>http://localhost:1313/post/docker-golang-php/</link>
+      <link>http://anakin.github.io/post/docker-golang-php/</link>
       <pubDate>Fri, 31 May 2019 21:30:05 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/docker-golang-php/</guid>
+      <guid>http://anakin.github.io/post/docker-golang-php/</guid>
       <description>完全基于docker部署一个php通过rpc访问golang的环境。 基本架构 我们用PHP的Laravel框架来实现一个用户登录的Restfu</description>
     </item>
     
     <item>
       <title>Gokit创建微服务的例子(翻译)</title>
-      <link>http://localhost:1313/post/gokit-example/</link>
+      <link>http://anakin.github.io/post/gokit-example/</link>
       <pubDate>Mon, 27 May 2019 23:14:16 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/gokit-example/</guid>
-      <description>第一原理 让我们创建一个Go kit 服务，我们暂时只用一个main.go文件。 你的事务逻辑 你的服务从你的事务逻辑开始。在Go kit里，我们用一个in</description>
+      <guid>http://anakin.github.io/post/gokit-example/</guid>
+      <description>第一原理 让我们创建一个Go kit 服务，我们暂时只用一个main.go文件。你的事务逻辑 你的服务从你的事务逻辑开始。在Go kit里，我们用一个in</description>
     </item>
     
     <item>
       <title>Golang通过ETCD实现分布式锁</title>
-      <link>http://localhost:1313/post/golang-etcd-lock/</link>
+      <link>http://anakin.github.io/post/golang-etcd-lock/</link>
       <pubDate>Wed, 22 May 2019 16:09:11 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/golang-etcd-lock/</guid>
+      <guid>http://anakin.github.io/post/golang-etcd-lock/</guid>
       <description>之前写过用redis实现的分布式锁，这次用etcd来实现一个。 原理 首先获取一个etcd的租约，拿着这个租约用etcd的事务操作去设置一个ke</description>
     </item>
     
     <item>
       <title>Golang利用redis实现分布式锁</title>
-      <link>http://localhost:1313/post/golang-redis-lock/</link>
+      <link>http://anakin.github.io/post/golang-redis-lock/</link>
       <pubDate>Thu, 16 May 2019 20:11:09 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/golang-redis-lock/</guid>
+      <guid>http://anakin.github.io/post/golang-redis-lock/</guid>
       <description>原理 使用SETNX命令(SET if Not eXists) SETNX key value 将 key 的值设为 value，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。 设置成功，返回 1 。</description>
     </item>
     
     <item>
       <title>Golang的GC学习</title>
-      <link>http://localhost:1313/post/golang-gc/</link>
+      <link>http://anakin.github.io/post/golang-gc/</link>
       <pubDate>Sun, 12 May 2019 23:05:48 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/golang-gc/</guid>
+      <guid>http://anakin.github.io/post/golang-gc/</guid>
       <description>STW触发的时间 一次GC有两次触发STW，一次是GC的开始阶段，主要是开启写屏障和辅助GC等操作 另外就是表记完成之后，重新扫描部分根对象，禁</description>
     </item>
     

@@ -23,7 +23,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="Anakin" />
-  <meta name="description" content="第一原理 让我们创建一个Go kit 服务，我们暂时只用一个main.go文件。 你的事务逻辑 你的服务从你的事务逻辑开始。在Go kit里，我们用一个in" />
+  <meta name="description" content="第一原理 让我们创建一个Go kit 服务，我们暂时只用一个main.go文件。你的事务逻辑 你的服务从你的事务逻辑开始。在Go kit里，我们用一个in" />
 
   <meta name="keywords" content="anakin, sun, github" />
 
@@ -32,10 +32,10 @@
 
 
 
-<meta name="generator" content="Hugo 0.56.3" />
+<meta name="generator" content="Hugo 0.83.1" />
 
 
-<link rel="canonical" href="http://localhost:1313/post/gokit-example/" />
+<link rel="canonical" href="http://anakin.github.io/post/gokit-example/" />
 
 
 
@@ -51,32 +51,26 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.5f696afb662abd14c9a57b5ce751a018b247bd7f22b955668eab514d6c225d74.css" integrity="sha256-X2lq&#43;2YqvRTJpXtc51GgGLJHvX8iuVVmjqtRTWwiXXQ=" media="screen" crossorigin="anonymous">
 
 
 
 
 
 <meta property="og:title" content="Gokit创建微服务的例子(翻译)" />
-<meta property="og:description" content="第一原理 让我们创建一个Go kit 服务，我们暂时只用一个main.go文件。 你的事务逻辑 你的服务从你的事务逻辑开始。在Go kit里，我们用一个in" />
+<meta property="og:description" content="第一原理 让我们创建一个Go kit 服务，我们暂时只用一个main.go文件。你的事务逻辑 你的服务从你的事务逻辑开始。在Go kit里，我们用一个in" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/gokit-example/" />
-<meta property="article:published_time" content="2019-05-27T23:14:16+08:00" />
-<meta property="article:modified_time" content="2019-05-27T23:14:16+08:00" />
+<meta property="og:url" content="http://anakin.github.io/post/gokit-example/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-05-27T23:14:16&#43;08:00" />
+<meta property="article:modified_time" content="2019-05-27T23:14:16&#43;08:00" />
+
 <meta itemprop="name" content="Gokit创建微服务的例子(翻译)">
-<meta itemprop="description" content="第一原理 让我们创建一个Go kit 服务，我们暂时只用一个main.go文件。 你的事务逻辑 你的服务从你的事务逻辑开始。在Go kit里，我们用一个in">
-
-
-<meta itemprop="datePublished" content="2019-05-27T23:14:16&#43;08:00" />
+<meta itemprop="description" content="第一原理 让我们创建一个Go kit 服务，我们暂时只用一个main.go文件。你的事务逻辑 你的服务从你的事务逻辑开始。在Go kit里，我们用一个in"><meta itemprop="datePublished" content="2019-05-27T23:14:16&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-27T23:14:16&#43;08:00" />
 <meta itemprop="wordCount" content="3910">
-
-
-
-<meta itemprop="keywords" content="golang,gokit," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="golang,gokit," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Gokit创建微服务的例子(翻译)"/>
-<meta name="twitter:description" content="第一原理 让我们创建一个Go kit 服务，我们暂时只用一个main.go文件。 你的事务逻辑 你的服务从你的事务逻辑开始。在Go kit里，我们用一个in"/>
+<meta name="twitter:description" content="第一原理 让我们创建一个Go kit 服务，我们暂时只用一个main.go文件。你的事务逻辑 你的服务从你的事务逻辑开始。在Go kit里，我们用一个in"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -108,28 +102,28 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
+            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
+            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
+            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
+            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
           
         
       </li>
@@ -217,7 +211,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
+            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
           
 
         
@@ -228,7 +222,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
+            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
           
 
         
@@ -239,7 +233,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
+            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
           
 
         
@@ -250,7 +244,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
+            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
           
 
         
@@ -293,48 +287,42 @@
   <h2 class="post-toc-title">Table of Contents</h2>
   <div class="post-toc-content">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#第一原理">第一原理</a>
-<ul>
-<li><a href="#你的事务逻辑-br">你的事务逻辑<br></a></li>
-<li><a href="#请求和应答">请求和应答</a></li>
-<li><a href="#传输">传输</a></li>
-<li><a href="#stringsvc1">stringsvc1</a></li>
-</ul></li>
-<li><a href="#中间件">中间件</a>
-<ul>
-<li><a href="#焦虑的分离">焦虑的分离</a></li>
-<li><a href="#传输日志">传输日志</a></li>
-<li><a href="#应用日志">应用日志</a></li>
-<li><a href="#应用instrumentation">应用instrumentation</a></li>
-<li><a href="#stringsvc2">stringsvc2</a></li>
-</ul></li>
-<li><a href="#调用其他服务">调用其他服务</a>
-<ul>
-<li><a href="#客户端-endpoint">客户端 endpoint</a></li>
-<li><a href="#服务发现和负载均衡">服务发现和负载均衡</a></li>
-<li><a href="#stringsvc3">stringsvc3</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#第一原理">第一原理</a>
+      <ul>
+        <li><a href="#你的事务逻辑br">你的事务逻辑<!-- raw HTML omitted --></a></li>
+        <li><a href="#请求和应答">请求和应答</a></li>
+        <li><a href="#传输">传输</a></li>
+        <li><a href="#stringsvc1">stringsvc1</a></li>
+      </ul>
+    </li>
+    <li><a href="#中间件">中间件</a>
+      <ul>
+        <li><a href="#焦虑的分离">焦虑的分离</a></li>
+        <li><a href="#传输日志">传输日志</a></li>
+        <li><a href="#应用日志">应用日志</a></li>
+        <li><a href="#应用instrumentation">应用instrumentation</a></li>
+        <li><a href="#stringsvc2">stringsvc2</a></li>
+      </ul>
+    </li>
+    <li><a href="#调用其他服务">调用其他服务</a>
+      <ul>
+        <li><a href="#客户端-endpoint">客户端 endpoint</a></li>
+        <li><a href="#服务发现和负载均衡">服务发现和负载均衡</a></li>
+        <li><a href="#stringsvc3">stringsvc3</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
   </div>
 </div>
 
     
     <div class="post-content">
-      
-
-<h2 id="第一原理">第一原理</h2>
-
-<p>让我们创建一个Go kit 服务，我们暂时只用一个main.go文件。<br></p>
-
-<h3 id="你的事务逻辑-br">你的事务逻辑<br></h3>
-
+      <h2 id="第一原理">第一原理</h2>
+<p>让我们创建一个Go kit 服务，我们暂时只用一个main.go文件。<!-- raw HTML omitted --></p>
+<h3 id="你的事务逻辑br">你的事务逻辑<!-- raw HTML omitted --></h3>
 <p>你的服务从你的事务逻辑开始。在Go kit里，我们用一个interface来描述一个服务</p>
-
 <pre><code>// StringService provides operations on strings.
 import &quot;context&quot;
 
@@ -342,10 +330,7 @@ type StringService interface {
 	Uppercase(string) (string, error)
 	Count(string) int
 }
-</code></pre>
-
-<p>这个interface会有一个实现</p>
-
+</code></pre><p>这个interface会有一个实现</p>
 <pre><code>import (
 	&quot;context&quot;
 	&quot;errors&quot;
@@ -367,12 +352,8 @@ func (stringService) Count(s string) int {
 
 // ErrEmpty is returned when input string is empty
 var ErrEmpty = errors.New(&quot;Empty string&quot;)
-</code></pre>
-
-<h3 id="请求和应答">请求和应答</h3>
-
+</code></pre><h3 id="请求和应答">请求和应答</h3>
 <p>在Go kit里，主要的通信模式是RPC。因此，我们的interface里的每个方法都会被作为一个远程过程调用。我们为每个方法定义请求和应答结构，独立的捕获所有的输入和输出。</p>
-
 <pre><code>type uppercaseRequest struct {
 	S string `json:&quot;s&quot;`
 }
@@ -389,16 +370,10 @@ type countRequest struct {
 type countResponse struct {
 	V int `json:&quot;v&quot;`
 }
-</code></pre>
-
-<p>终端
+</code></pre><p>终端
 Go kit通过一个叫做endpoint的抽象来提供大部分功能。一个endpint的定义如下：</p>
-
 <pre><code>type Endpoint func(ctx context.Context, request interface{}) (response interface{}, err error)
-</code></pre>
-
-<p>它相当于一个独立的RPC，就是说，我们服务接口里一个独立的方法。我们会写简单的适配器来把我们服务里的每个方法转换成一个endpoint。每个适配器携带一个StringService，返回相当于一个方法的endpoint。</p>
-
+</code></pre><p>它相当于一个独立的RPC，就是说，我们服务接口里一个独立的方法。我们会写简单的适配器来把我们服务里的每个方法转换成一个endpoint。每个适配器携带一个StringService，返回相当于一个方法的endpoint。</p>
 <pre><code>import (
 	&quot;context&quot;
 	&quot;github.com/go-kit/kit/endpoint&quot;
@@ -422,13 +397,9 @@ func makeCountEndpoint(svc StringService) endpoint.Endpoint {
 		return countResponse{v}, nil
 	}
 }
-</code></pre>
-
-<h3 id="传输">传输</h3>
-
-<p>现在我们需要把你的服务暴露给外面的世界，这样它才能被调用。你的组织对于服务直接相互调用可能已经有了一些选择。可能你用Thrit，或者定制化的通过HTTP传输的JSON。Go kit多种向外的传输方式。<br>
+</code></pre><h3 id="传输">传输</h3>
+<p>现在我们需要把你的服务暴露给外面的世界，这样它才能被调用。你的组织对于服务直接相互调用可能已经有了一些选择。可能你用Thrit，或者定制化的通过HTTP传输的JSON。Go kit多种向外的传输方式。<!-- raw HTML omitted -->
 这个小服务，我们用通过HTTP传输的JSON。Go kit在transport/http包里提供了一个helper struct。</p>
-
 <pre><code>import (
 	&quot;context&quot;
 	&quot;encoding/json&quot;
@@ -477,39 +448,23 @@ func decodeCountRequest(_ context.Context, r *http.Request) (interface{}, error)
 func encodeResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	return json.NewEncoder(w).Encode(response)
 }
-</code></pre>
-
-<h3 id="stringsvc1">stringsvc1</h3>
-
+</code></pre><h3 id="stringsvc1">stringsvc1</h3>
 <p>到现在为止，整个服务就是<a href="https://github.com/go-kit/kit/blob/master/examples/stringsvc1">stringsvc1</a></p>
-
 <pre><code>$ go get github.com/go-kit/kit/examples/stringsvc1
 $ stringsvc1
-</code></pre>
-
-<pre><code>$ curl -XPOST -d'{&quot;s&quot;:&quot;hello, world&quot;}' localhost:8080/uppercase
+</code></pre><pre><code>$ curl -XPOST -d'{&quot;s&quot;:&quot;hello, world&quot;}' localhost:8080/uppercase
 {&quot;v&quot;:&quot;HELLO, WORLD&quot;,&quot;err&quot;:null}
 $ curl -XPOST -d'{&quot;s&quot;:&quot;hello, world&quot;}' localhost:8080/count
 {&quot;v&quot;:12}
-</code></pre>
-
-<h2 id="中间件">中间件</h2>
-
+</code></pre><h2 id="中间件">中间件</h2>
 <p>缺少了logging和instrumentation的服务，不能说做好了在生产环境使用的准备。</p>
-
 <h3 id="焦虑的分离">焦虑的分离</h3>
-
 <p>当你增加服务的endpoint数量的时候，将调用图的每一层分离为单独的文件是一个go-kit工程变得更可读。我们的第一个例子<a href="https://github.com/go-kit/kit/blob/master/examples/stringsvc1">stringsvc1</a>在一个main文件里包含了所有这些层。在增加更多复杂性之前，让我们把代码分离到下列文件中，剩下的留在main.go里。</p>
-
 <p>把服务放在service.go文件里，包含下面的function和type。</p>
-
 <pre><code>type StringService
 type stringService
 var ErrEmpty
-</code></pre>
-
-<p>把transports放在transport.go里，包含如下的function和type。</p>
-
+</code></pre><p>把transports放在transport.go里，包含如下的function和type。</p>
 <pre><code>func makeUppercaseEndpoint
 func makeCountEndpoint
 func decodeUppercaseRequest
@@ -519,21 +474,12 @@ type uppercaseRequest
 type uppercaseResponse
 type countRequest
 type countResponse
-</code></pre>
-
-<h3 id="传输日志">传输日志</h3>
-
+</code></pre><h3 id="传输日志">传输日志</h3>
 <p>任何需要记录日志的组件都应该把logger当做一个依赖，就行对待一个数据库连接一样。因此，我们在func main里构建我们的logger，然后传给需要它的组件。我们从不使用一个全局的logger。</p>
-
 <p>我们本可以直接把logger传递给stringService的实现，但是有更好的办法。让我们用一个中间件。也叫做装饰器。一个中间件就是一个传入endpoint然后返回endpoint的函数。</p>
-
 <pre><code>type Middleware func(Endpoint) Endpoint
-</code></pre>
-
-<p>注意，Middleware类型是go-kit提供给你的。</p>
-
+</code></pre><p>注意，Middleware类型是go-kit提供给你的。</p>
 <p>在这中间，它可以做任何事情。下面你可以看到一个可以被实现的基本的日志中间件：</p>
-
 <pre><code> loggingMiddleware(logger log.Logger) Middleware {
 	return func(next endpoint.Endpoint) endpoint.Endpoint {
 		return func(_ context.Context, request interface{}) (interface{}, error) {
@@ -543,17 +489,11 @@ type countResponse
 		}
 	}
 }
-</code></pre>
-
-<p>使用go-kit log包，并且删除标准库log。你需要从main.go底部删除log.Fatal。</p>
-
+</code></pre><p>使用go-kit log包，并且删除标准库log。你需要从main.go底部删除log.Fatal。</p>
 <pre><code>import (
  &quot;github.com/go-kit/kit/log&quot;
 )
-</code></pre>
-
-<p>把它写在每个处理器里。注意，下面的代码块在你学完Application Logging部分之前不会编译，它定义了loggingMiddleware。</p>
-
+</code></pre><p>把它写在每个处理器里。注意，下面的代码块在你学完Application Logging部分之前不会编译，它定义了loggingMiddleware。</p>
 <pre><code>logger := log.NewLogfmtLogger(os.Stderr)
 
 svc := stringService{}
@@ -577,14 +517,9 @@ countHandler := httptransport.NewServer(
 	count,
 	// ...
 )
-</code></pre>
-
-<p>它说明这个技术有更多的用途，而不只是用来记录日志。很多Go kit组件都实现成了endpoint的中间件。</p>
-
+</code></pre><p>它说明这个技术有更多的用途，而不只是用来记录日志。很多Go kit组件都实现成了endpoint的中间件。</p>
 <h3 id="应用日志">应用日志</h3>
-
 <p>但是，如果我们想像传入的参数一样记录我们应用范畴的日志呢？我们可以为我们的服务定义一个中间件，获得一样优雅的组合效果。由于我们的StringService被定义成立一个interface，我们只需要一个包装了已有的StringService的新类型，来负责额外的日志记录。</p>
-
 <pre><code>type loggingMiddleware struct {
 	logger log.Logger
 	next   StringService
@@ -618,10 +553,7 @@ func (mw loggingMiddleware) Count(s string) (n int) {
 	n = mw.next.Count(s)
 	return
 }
-</code></pre>
-
-<p>然后，写入</p>
-
+</code></pre><p>然后，写入</p>
 <pre><code>import (
 	&quot;os&quot;
 
@@ -650,16 +582,10 @@ func main() {
 		// ...
 	)
 }
-</code></pre>
-
-<p>用endpoint中间件对付传输范畴的问题，例如熔断和限流。用服务中间件来处理事务领域的问题，例如日志和instrumentation。说道instrumentation。。。</p>
-
+</code></pre><p>用endpoint中间件对付传输范畴的问题，例如熔断和限流。用服务中间件来处理事务领域的问题，例如日志和instrumentation。说道instrumentation。。。</p>
 <h3 id="应用instrumentation">应用instrumentation</h3>
-
 <p>在Go kit里，instrumentation表示用package metrics来记录关于你的服务的运行时行为的统计信息。统计job运行的数量，在请求结束后记录时长，跟踪正在运行的操作数量，这些都被认为是instrumentation。</p>
-
 <p>我们可以用和logging相同的中间件模式</p>
-
 <pre><code>type instrumentingMiddleware struct {
 	requestCount   metrics.Counter
 	requestLatency metrics.Histogram
@@ -689,10 +615,7 @@ func (mw instrumentingMiddleware) Count(s string) (n int) {
 	n = mw.next.Count(s)
 	return
 }
-</code></pre>
-
-<p>然后写入我们的服务里</p>
-
+</code></pre><p>然后写入我们的服务里</p>
 <pre><code>import (
 	stdprometheus &quot;github.com/prometheus/client_golang/prometheus&quot;
 	kitprometheus &quot;github.com/go-kit/kit/metrics/prometheus&quot;
@@ -745,33 +668,20 @@ func main() {
 	logger.Log(&quot;msg&quot;, &quot;HTTP&quot;, &quot;addr&quot;, &quot;:8080&quot;)
 	logger.Log(&quot;err&quot;, http.ListenAndServe(&quot;:8080&quot;, nil))
 }
-</code></pre>
-
-<h3 id="stringsvc2">stringsvc2</h3>
-
+</code></pre><h3 id="stringsvc2">stringsvc2</h3>
 <p>到现在为止，完整的服务是<a href="https://github.com/go-kit/kit/blob/master/examples/stringsvc2">stringsvc2</a></p>
-
 <pre><code>$ go get github.com/go-kit/kit/examples/stringsvc2
 $ stringsvc2
 msg=HTTP addr=:8080
-</code></pre>
-
-<pre><code>$ curl -XPOST -d'{&quot;s&quot;:&quot;hello, world&quot;}' localhost:8080/uppercase
+</code></pre><pre><code>$ curl -XPOST -d'{&quot;s&quot;:&quot;hello, world&quot;}' localhost:8080/uppercase
 {&quot;v&quot;:&quot;HELLO, WORLD&quot;,&quot;err&quot;:null}
 $ curl -XPOST -d'{&quot;s&quot;:&quot;hello, world&quot;}' localhost:8080/count
 {&quot;v&quot;:12}
-</code></pre>
-
-<pre><code>method=uppercase input=&quot;hello, world&quot; output=&quot;HELLO, WORLD&quot; err=null took=2.455µs
+</code></pre><pre><code>method=uppercase input=&quot;hello, world&quot; output=&quot;HELLO, WORLD&quot; err=null took=2.455µs
 method=count input=&quot;hello, world&quot; n=12 took=743ns
-</code></pre>
-
-<h2 id="调用其他服务">调用其他服务</h2>
-
+</code></pre><h2 id="调用其他服务">调用其他服务</h2>
 <p>一个服务存在于一个真空里是很罕见的。通常，你需要调用其他的服务。<strong>这就是Go kit的价值所在</strong>。我们提供了传输中间件来解决接下来的很多问题。</p>
-
 <p>假设我们让我们的string服务调用一个不同的string服务来满足Uppercase方法。就是说，把请求代理到另外的服务上。让我们来实现代理中间件叫做ServiceMiddleware，和logging或者instrumenting中间件一样。</p>
-
 <pre><code>// proxymw implements StringService, forwarding Uppercase requests to the
 // provided endpoint, and serving all other (i.e. Count) requests via the
 // next StringService.
@@ -779,12 +689,8 @@ type proxymw struct {
 	next      StringService     // Serve most requests via this service...
 	uppercase endpoint.Endpoint // ...except Uppercase, which gets served by this endpoint
 }
-</code></pre>
-
-<h3 id="客户端-endpoint">客户端 endpoint</h3>
-
+</code></pre><h3 id="客户端-endpoint">客户端 endpoint</h3>
 <p>我们有一个我们已经了解的同样的endpont，但是我们将用它来转移一个请求，而不是直接提供服务。这样使用的时候，我们叫它客户端endpoint。我们只需要做一些简单的改动：</p>
-
 <pre><code>func (mw proxymw) Uppercase(s string) (string, error) {
 	response, err := mw.uppercase(uppercaseRequest{S: s})
 	if err != nil {
@@ -796,10 +702,7 @@ type proxymw struct {
 	}
 	return resp.V, nil
 }
-</code></pre>
-
-<p>现在，为了构建一个这样的代理中间件，我们转换一个代理URL字符串给一个endpoint。如果我们假设使用通过HTTP的JSON，我们可以使用transport/http包里的helper。</p>
-
+</code></pre><p>现在，为了构建一个这样的代理中间件，我们转换一个代理URL字符串给一个endpoint。如果我们假设使用通过HTTP的JSON，我们可以使用transport/http包里的helper。</p>
 <pre><code>import (
 	httptransport &quot;github.com/go-kit/kit/transport/http&quot;
 )
@@ -818,46 +721,26 @@ func makeUppercaseProxy(proxyURL string) endpoint.Endpoint {
 		decodeUppercaseResponse,
 	).Endpoint()
 }
-</code></pre>
-
-<h3 id="服务发现和负载均衡">服务发现和负载均衡</h3>
-
+</code></pre><h3 id="服务发现和负载均衡">服务发现和负载均衡</h3>
 <p>如果我们只有一个远程服务还好。但是真实情况是，我们可能有很多可用的服务实例。我们希望通过一些服务发现机制发现它们。并且把我们的压力分散到他们身上。而且如果这些实例中的任何一个表现异常，我们希望可以处理，不影响我们的服务可用性。</p>
-
 <p>Go kit为不同的服务发现系统提供了转换器，用来获取更新的实例集合，作为独立的endpoint暴露出去。这些转换器叫做subscriber。</p>
-
 <pre><code>type Subscriber interface {
 	Endpoints() ([]endpoint.Endpoint, error)
 }
-</code></pre>
-
-<p>在内部，subscriber使用一个工厂方法来把发现实例字符串转换成一个可用的endpoint。</p>
-
+</code></pre><p>在内部，subscriber使用一个工厂方法来把发现实例字符串转换成一个可用的endpoint。</p>
 <pre><code>type Factory func(instance string) (endpoint.Endpoint, error)
-</code></pre>
-
-<p>目前，我们的工厂方法，makeUppercaseProxy，还是直接调用URL。但是在工厂里放一些安全中间件，例如熔断和限流，同样很重要。</p>
-
+</code></pre><p>目前，我们的工厂方法，makeUppercaseProxy，还是直接调用URL。但是在工厂里放一些安全中间件，例如熔断和限流，同样很重要。</p>
 <pre><code>var e endpoint.Endpoint
 e = makeUppercaseProxy(instance)
 e = circuitbreaker.Gobreaker(gobreaker.NewCircuitBreaker(gobreaker.Settings{}))(e)
 e = kitratelimit.NewTokenBucketLimiter(jujuratelimit.NewBucketWithRate(float64(maxQPS), int64(maxQPS)))(e)
-</code></pre>
-
-<p>现在，我们有了一个endpoint集合，我们需要选择一个。负载均衡器包装了subscriber，并且从中选择一个endpoint。Go kit提供了一些基础的负载均衡器，并且，如果有更多需求，自己写一个也很容易。</p>
-
+</code></pre><p>现在，我们有了一个endpoint集合，我们需要选择一个。负载均衡器包装了subscriber，并且从中选择一个endpoint。Go kit提供了一些基础的负载均衡器，并且，如果有更多需求，自己写一个也很容易。</p>
 <pre><code>type Balancer interface {
 	Endpoint() (endpoint.Endpoint, error)
 }
-</code></pre>
-
-<p>现在，我们有能力根据一些逻辑选择endpoint。我们可以用来提供独立的，逻辑的，健壮的endpoint给消费者。重试策略包装一个负载均衡器，返回一个可用的endpoint。重试策略将会重试失败的请求，知道到达最大尝试次数或者超时。</p>
-
+</code></pre><p>现在，我们有能力根据一些逻辑选择endpoint。我们可以用来提供独立的，逻辑的，健壮的endpoint给消费者。重试策略包装一个负载均衡器，返回一个可用的endpoint。重试策略将会重试失败的请求，知道到达最大尝试次数或者超时。</p>
 <pre><code>func Retry(max int, timeout time.Duration, lb Balancer) endpoint.Endpoint
-</code></pre>
-
-<p>让我们把最终的代理中间件连起来。简化起见，我们假设用户提供多个用逗号分隔的实例endpoint。</p>
-
+</code></pre><p>让我们把最终的代理中间件连起来。简化起见，我们假设用户提供多个用逗号分隔的实例endpoint。</p>
 <pre><code>func proxyingMiddleware(instances string, logger log.Logger) ServiceMiddleware {
 	// If instances is empty, don't proxy.
 	if instances == &quot;&quot; {
@@ -899,12 +782,8 @@ e = kitratelimit.NewTokenBucketLimiter(jujuratelimit.NewBucketWithRate(float64(m
 		return proxymw{next, retry}
 	}
 }
-</code></pre>
-
-<h3 id="stringsvc3">stringsvc3</h3>
-
+</code></pre><h3 id="stringsvc3">stringsvc3</h3>
 <p>现在为止完整的服务是<a href="https://github.com/go-kit/kit/blob/master/examples/stringsvc3">stringsvc3</a></p>
-
 <pre><code>$ go get github.com/go-kit/kit/examples/stringsvc3
 $ stringsvc3 -listen=:8001 &amp;
 listen=:8001 caller=proxying.go:25 proxy_to=none
@@ -918,22 +797,17 @@ listen=:8003 caller=main.go:72 msg=HTTP addr=:8003
 $ stringsvc3 -listen=:8080 -proxy=localhost:8001,localhost:8002,localhost:8003
 listen=:8080 caller=proxying.go:29 proxy_to=&quot;[localhost:8001 localhost:8002 localhost:8003]&quot;
 listen=:8080 caller=main.go:72 msg=HTTP addr=:8080
-</code></pre>
-
-<pre><code>$ for s in foo bar baz ; do curl -d&quot;{\&quot;s\&quot;:\&quot;$s\&quot;}&quot; localhost:8080/uppercase ; done
+</code></pre><pre><code>$ for s in foo bar baz ; do curl -d&quot;{\&quot;s\&quot;:\&quot;$s\&quot;}&quot; localhost:8080/uppercase ; done
 {&quot;v&quot;:&quot;FOO&quot;,&quot;err&quot;:null}
 {&quot;v&quot;:&quot;BAR&quot;,&quot;err&quot;:null}
 {&quot;v&quot;:&quot;BAZ&quot;,&quot;err&quot;:null}
-</code></pre>
-
-<pre><code>listen=:8001 caller=logging.go:28 method=uppercase input=foo output=FOO err=null took=5.168µs
+</code></pre><pre><code>listen=:8001 caller=logging.go:28 method=uppercase input=foo output=FOO err=null took=5.168µs
 listen=:8080 caller=logging.go:28 method=uppercase input=foo output=FOO err=null took=4.39012ms
 listen=:8002 caller=logging.go:28 method=uppercase input=bar output=BAR err=null took=5.445µs
 listen=:8080 caller=logging.go:28 method=uppercase input=bar output=BAR err=null took=2.04831ms
 listen=:8003 caller=logging.go:28 method=uppercase input=baz output=BAZ err=null took=3.285µs
 listen=:8080 caller=logging.go:28 method=uppercase input=baz output=BAZ err=null took=1.388155ms
 </code></pre>
-
     </div>
 
     
@@ -960,8 +834,8 @@ listen=:8080 caller=logging.go:28 method=uppercase input=baz output=BAZ err=null
 
     <footer class="post-footer">
       <div class="post-tags">
-          <a href="http://localhost:1313/tags/golang/">golang</a>
-          <a href="http://localhost:1313/tags/gokit/">gokit</a>
+          <a href="http://anakin.github.io/tags/golang/">golang</a>
+          <a href="http://anakin.github.io/tags/gokit/">gokit</a>
           
         </div>
 
@@ -1048,7 +922,7 @@ listen=:8080 caller=logging.go:28 method=uppercase input=baz output=BAZ err=null
     </a>
 
 
-<a href="http://localhost:1313/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+<a href="http://anakin.github.io/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
     class="iconfont" title="rss" target="_blank">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -1073,7 +947,7 @@ listen=:8080 caller=logging.go:28 method=uppercase input=baz output=BAZ err=null
     &copy;
     
       2017 -
-    2019
+    2021
     <span class="heart">
       
       <i class="iconfont">

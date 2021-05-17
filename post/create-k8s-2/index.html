@@ -23,7 +23,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="Anakin" />
-  <meta name="description" content="根据前文准备好的环境，我们现在来一步步的搭建一个基础的k8s集群 注意，这里的配置信息都是按照我自己的虚拟环境来写的。 把server01作为m" />
+  <meta name="description" content="根据前文准备好的环境，我们现在来一步步的搭建一个基础的k8s集群注意，这里的配置信息都是按照我自己的虚拟环境来写的。把server01作为m" />
 
   <meta name="keywords" content="anakin, sun, github" />
 
@@ -32,10 +32,10 @@
 
 
 
-<meta name="generator" content="Hugo 0.56.3" />
+<meta name="generator" content="Hugo 0.83.1" />
 
 
-<link rel="canonical" href="http://localhost:1313/post/create-k8s-2/" />
+<link rel="canonical" href="http://anakin.github.io/post/create-k8s-2/" />
 
 
 
@@ -51,32 +51,26 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.5f696afb662abd14c9a57b5ce751a018b247bd7f22b955668eab514d6c225d74.css" integrity="sha256-X2lq&#43;2YqvRTJpXtc51GgGLJHvX8iuVVmjqtRTWwiXXQ=" media="screen" crossorigin="anonymous">
 
 
 
 
 
 <meta property="og:title" content="手动搭建kubernetes集群（二）" />
-<meta property="og:description" content="根据前文准备好的环境，我们现在来一步步的搭建一个基础的k8s集群 注意，这里的配置信息都是按照我自己的虚拟环境来写的。 把server01作为m" />
+<meta property="og:description" content="根据前文准备好的环境，我们现在来一步步的搭建一个基础的k8s集群注意，这里的配置信息都是按照我自己的虚拟环境来写的。把server01作为m" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/create-k8s-2/" />
-<meta property="article:published_time" content="2019-05-20T15:18:19+08:00" />
-<meta property="article:modified_time" content="2019-05-20T15:18:19+08:00" />
+<meta property="og:url" content="http://anakin.github.io/post/create-k8s-2/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-05-20T15:18:19&#43;08:00" />
+<meta property="article:modified_time" content="2019-05-20T15:18:19&#43;08:00" />
+
 <meta itemprop="name" content="手动搭建kubernetes集群（二）">
-<meta itemprop="description" content="根据前文准备好的环境，我们现在来一步步的搭建一个基础的k8s集群 注意，这里的配置信息都是按照我自己的虚拟环境来写的。 把server01作为m">
-
-
-<meta itemprop="datePublished" content="2019-05-20T15:18:19&#43;08:00" />
+<meta itemprop="description" content="根据前文准备好的环境，我们现在来一步步的搭建一个基础的k8s集群注意，这里的配置信息都是按照我自己的虚拟环境来写的。把server01作为m"><meta itemprop="datePublished" content="2019-05-20T15:18:19&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-20T15:18:19&#43;08:00" />
-<meta itemprop="wordCount" content="1643">
-
-
-
-<meta itemprop="keywords" content="kubernetes,ubuntu," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="1642">
+<meta itemprop="keywords" content="kubernetes,ubuntu," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="手动搭建kubernetes集群（二）"/>
-<meta name="twitter:description" content="根据前文准备好的环境，我们现在来一步步的搭建一个基础的k8s集群 注意，这里的配置信息都是按照我自己的虚拟环境来写的。 把server01作为m"/>
+<meta name="twitter:description" content="根据前文准备好的环境，我们现在来一步步的搭建一个基础的k8s集群注意，这里的配置信息都是按照我自己的虚拟环境来写的。把server01作为m"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -108,28 +102,28 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
+            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
+            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
+            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
+            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
           
         
       </li>
@@ -217,7 +211,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
+            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
           
 
         
@@ -228,7 +222,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
+            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
           
 
         
@@ -239,7 +233,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
+            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
           
 
         
@@ -250,7 +244,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
+            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
           
 
         
@@ -293,59 +287,46 @@
   <h2 class="post-toc-title">Table of Contents</h2>
   <div class="post-toc-content">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#步骤1-准备文件">步骤1：准备文件</a></li>
-<li><a href="#步骤2-master环境部署">步骤2：master环境部署</a></li>
-<li><a href="#步骤3-worker环境部署">步骤3：worker环境部署</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#步骤1准备文件">步骤1：准备文件</a></li>
+    <li><a href="#步骤2master环境部署">步骤2：master环境部署</a></li>
+    <li><a href="#步骤3worker环境部署">步骤3：worker环境部署</a></li>
+  </ul>
 </nav>
   </div>
 </div>
 
     
     <div class="post-content">
-      
-
-<p>根据前文准备好的环境，我们现在来一步步的搭建一个基础的k8s集群<br>
-<code>注意，这里的配置信息都是按照我自己的虚拟环境来写的。</code><br>
-把server01作为master节点，server02和server03作为worker节点<br>
-各个节点需要配置的服务和命令如下：<br>
+      <p>根据前文准备好的环境，我们现在来一步步的搭建一个基础的k8s集群<!-- raw HTML omitted -->
+<code>注意，这里的配置信息都是按照我自己的虚拟环境来写的。</code><!-- raw HTML omitted -->
+把server01作为master节点，server02和server03作为worker节点<!-- raw HTML omitted -->
+各个节点需要配置的服务和命令如下：<!-- raw HTML omitted -->
 master节点上需要部署的服务包括：<code>etcd服务</code>、<code>APIServer服务</code>、<code>Scheduler服务</code>、<code>ControllerManager服务</code>、<code>CalicoNode服务</code>、<code>kube-proxy服务</code>、<code>kubectl命令</code></p>
-
 <p>worker节点上需要部署的服务包括：<code>CalicoNode服务</code>、<code>kubelet服务</code>、<code>kube-proxy服务</code></p>
-
-<h2 id="步骤1-准备文件">步骤1：准备文件</h2>
-
-<p>安装k8s集群有几种方式可以选择，比如容器化的方式，比如用kubeadmin的方式，这次我们打算尝试的是使用二进制文件的方式。<br>
-1. 登录到master虚拟机上（server01），从github上下载安装文件的压缩包，我们使用的是1.13.6版本：</p>
-
-<pre><code>    wget https://github.com/kubernetes/kubernetes/releases/download/v1.13.6/kubernetes.tar.gz
-</code></pre>
-
+<h2 id="步骤1准备文件">步骤1：准备文件</h2>
+<p>安装k8s集群有几种方式可以选择，比如容器化的方式，比如用kubeadmin的方式，这次我们打算尝试的是使用二进制文件的方式。<!-- raw HTML omitted --></p>
 <ol>
-<li><p>解压缩</p>
-
+<li>
+<p>登录到master虚拟机上（server01），从github上下载安装文件的压缩包，我们使用的是1.13.6版本：</p>
+<pre><code> wget https://github.com/kubernetes/kubernetes/releases/download/v1.13.6/kubernetes.tar.gz
+</code></pre></li>
+<li>
+<p>解压缩</p>
 <pre><code>tar zxvf kubernetes.tar.gz
 </code></pre></li>
-
-<li><p>下载文件，进入刚刚解压好的文件夹</p>
-
+<li>
+<p>下载文件，进入刚刚解压好的文件夹</p>
 <pre><code>cd kubernetes
 ./cluster/get-kube-binaries.sh
-</code></pre>
-
-<p>这个步骤因为涉及到从官网下载文件，由于墙的原因会非常缓慢或者失败，请自行上网解决。</p></li>
+</code></pre><p>这个步骤因为涉及到从官网下载文件，由于墙的原因会非常缓慢或者失败，请自行上网解决。</p>
+</li>
 </ol>
-
-<h2 id="步骤2-master环境部署">步骤2：master环境部署</h2>
-
+<h2 id="步骤2master环境部署">步骤2：master环境部署</h2>
 <ol>
-<li><p>etcd部署：<br>
-编写etcd服务的启动配置文件etcd.service，内容如下：</p>
-
+<li>etcd部署：<!-- raw HTML omitted -->
+编写etcd服务的启动配置文件etcd.service，内容如下：</li>
+</ol>
 <pre><code>[Unit]
 Description=Etcd Server
 After=network.target
@@ -357,130 +338,109 @@ Documentation=https://github.com/coreos
 Type=notify
 WorkingDirectory=/var/lib/etcd/
 ExecStart=/home/anakin/bin/etcd \
---name=192.168.32.131 \
---listen-client-urls=http://192.168.32.131:2379,http://127.0.0.1:2379 \
---advertise-client-urls=http://192.168.32.131:2379 \
---data-dir=/var/lib/etcd
+  --name=192.168.32.131 \
+  --listen-client-urls=http://192.168.32.131:2379,http://127.0.0.1:2379 \
+  --advertise-client-urls=http://192.168.32.131:2379 \
+  --data-dir=/var/lib/etcd
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65536
 
 [Install]
 WantedBy=multi-user.target
-</code></pre></li>
-</ol>
-
-<p>然后执行以下命令：</p>
-
+</code></pre><p>然后执行以下命令：</p>
 <pre><code>cp etcd.service /lib/systemd/system/
 systemctl enable etcd.service
 mkdir -p /var/lib/etcd
 service etcd start
-</code></pre>
-
-<p>如果没有问题的话，etcd服务应该已经跑起来了。</p>
-
-<ol>
-<li><p>APIServer部署<br>
-编写kube-apiserver.service文件，内容如下：</p>
-
+</code></pre><p>如果没有问题的话，etcd服务应该已经跑起来了。</p>
+<ol start="2">
+<li>APIServer部署<!-- raw HTML omitted -->
+编写kube-apiserver.service文件，内容如下：</li>
+</ol>
 <pre><code>[Unit]
 Description=Kubernetes API Server
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 After=network.target
 [Service]
 ExecStart=/home/anakin/bin/kube-apiserver \
---admission-control=NamespaceLifecycle,LimitRanger,DefaultStorageClass,ResourceQuota,NodeRestriction \
---insecure-bind-address=0.0.0.0 \
---kubelet-https=false \
---service-cluster-ip-range=10.68.0.0/16 \
---service-node-port-range=20000-40000 \
---etcd-servers=http://192.168.32.131:2379 \
---enable-swagger-ui=true \
---allow-privileged=true \
---audit-log-maxage=30 \
---audit-log-maxbackup=3 \
---audit-log-maxsize=100 \
---audit-log-path=/var/lib/audit.log \
---event-ttl=1h \
---v=2
+  --admission-control=NamespaceLifecycle,LimitRanger,DefaultStorageClass,ResourceQuota,NodeRestriction \
+  --insecure-bind-address=0.0.0.0 \
+  --kubelet-https=false \
+  --service-cluster-ip-range=10.68.0.0/16 \
+  --service-node-port-range=20000-40000 \
+  --etcd-servers=http://192.168.32.131:2379 \
+  --enable-swagger-ui=true \
+  --allow-privileged=true \
+  --audit-log-maxage=30 \
+  --audit-log-maxbackup=3 \
+  --audit-log-maxsize=100 \
+  --audit-log-path=/var/lib/audit.log \
+  --event-ttl=1h \
+  --v=2
 Restart=on-failure
 RestartSec=5
 Type=notify
 LimitNOFILE=65536
 [Install]
 WantedBy=multi-user.target
-</code></pre>
-
-<p>然后执行和启动etcd类似的命令</p>
-
+</code></pre><p>然后执行和启动etcd类似的命令</p>
 <pre><code>cp kube-apiserver.service /lib/systemd/system/
 systemctl enable kube-apiserver.service
 service kube-apiserver start
-</code></pre></li>
-
-<li><p>ControllerManager部署<br>
-编写kube-controller-manager.service文件，内容如下：</p>
-
+</code></pre><ol start="3">
+<li>ControllerManager部署<!-- raw HTML omitted -->
+编写kube-controller-manager.service文件，内容如下：</li>
+</ol>
 <pre><code>[Unit]
 Description=Kubernetes Controller Manager
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 [Service]
 ExecStart=/home/anakin/bin/kube-controller-manager \
---address=127.0.0.1 \
---master=http://127.0.0.1:8080 \
---allocate-node-cidrs=true \
---service-cluster-ip-range=10.68.0.0/16 \
---cluster-cidr=172.20.0.0/16 \
---cluster-name=kubernetes \
---leader-elect=true \
---cluster-signing-cert-file= \
---cluster-signing-key-file= \
---v=2
+  --address=127.0.0.1 \
+  --master=http://127.0.0.1:8080 \
+  --allocate-node-cidrs=true \
+  --service-cluster-ip-range=10.68.0.0/16 \
+  --cluster-cidr=172.20.0.0/16 \
+  --cluster-name=kubernetes \
+  --leader-elect=true \
+  --cluster-signing-cert-file= \
+  --cluster-signing-key-file= \
+  --v=2
 Restart=on-failure
 RestartSec=5
 [Install]
 WantedBy=multi-user.target
-</code></pre>
-
-<p>然后，同样的方式启动服务:</p>
-
+</code></pre><p>然后，同样的方式启动服务:</p>
 <pre><code>cp kube-controller-manager.service /lib/systemd/system/
 systemctl enable kube-controller-manager.service
 service kube-controller-manager start
-</code></pre></li>
-
-<li><p>Scheduler部署<br>
-编写kube-scheduler.service文件，内容如下：</p>
-
+</code></pre><ol start="4">
+<li>Scheduler部署<!-- raw HTML omitted -->
+编写kube-scheduler.service文件，内容如下：</li>
+</ol>
 <pre><code>[Unit]
 Description=Kubernetes Scheduler
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 
 [Service]
 ExecStart=/home/anakin/bin/kube-scheduler \
---address=127.0.0.1 \
---master=http://127.0.0.1:8080 \
---leader-elect=true \
---v=2
+  --address=127.0.0.1 \
+  --master=http://127.0.0.1:8080 \
+  --leader-elect=true \
+  --v=2
 Restart=on-failure
 RestartSec=5
 [Install]
 WantedBy=multi-user.target
-</code></pre></li>
-</ol>
-
-<p>然后，继续上面的启动方式:</p>
-
+</code></pre><p>然后，继续上面的启动方式:</p>
 <pre><code>cp kube-scheduler.service /lib/systemd/system/
 systemctl enable kube-scheduler.service
 service kube-scheduler start
-</code></pre>
-
-<ol>
-<li><p>CalicoNode部署
-编写kube-calico.service文件，内容如下：</p>
-
+</code></pre><ol start="5">
+<li>CalicoNode部署
+编写kube-calico.service文件，内容如下：</li>
+</ol>
 <pre><code>[Unit]
 Description=calico node
 After=docker.service
@@ -490,54 +450,46 @@ Requires=docker.service
 User=root
 PermissionsStartOnly=true
 ExecStart=/usr/bin/docker run --net=host --privileged --name=calico-node \
--e ETCD_ENDPOINTS=http://192.168.32.131:2379 \
--e CALICO_LIBNETWORK_ENABLED=true \
--e CALICO_NETWORKING_BACKEND=bird \
--e CALICO_DISABLE_FILE_LOGGING=true \
--e CALICO_IPV4POOL_CIDR=172.20.0.0/16 \
--e CALICO_IPV4POOL_IPIP=off \
--e FELIX_DEFAULTENDPOINTTOHOSTACTION=ACCEPT \
--e FELIX_IPV6SUPPORT=false \
--e FELIX_LOGSEVERITYSCREEN=info \
--e FELIX_IPINIPMTU=1440 \
--e FELIX_HEALTHENABLED=true \
--e IP=192.168.32.131 \
--v /var/run/calico:/var/run/calico \
--v /lib/modules:/lib/modules \
--v /run/docker/plugins:/run/docker/plugins \
--v /var/run/docker.sock:/var/run/docker.sock \
--v /var/log/calico:/var/log/calico \
-registry.anakin.sun.com/k8s/calico-node:v2.6.2
-ExecStop=/usr/bin/docker rm -f calico-node
+  -e ETCD_ENDPOINTS=http://192.168.32.131:2379 \
+  -e CALICO_LIBNETWORK_ENABLED=true \
+  -e CALICO_NETWORKING_BACKEND=bird \
+  -e CALICO_DISABLE_FILE_LOGGING=true \
+  -e CALICO_IPV4POOL_CIDR=172.20.0.0/16 \
+  -e CALICO_IPV4POOL_IPIP=off \
+  -e FELIX_DEFAULTENDPOINTTOHOSTACTION=ACCEPT \
+  -e FELIX_IPV6SUPPORT=false \
+  -e FELIX_LOGSEVERITYSCREEN=info \
+  -e FELIX_IPINIPMTU=1440 \
+  -e FELIX_HEALTHENABLED=true \
+  -e IP=192.168.32.131 \
+  -v /var/run/calico:/var/run/calico \
+  -v /lib/modules:/lib/modules \
+  -v /run/docker/plugins:/run/docker/plugins \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /var/log/calico:/var/log/calico \
+  registry.anakin.sun.com/k8s/calico-node:v2.6.2
+  ExecStop=/usr/bin/docker rm -f calico-node
 Restart=always
 RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
-</code></pre></li>
-</ol>
-
-<p>同样的方式启动：</p>
-
+</code></pre><p>同样的方式启动：</p>
 <pre><code>cp kube-calico.service /lib/systemd/system/
 systemctl enable kube-calico.service
 service kube-calico start
-</code></pre>
-
-<ol>
-<li><p>kubectl命令配置
-执行以下命令(root)：</p>
-
+</code></pre><ol start="6">
+<li>kubectl命令配置
+执行以下命令(root)：</li>
+</ol>
 <pre><code>kubectl config set-cluster kubernetes  --server=http://192.168.1.102:8080
 kubectl config set-context kubernetes --cluster=kubernetes
 kubectl config use-context kubernetes
-</code></pre>
-
-<p>如果有问题，可以手动修改配置文件：~/.kube/config</p></li>
-
-<li><p>kube-proxy服务部署
-编写kube-proxy.service文件，内容如下：</p>
-
+</code></pre><p>如果有问题，可以手动修改配置文件：~/.kube/config</p>
+<ol start="7">
+<li>kube-proxy服务部署
+编写kube-proxy.service文件，内容如下：</li>
+</ol>
 <pre><code>[Unit]
 Description=Kubernetes Kube-Proxy Server
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
@@ -545,22 +497,18 @@ After=network.target
 [Service]
 WorkingDirectory=/var/lib/kube-proxy
 ExecStart=/home/anakin/bin/kube-proxy \
---bind-address=192.168.32.131 \
---hostname-override=192.168.32.131 \
---kubeconfig=/etc/kubernetes/kube-proxy.kubeconfig \
---logtostderr=true \
---v=2
+  --bind-address=192.168.32.131 \
+  --hostname-override=192.168.32.131 \
+  --kubeconfig=/etc/kubernetes/kube-proxy.kubeconfig \
+  --logtostderr=true \
+  --v=2
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65536
 
 [Install]
 WantedBy=multi-user.target
-</code></pre></li>
-</ol>
-
-<p>编写kube-proxy.kubeconfig文件，内容如下：</p>
-
+</code></pre><p>编写kube-proxy.kubeconfig文件，内容如下：</p>
 <pre><code>apiVersion: v1
 clusters:
 - cluster:
@@ -574,30 +522,27 @@ current-context: default
 kind: Config
 preferences: {}
 users: []
-</code></pre>
-
-<p>然后执行如下命令：</p>
-
+</code></pre><p>然后执行如下命令：</p>
 <pre><code>mkdir -p /var/lib/kube-proxy
 cp kube-proxy.service /lib/systemd/system/
 cp kube-proxy.kubeconfig /etc/kubernetes/
 systemctl enable kube-proxy.service
-</code></pre>
-
-<p>OK,至此，master节点应该已经配置完成了。</p>
-
-<h2 id="步骤3-worker环境部署">步骤3：worker环境部署</h2>
-
+</code></pre><p>OK,至此，master节点应该已经配置完成了。</p>
+<h2 id="步骤3worker环境部署">步骤3：worker环境部署</h2>
 <ol>
-<li>CalicoNode部署<br>
-参考master部分的内容</li>
-
-<li><p>kube-proxy服务部署<br>
-参考master部分的内容</p></li>
-
-<li><p>kubelet服务配置<br>
+<li>
+<p>CalicoNode部署<!-- raw HTML omitted -->
+参考master部分的内容</p>
+</li>
+<li>
+<p>kube-proxy服务部署<!-- raw HTML omitted -->
+参考master部分的内容</p>
+</li>
+<li>
+<p>kubelet服务配置<!-- raw HTML omitted -->
 编写kubelet.service文件，内容如下：</p>
-
+</li>
+</ol>
 <pre><code>[Unit]
 Description=Kubernetes Kubelet
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
@@ -607,19 +552,19 @@ Requires=docker.service
 [Service]
 WorkingDirectory=/var/lib/kubelet
 ExecStart=/home/anakin/bin/kubelet \
---address=192.168.32.131 \
---hostname-override=192.168.32.131 \
---pod-infra-container-image=registry.anakin.sun.com/imooc/pause-amd64:3.0 \
---kubeconfig=/etc/kubernetes/kubelet.kubeconfig \
---network-plugin=cni \
---cni-conf-dir=/etc/cni/net.d \
---cni-bin-dir=/home/anakin/bin \
---cluster-dns=10.68.0.2 \
---cluster-domain=cluster.local. \
---allow-privileged=true \
---fail-swap-on=false \
---logtostderr=true \
---v=2
+  --address=192.168.32.131 \
+  --hostname-override=192.168.32.131 \
+  --pod-infra-container-image=registry.anakin.sun.com/imooc/pause-amd64:3.0 \
+  --kubeconfig=/etc/kubernetes/kubelet.kubeconfig \
+  --network-plugin=cni \
+  --cni-conf-dir=/etc/cni/net.d \
+  --cni-bin-dir=/home/anakin/bin \
+  --cluster-dns=10.68.0.2 \
+  --cluster-domain=cluster.local. \
+  --allow-privileged=true \
+  --fail-swap-on=false \
+  --logtostderr=true \
+  --v=2
 ExecStartPost=/sbin/iptables -A INPUT -s 10.0.0.0/8 -p tcp --dport 4194 -j ACCEPT
 ExecStartPost=/sbin/iptables -A INPUT -s 172.16.0.0/12 -p tcp --dport 4194 -j ACCEPT
 ExecStartPost=/sbin/iptables -A INPUT -s 192.168.0.0/16 -p tcp --dport 4194 -j ACCEPT
@@ -629,11 +574,7 @@ RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
-</code></pre></li>
-</ol>
-
-<p>编写kubelet.kubeconfig文件，内容如下：</p>
-
+</code></pre><p>编写kubelet.kubeconfig文件，内容如下：</p>
 <pre><code>apiVersion: v1
 clusters:
 - cluster:
@@ -649,10 +590,7 @@ current-context: system:node:kube-master
 kind: Config
 preferences: {}
 users: []
-</code></pre>
-
-<p>编写10-calico.conf文件，内容如下：</p>
-
+</code></pre><p>编写10-calico.conf文件，内容如下：</p>
 <pre><code>{
     &quot;name&quot;: &quot;calico-k8s-network&quot;,
     &quot;cniVersion&quot;: &quot;0.1.0&quot;,
@@ -666,10 +604,7 @@ users: []
         &quot;k8s_api_root&quot;: &quot;http://192.168.32.131:8080&quot;
     }
 }
-</code></pre>
-
-<p>然后，执行如下命令：</p>
-
+</code></pre><p>然后，执行如下命令：</p>
 <pre><code>mkdir -p /var/lib/kubelet
 mkdir -p /etc/kubernetes
 mkdir -p /etc/cni/net.d
@@ -680,9 +615,7 @@ cp 10-calico.conf /etc/cni/net.d/
 
 systemctl enable kubelet.service
 service kubelet start
-</code></pre>
-
-<p>至此，整个集群应该已经搭建好了，如果中间遇到什么问题，可以通过查看系统日志，或者google解决。</p>
+</code></pre><p>至此，整个集群应该已经搭建好了，如果中间遇到什么问题，可以通过查看系统日志，或者google解决。</p>
 
     </div>
 
@@ -710,8 +643,8 @@ service kubelet start
 
     <footer class="post-footer">
       <div class="post-tags">
-          <a href="http://localhost:1313/tags/kubernetes/">kubernetes</a>
-          <a href="http://localhost:1313/tags/ubuntu/">ubuntu</a>
+          <a href="http://anakin.github.io/tags/kubernetes/">kubernetes</a>
+          <a href="http://anakin.github.io/tags/ubuntu/">ubuntu</a>
           
         </div>
 
@@ -798,7 +731,7 @@ service kubelet start
     </a>
 
 
-<a href="http://localhost:1313/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+<a href="http://anakin.github.io/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
     class="iconfont" title="rss" target="_blank">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -823,7 +756,7 @@ service kubelet start
     &copy;
     
       2017 -
-    2019
+    2021
     <span class="heart">
       
       <i class="iconfont">

@@ -1,31 +1,27 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>redis on Anakin- 奔向NB的生活</title>
-    <link>http://localhost:1313/tags/redis/</link>
+    <link>http://anakin.github.io/tags/redis/</link>
     <description>Recent content in redis on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 17 May 2019 13:22:22 +0800</lastBuildDate>
-    
-	<atom:link href="http://localhost:1313/tags/redis/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 17 May 2019 13:22:22 +0800</lastBuildDate><atom:link href="http://anakin.github.io/tags/redis/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Redis持久化</title>
-      <link>http://localhost:1313/post/redis-rdb-aof/</link>
+      <link>http://anakin.github.io/post/redis-rdb-aof/</link>
       <pubDate>Fri, 17 May 2019 13:22:22 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/redis-rdb-aof/</guid>
-      <description>redis的持久化有两种方式，RDB和AOF ## RDB: 在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成</description>
+      <guid>http://anakin.github.io/post/redis-rdb-aof/</guid>
+      <description>redis的持久化有两种方式，RDB和AOF RDB: 在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成一</description>
     </item>
     
     <item>
       <title>Golang利用redis实现分布式锁</title>
-      <link>http://localhost:1313/post/golang-redis-lock/</link>
+      <link>http://anakin.github.io/post/golang-redis-lock/</link>
       <pubDate>Thu, 16 May 2019 20:11:09 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/golang-redis-lock/</guid>
+      <guid>http://anakin.github.io/post/golang-redis-lock/</guid>
       <description>原理 使用SETNX命令(SET if Not eXists) SETNX key value 将 key 的值设为 value，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。 设置成功，返回 1 。</description>
     </item>
     

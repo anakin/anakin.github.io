@@ -1,40 +1,36 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>php on Anakin- 奔向NB的生活</title>
-    <link>http://localhost:1313/tags/php/</link>
+    <link>http://anakin.github.io/tags/php/</link>
     <description>Recent content in php on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 14 Jun 2019 09:22:14 +0800</lastBuildDate>
-    
-	<atom:link href="http://localhost:1313/tags/php/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 14 Jun 2019 09:22:14 +0800</lastBuildDate><atom:link href="http://anakin.github.io/tags/php/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>php的Yaf框架类加载顺序研究</title>
-      <link>http://localhost:1313/post/php-yaf-library/</link>
+      <link>http://anakin.github.io/post/php-yaf-library/</link>
       <pubDate>Fri, 14 Jun 2019 09:22:14 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/php-yaf-library/</guid>
+      <guid>http://anakin.github.io/post/php-yaf-library/</guid>
       <description>代码 注册ini设置到global_library变量（yaf.c） STD_PHP_INI_ENTRY(&amp;quot;yaf.library&amp;quot;, &amp;quot;&amp;quot;, PHP_INI_ALL, OnUpdateString, global_library, zend_yaf_globals, yaf_globals) 把global_library和local_library都</description>
     </item>
     
     <item>
       <title>Docker部署完整的PHP-RPC-Golang环境</title>
-      <link>http://localhost:1313/post/docker-golang-php/</link>
+      <link>http://anakin.github.io/post/docker-golang-php/</link>
       <pubDate>Fri, 31 May 2019 21:30:05 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/docker-golang-php/</guid>
+      <guid>http://anakin.github.io/post/docker-golang-php/</guid>
       <description>完全基于docker部署一个php通过rpc访问golang的环境。 基本架构 我们用PHP的Laravel框架来实现一个用户登录的Restfu</description>
     </item>
     
     <item>
       <title>Laravel整合gRPC</title>
-      <link>http://localhost:1313/post/php-laravel-grpc/</link>
+      <link>http://anakin.github.io/post/php-laravel-grpc/</link>
       <pubDate>Fri, 31 May 2019 12:58:45 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/php-laravel-grpc/</guid>
+      <guid>http://anakin.github.io/post/php-laravel-grpc/</guid>
       <description>最近需要用Laravel实现一个Rest的API，后端调用Golang的RPC服务，记录一下整合的过程。 环境准备 php安装grpc和prot</description>
     </item>
     

@@ -1,22 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>docker on Anakin- 奔向NB的生活</title>
-    <link>http://localhost:1313/tags/docker/</link>
+    <link>http://anakin.github.io/tags/docker/</link>
     <description>Recent content in docker on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 31 May 2019 21:30:05 +0800</lastBuildDate>
-    
-	<atom:link href="http://localhost:1313/tags/docker/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 31 May 2019 21:30:05 +0800</lastBuildDate><atom:link href="http://anakin.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Docker部署完整的PHP-RPC-Golang环境</title>
-      <link>http://localhost:1313/post/docker-golang-php/</link>
+      <link>http://anakin.github.io/post/docker-golang-php/</link>
       <pubDate>Fri, 31 May 2019 21:30:05 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/docker-golang-php/</guid>
+      <guid>http://anakin.github.io/post/docker-golang-php/</guid>
       <description>完全基于docker部署一个php通过rpc访问golang的环境。 基本架构 我们用PHP的Laravel框架来实现一个用户登录的Restfu</description>
     </item>
     

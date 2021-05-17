@@ -32,10 +32,10 @@
 
 
 
-<meta name="generator" content="Hugo 0.56.3" />
+<meta name="generator" content="Hugo 0.83.1" />
 
 
-<link rel="canonical" href="http://localhost:1313/post/php-laravel-grpc/" />
+<link rel="canonical" href="http://anakin.github.io/post/php-laravel-grpc/" />
 
 
 
@@ -51,7 +51,7 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.5f696afb662abd14c9a57b5ce751a018b247bd7f22b955668eab514d6c225d74.css" integrity="sha256-X2lq&#43;2YqvRTJpXtc51GgGLJHvX8iuVVmjqtRTWwiXXQ=" media="screen" crossorigin="anonymous">
 
 
 
@@ -60,21 +60,15 @@
 <meta property="og:title" content="Laravel整合gRPC" />
 <meta property="og:description" content="最近需要用Laravel实现一个Rest的API，后端调用Golang的RPC服务，记录一下整合的过程。 环境准备 php安装grpc和prot" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/php-laravel-grpc/" />
-<meta property="article:published_time" content="2019-05-31T12:58:45+08:00" />
-<meta property="article:modified_time" content="2019-05-31T12:58:45+08:00" />
+<meta property="og:url" content="http://anakin.github.io/post/php-laravel-grpc/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-05-31T12:58:45&#43;08:00" />
+<meta property="article:modified_time" content="2019-05-31T12:58:45&#43;08:00" />
+
 <meta itemprop="name" content="Laravel整合gRPC">
-<meta itemprop="description" content="最近需要用Laravel实现一个Rest的API，后端调用Golang的RPC服务，记录一下整合的过程。 环境准备 php安装grpc和prot">
-
-
-<meta itemprop="datePublished" content="2019-05-31T12:58:45&#43;08:00" />
+<meta itemprop="description" content="最近需要用Laravel实现一个Rest的API，后端调用Golang的RPC服务，记录一下整合的过程。 环境准备 php安装grpc和prot"><meta itemprop="datePublished" content="2019-05-31T12:58:45&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-31T12:58:45&#43;08:00" />
 <meta itemprop="wordCount" content="533">
-
-
-
-<meta itemprop="keywords" content="PHP,Laravel,gRPC," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="PHP,Laravel,gRPC," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Laravel整合gRPC"/>
 <meta name="twitter:description" content="最近需要用Laravel实现一个Rest的API，后端调用Golang的RPC服务，记录一下整合的过程。 环境准备 php安装grpc和prot"/>
 
@@ -108,28 +102,28 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
+            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
+            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
+            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
+            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
           
         
       </li>
@@ -217,7 +211,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
+            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
           
 
         
@@ -228,7 +222,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
+            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
           
 
         
@@ -239,7 +233,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
+            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
           
 
         
@@ -250,7 +244,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
+            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
           
 
         
@@ -293,57 +287,39 @@
   <h2 class="post-toc-title">Table of Contents</h2>
   <div class="post-toc-content">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#环境准备">环境准备</a></li>
-<li><a href="#准备proto文件">准备proto文件</a></li>
-<li><a href="#生成php的grpc客户端代码">生成PHP的gRPC客户端代码</a></li>
-<li><a href="#编写controller">编写Controller</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#环境准备">环境准备</a></li>
+    <li><a href="#准备proto文件">准备proto文件</a></li>
+    <li><a href="#生成php的grpc客户端代码">生成PHP的gRPC客户端代码</a></li>
+    <li><a href="#编写controller">编写Controller</a></li>
+  </ul>
 </nav>
   </div>
 </div>
 
     
     <div class="post-content">
-      
-
-<p>最近需要用Laravel实现一个Rest的API，后端调用Golang的RPC服务，记录一下整合的过程。</p>
-
+      <p>最近需要用Laravel实现一个Rest的API，后端调用Golang的RPC服务，记录一下整合的过程。</p>
 <h2 id="环境准备">环境准备</h2>
-
 <ol>
-<li><p>php安装grpc和protobuf扩展<br></p>
-
+<li>php安装grpc和protobuf扩展<!-- raw HTML omitted --></li>
+</ol>
 <pre><code>pecl install grpc
 pecl install protobuf
-</code></pre>
-
-<p>找到php.ini文件，添加下面两行：</p>
-
+</code></pre><p>找到php.ini文件，添加下面两行：</p>
 <pre><code>extension=grpc.so
 extension=protobuf.so
-</code></pre></li>
-
-<li><p>clone一个grpc的repo<br></p>
-
-<pre><code>git clone https://github.com/grpc/grpc.git
-</code></pre>
-
-<p>假设目录在/home/aaa/下面</p></li>
-
-<li><p>安装protobuf<br></p>
-
-<pre><code>apt install protobuf
-</code></pre></li>
+</code></pre><ol start="2">
+<li>clone一个grpc的repo<!-- raw HTML omitted --></li>
 </ol>
-
-<h2 id="准备proto文件">准备proto文件</h2>
-
+<pre><code>git clone https://github.com/grpc/grpc.git
+</code></pre><p>假设目录在/home/aaa/下面</p>
+<ol start="3">
+<li>安装protobuf<!-- raw HTML omitted --></li>
+</ol>
+<pre><code>apt install protobuf
+</code></pre><h2 id="准备proto文件">准备proto文件</h2>
 <p>文件名：userrpc.proto，内容如下</p>
-
 <pre><code>syntax = &quot;proto3&quot;;
 package App.UserRpc;
 
@@ -365,48 +341,28 @@ message UserInfo{
   int32 userid= 4;
   string username= 5;
 }
-</code></pre>
-
-<p>其中定义了两种消息结构和一个rpc服务。</p>
-
+</code></pre><p>其中定义了两种消息结构和一个rpc服务。</p>
 <h2 id="生成php的grpc客户端代码">生成PHP的gRPC客户端代码</h2>
-
 <ol>
-<li><p>在user.proto文件的所在目录，执行下面的命令：</p>
-
+<li>在user.proto文件的所在目录，执行下面的命令：</li>
+</ol>
 <pre><code>protoc --php_out=./ --grpc_out=./ --plugin=protoc-gen-grpc=/home/aaa/grpc/bins/opt/grpc_php_plugin user.proto
-</code></pre>
-
-<p>如果没问题的话，应该会生成两个目录:App和GPBMetadata</p></li>
-
-<li><p>拷贝文件<br></p></li>
+</code></pre><p>如果没问题的话，应该会生成两个目录:App和GPBMetadata</p>
+<ol start="2">
+<li>拷贝文件<!-- raw HTML omitted --></li>
 </ol>
-
 <p>把App下面的UserRpc目录拷贝到laravel的app/下，把GPBMetadata目录拷贝到和app同级的目录。</p>
-
-<ol>
-<li>设置composer<br></li>
+<ol start="3">
+<li>设置composer<!-- raw HTML omitted --></li>
 </ol>
-
 <p>打开laravel的composer.json文件，在classmap下添加一行：</p>
-
 <pre><code>GPBMetadata
-</code></pre>
-
-<p>执行下面的命令：</p>
-
+</code></pre><p>执行下面的命令：</p>
 <pre><code>composer require &quot;grpc/grpc&quot;
-</code></pre>
-
-<p>然后执行：</p>
-
+</code></pre><p>然后执行：</p>
 <pre><code>composer dump-autoload
-</code></pre>
-
-<h2 id="编写controller">编写Controller</h2>
-
+</code></pre><h2 id="编写controller">编写Controller</h2>
 <p>现在可以去写一个laravel的controller试试了。</p>
-
 <pre><code>  public function login(Request $request){
     $loginname = $request-&gt;input(&quot;loginname&quot;);
     $password = (string)$request-&gt;input(&quot;password&quot;);
@@ -422,7 +378,6 @@ message UserInfo{
     exit;
   }
 </code></pre>
-
     </div>
 
     
@@ -449,9 +404,9 @@ message UserInfo{
 
     <footer class="post-footer">
       <div class="post-tags">
-          <a href="http://localhost:1313/tags/php/">PHP</a>
-          <a href="http://localhost:1313/tags/laravel/">Laravel</a>
-          <a href="http://localhost:1313/tags/grpc/">gRPC</a>
+          <a href="http://anakin.github.io/tags/php/">PHP</a>
+          <a href="http://anakin.github.io/tags/laravel/">Laravel</a>
+          <a href="http://anakin.github.io/tags/grpc/">gRPC</a>
           
         </div>
 
@@ -538,7 +493,7 @@ message UserInfo{
     </a>
 
 
-<a href="http://localhost:1313/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+<a href="http://anakin.github.io/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
     class="iconfont" title="rss" target="_blank">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -563,7 +518,7 @@ message UserInfo{
     &copy;
     
       2017 -
-    2019
+    2021
     <span class="heart">
       
       <i class="iconfont">

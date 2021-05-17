@@ -23,7 +23,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="Anakin" />
-  <meta name="description" content="开始改造我们之前搭建的基础集群，加上安全机制。 准备工作 1. 停止master节点的所有服务 查看已有的service kubectl get services 删除service（例如" />
+  <meta name="description" content="开始改造我们之前搭建的基础集群，加上安全机制。 准备工作 1. 停止master节点的所有服务查看已有的service kubectl get services 删除service（例如" />
 
   <meta name="keywords" content="anakin, sun, github" />
 
@@ -32,10 +32,10 @@
 
 
 
-<meta name="generator" content="Hugo 0.56.3" />
+<meta name="generator" content="Hugo 0.83.1" />
 
 
-<link rel="canonical" href="http://localhost:1313/post/create-k8s-4/" />
+<link rel="canonical" href="http://anakin.github.io/post/create-k8s-4/" />
 
 
 
@@ -51,32 +51,26 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.5f696afb662abd14c9a57b5ce751a018b247bd7f22b955668eab514d6c225d74.css" integrity="sha256-X2lq&#43;2YqvRTJpXtc51GgGLJHvX8iuVVmjqtRTWwiXXQ=" media="screen" crossorigin="anonymous">
 
 
 
 
 
 <meta property="og:title" content="手动搭建kubernetes集群（四）" />
-<meta property="og:description" content="开始改造我们之前搭建的基础集群，加上安全机制。 准备工作 1. 停止master节点的所有服务 查看已有的service kubectl get services 删除service（例如" />
+<meta property="og:description" content="开始改造我们之前搭建的基础集群，加上安全机制。 准备工作 1. 停止master节点的所有服务查看已有的service kubectl get services 删除service（例如" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/create-k8s-4/" />
-<meta property="article:published_time" content="2019-05-23T10:24:06+08:00" />
-<meta property="article:modified_time" content="2019-05-23T10:24:06+08:00" />
+<meta property="og:url" content="http://anakin.github.io/post/create-k8s-4/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-05-23T10:24:06&#43;08:00" />
+<meta property="article:modified_time" content="2019-05-23T10:24:06&#43;08:00" />
+
 <meta itemprop="name" content="手动搭建kubernetes集群（四）">
-<meta itemprop="description" content="开始改造我们之前搭建的基础集群，加上安全机制。 准备工作 1. 停止master节点的所有服务 查看已有的service kubectl get services 删除service（例如">
-
-
-<meta itemprop="datePublished" content="2019-05-23T10:24:06&#43;08:00" />
+<meta itemprop="description" content="开始改造我们之前搭建的基础集群，加上安全机制。 准备工作 1. 停止master节点的所有服务查看已有的service kubectl get services 删除service（例如"><meta itemprop="datePublished" content="2019-05-23T10:24:06&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-23T10:24:06&#43;08:00" />
-<meta itemprop="wordCount" content="2516">
-
-
-
-<meta itemprop="keywords" content="kubernetes,ubuntu," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="2522">
+<meta itemprop="keywords" content="kubernetes,ubuntu," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="手动搭建kubernetes集群（四）"/>
-<meta name="twitter:description" content="开始改造我们之前搭建的基础集群，加上安全机制。 准备工作 1. 停止master节点的所有服务 查看已有的service kubectl get services 删除service（例如"/>
+<meta name="twitter:description" content="开始改造我们之前搭建的基础集群，加上安全机制。 准备工作 1. 停止master节点的所有服务查看已有的service kubectl get services 删除service（例如"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -108,28 +102,28 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
+            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
+            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
+            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
+            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
           
         
       </li>
@@ -217,7 +211,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
+            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
           
 
         
@@ -228,7 +222,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
+            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
           
 
         
@@ -239,7 +233,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
+            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
           
 
         
@@ -250,7 +244,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
+            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
           
 
         
@@ -293,103 +287,59 @@
   <h2 class="post-toc-title">Table of Contents</h2>
   <div class="post-toc-content">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#准备工作">准备工作</a></li>
-<li><a href="#master节点设置">master节点设置</a></li>
-<li><a href="#worker节点设置">worker节点设置</a></li>
-<li><a href="#总结">总结</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#准备工作">准备工作</a></li>
+    <li><a href="#master节点设置">master节点设置</a></li>
+    <li><a href="#worker节点设置">worker节点设置</a></li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
 </nav>
   </div>
 </div>
 
     
     <div class="post-content">
-      
-
-<p>开始改造我们之前搭建的基础集群，加上安全机制。</p>
-
+      <p>开始改造我们之前搭建的基础集群，加上安全机制。</p>
 <h2 id="准备工作">准备工作</h2>
-
-<p><strong>1. 停止master节点的所有服务</strong><br></p>
-
+<p><strong>1. 停止master节点的所有服务</strong><!-- raw HTML omitted --></p>
 <p><strong>查看已有的service</strong></p>
-
 <pre><code>kubectl get services
-</code></pre>
-
-<p><strong>删除service（例如有一个叫xxx的service）</strong></p>
-
+</code></pre><p><strong>删除service（例如有一个叫xxx的service）</strong></p>
 <pre><code>kubectl delete service xxx
-</code></pre>
-
-<p><strong>查看已有的deployments</strong></p>
-
+</code></pre><p><strong>查看已有的deployments</strong></p>
 <pre><code>kubectl get deploy
-</code></pre>
-
-<p><strong>删除deployments</strong></p>
-
+</code></pre><p><strong>删除deployments</strong></p>
 <pre><code>kubectl delete deploy xxx
-</code></pre>
-
-<p><strong>停止master的服务</strong></p>
-
+</code></pre><p><strong>停止master的服务</strong></p>
 <pre><code>service kube-calico stop
 service kube-scheduler stop
 service kube-controller-manager stop
 service kube-apiserver stop
 service etcd stop &amp;&amp; rm -fr /var/lib/etcd/*
-</code></pre>
-
-<p><strong>2. 停止worker节点的所有服务</strong><br></p>
-
+</code></pre><p><strong>2. 停止worker节点的所有服务</strong><!-- raw HTML omitted --></p>
 <pre><code>service kubelet stop 
 rm -fr /var/lib/kubelet/*
 service kube-proxy stop 
 rm -fr /var/lib/kube-proxy/*
 service kube-calico stop
-</code></pre>
-
-<p><strong>3. 安装需要的工具</strong><br></p>
-
-<p><strong>在所有节点上安装cfssl:</strong><br></p>
-
+</code></pre><p><strong>3. 安装需要的工具</strong><!-- raw HTML omitted --></p>
+<p><strong>在所有节点上安装cfssl:</strong><!-- raw HTML omitted --></p>
 <p>CFSSL是CloudFlare开源的一款PKI/TLS工具。 CFSSL 包含一个命令行工具 和一个用于 签名，验证并且捆绑TLS证书的 HTTP API 服务。 用Go写的。具体相关信息自行google。
 下载</p>
-
 <pre><code>wget -q --show-progress --https-only --timestamping \
   https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 \
   https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
-</code></pre>
-
-<p>修改权限</p>
-
+</code></pre><p>修改权限</p>
 <pre><code>chmod +x cfssl_linux-amd64 cfssljson_linux-amd64
-</code></pre>
-
-<p>放到可执行目录</p>
-
+</code></pre><p>放到可执行目录</p>
 <pre><code>mv cfssl_linux-amd64 /usr/local/bin/cfssl
 mv cfssljson_linux-amd64 /usr/local/bin/cfssljson  
-</code></pre>
-
-<p><strong>在worker节点上安装conntrack</strong></p>
-
+</code></pre><p><strong>在worker节点上安装conntrack</strong></p>
 <pre><code>apt install conntrack
-</code></pre>
-
-<p><strong>4.在master上生成根证书</strong></p>
-
+</code></pre><p><strong>4.在master上生成根证书</strong></p>
 <pre><code>mkdir -p /etc/kubernetes/ca
 cd /etc/kubernetes/ca
-</code></pre>
-
-<p>编辑ca-config.json文件，内容如下：</p>
-
+</code></pre><p>编辑ca-config.json文件，内容如下：</p>
 <pre><code>{
   &quot;signing&quot;: {
     &quot;default&quot;: {
@@ -408,10 +358,7 @@ cd /etc/kubernetes/ca
     }
   }
 }
-</code></pre>
-
-<p>编辑ca-csr.json文件，内容如下：</p>
-
+</code></pre><p>编辑ca-csr.json文件，内容如下：</p>
 <pre><code>{
   &quot;CN&quot;: &quot;kubernetes&quot;,
   &quot;key&quot;: {
@@ -428,27 +375,15 @@ cd /etc/kubernetes/ca
     }
   ]
 }
-</code></pre>
-
-<p>执行生成证书的命令：</p>
-
+</code></pre><p>执行生成证书的命令：</p>
 <pre><code>cfssl gencert -initca ca-csr.json | cfssljson -bare ca
-</code></pre>
-
-<p>OK。</p>
-
+</code></pre><p>OK。</p>
 <h2 id="master节点设置">master节点设置</h2>
-
 <p><strong>1. etcd设置</strong></p>
-
 <p>设置etcd的证书：</p>
-
 <pre><code>mkdir -p /etc/kubernetes/ca/etcd
 cd /etc/kubernetes/ca/etcd 
-</code></pre>
-
-<p>编辑etcd-csr.json文件，内容如下：</p>
-
+</code></pre><p>编辑etcd-csr.json文件，内容如下：</p>
 <pre><code>{
   &quot;CN&quot;: &quot;etcd&quot;,
   &quot;hosts&quot;: [
@@ -469,19 +404,13 @@ cd /etc/kubernetes/ca/etcd
     }
   ]
 }
-</code></pre>
-
-<p>执行签发证书的命令：</p>
-
+</code></pre><p>执行签发证书的命令：</p>
 <pre><code>cfssl gencert \
         -ca=/etc/kubernetes/ca/ca.pem \
         -ca-key=/etc/kubernetes/ca/ca-key.pem \
         -config=/etc/kubernetes/ca/ca-config.json \
         -profile=kubernetes etcd-csr.json | cfssljson -bare etcd
-</code></pre>
-
-<p>编辑/lib/systemd/system/etcd.service，内容如下：</p>
-
+</code></pre><p>编辑/lib/systemd/system/etcd.service，内容如下：</p>
 <pre><code>[Unit]
 Description=Etcd Server
 After=network.target
@@ -511,23 +440,14 @@ LimitNOFILE=65536
 
 [Install]
 WantedBy=multi-user.target
-</code></pre>
-
-<p>然后启动服务：</p>
-
+</code></pre><p>然后启动服务：</p>
 <pre><code>systemctl daemon-reload
 service etcd start
-</code></pre>
-
-<p><strong>2. apiserver设置</strong><br>
+</code></pre><p><strong>2. apiserver设置</strong><!-- raw HTML omitted -->
 创建一个存放证书的目录：</p>
-
 <pre><code>mkdir -p /etc/kubernetes/ca/kubernetes
 cd /etc/kubernetes/ca/kubernetes/
-</code></pre>
-
-<p>编辑kubernetes-csr.json文件，内容如下：</p>
-
+</code></pre><p>编辑kubernetes-csr.json文件，内容如下：</p>
 <pre><code>{
   &quot;CN&quot;: &quot;kubernetes&quot;,
   &quot;hosts&quot;: [
@@ -554,30 +474,18 @@ cd /etc/kubernetes/ca/kubernetes/
     }
   ]
 }
-</code></pre>
-
-<p>签发证书：</p>
-
+</code></pre><p>签发证书：</p>
 <pre><code>cfssl gencert \
         -ca=/etc/kubernetes/ca/ca.pem \
         -ca-key=/etc/kubernetes/ca/ca-key.pem \
         -config=/etc/kubernetes/ca/ca-config.json \
         -profile=kubernetes kubernetes-csr.json | cfssljson -bare kubernetes 
-</code></pre>
-
-<p>生成一个token文件：</p>
-
+</code></pre><p>生成一个token文件：</p>
 <pre><code>head -c 16 /dev/urandom | od -An -t x | tr -d ' '
 c81fb8ce5502f19d510d159ff8a1cf12
-</code></pre>
-
-<p>把这个token存入文件：</p>
-
+</code></pre><p>把这个token存入文件：</p>
 <pre><code>echo &quot;c81fb8ce5502f19d510d159ff8a1cf12,kubelet-bootstrap,10001,\&quot;system:kubelet-bootstrap\&quot;&quot; &gt; /etc/kubernetes/ca/kubernetes/token.csv
-</code></pre>
-
-<p>编辑/lib/systemd/system/kube-apiserver.service，内容如下：</p>
-
+</code></pre><p>编辑/lib/systemd/system/kube-apiserver.service，内容如下：</p>
 <pre><code>[Unit]
 Description=Kubernetes API Server
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
@@ -616,17 +524,11 @@ Type=notify
 LimitNOFILE=65536
 [Install]
 WantedBy=multi-user.target
-</code></pre>
-
-<p>然后启动服务：</p>
-
+</code></pre><p>然后启动服务：</p>
 <pre><code>systemctl daemon-reload
 service kube-apiserver start
-</code></pre>
-
-<p><strong>3. controller-manager设置</strong><br>
+</code></pre><p><strong>3. controller-manager设置</strong><!-- raw HTML omitted -->
 编辑/lib/systemd/system/kube-controller-manager.service文件，内容如下：</p>
-
 <pre><code>[Unit]
 Description=Kubernetes Controller Manager
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
@@ -648,26 +550,16 @@ Restart=on-failure
 RestartSec=5
 [Install]
 WantedBy=multi-user.target
-</code></pre>
-
-<p>启动服务</p>
-
+</code></pre><p>启动服务</p>
 <pre><code>systemctl daemon-reload
 service kube-controller-manager start
-</code></pre>
-
-<p><strong>4. scheduler设置</strong><br>
+</code></pre><p><strong>4. scheduler设置</strong><!-- raw HTML omitted -->
 scheduler不需要重新设置，直接启动就ok了。</p>
-
-<p><strong>5. kubectl设置</strong><br>
+<p><strong>5. kubectl设置</strong><!-- raw HTML omitted -->
 先创建一个叫做admin的系统管理员：</p>
-
 <pre><code>mkdir -p /etc/kubernetes/ca/admin
 cd /etc/kubernetes/ca/admin/
-</code></pre>
-
-<p>编辑admin-csr.json文件，内容如下：</p>
-
+</code></pre><p>编辑admin-csr.json文件，内容如下：</p>
 <pre><code>{
   &quot;CN&quot;: &quot;admin&quot;,
   &quot;hosts&quot;: [],
@@ -685,19 +577,13 @@ cd /etc/kubernetes/ca/admin/
     }
   ]
 }
-</code></pre>
-
-<p>签发证书：</p>
-
+</code></pre><p>签发证书：</p>
 <pre><code>cfssl gencert \
         -ca=/etc/kubernetes/ca/ca.pem \
         -ca-key=/etc/kubernetes/ca/ca-key.pem \
         -config=/etc/kubernetes/ca/ca-config.json \
         -profile=kubernetes admin-csr.json | cfssljson -bare admin
-</code></pre>
-
-<p>然后开始设置kubectl</p>
-
+</code></pre><p>然后开始设置kubectl</p>
 <pre><code>kubectl config set-cluster kubernetes \
         --certificate-authority=/etc/kubernetes/ca/ca.pem \
         --embed-certs=true \
@@ -712,17 +598,11 @@ kubectl config set-context kubernetes \
         --cluster=kubernetes --user=admin
     
 kubectl config use-context kubernetes
-</code></pre>
-
-<p><strong>6. calico设置</strong><br>
+</code></pre><p><strong>6. calico设置</strong><!-- raw HTML omitted -->
 生成证书：</p>
-
 <pre><code>mkdir -p /etc/kubernetes/ca/calico
 cd /etc/kubernetes/ca/calico/
-</code></pre>
-
-<p>编辑calico-csr.json文件，内容如下：</p>
-
+</code></pre><p>编辑calico-csr.json文件，内容如下：</p>
 <pre><code>{
   &quot;CN&quot;: &quot;calico&quot;,
   &quot;hosts&quot;: [],
@@ -740,19 +620,13 @@ cd /etc/kubernetes/ca/calico/
     }
   ]
 }
-</code></pre>
-
-<p>签发证书：</p>
-
+</code></pre><p>签发证书：</p>
 <pre><code>cfssl gencert \
         -ca=/etc/kubernetes/ca/ca.pem \
         -ca-key=/etc/kubernetes/ca/ca-key.pem \
         -config=/etc/kubernetes/ca/ca-config.json \
         -profile=kubernetes calico-csr.json | cfssljson -bare calico
-</code></pre>
-
-<p>编辑/lib/systemd/system/kube-calico.service文件，内容如下：</p>
-
+</code></pre><p>编辑/lib/systemd/system/kube-calico.service文件，内容如下：</p>
 <pre><code>[Unit]
 Description=calico node
 After=docker.service
@@ -791,31 +665,19 @@ RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
-</code></pre>
-
-<p>启动服务：</p>
-
+</code></pre><p>启动服务：</p>
 <pre><code>systemctl daemon-reload
 service kube-calico start
-</code></pre>
-
-<p><strong>还有一步，就是把/etc/kubernetes/ca/calico目录下的这几个证书拷贝到worker节点对应的位置上去备用</strong></p>
-
+</code></pre><p><strong>还有一步，就是把/etc/kubernetes/ca/calico目录下的这几个证书拷贝到worker节点对应的位置上去备用</strong></p>
 <p><strong>7. 设置kubelet的角色绑定</strong></p>
-
 <pre><code>kubectl -n kube-system get clusterrole
 kubectl create clusterrolebinding kubelet-bootstrap \
          --clusterrole=system:node-bootstrapper --user=kubelet-bootstrap
-</code></pre>
-
-<h2 id="worker节点设置">worker节点设置</h2>
-
-<p><strong>1. calico设置</strong><br>
+</code></pre><h2 id="worker节点设置">worker节点设置</h2>
+<p><strong>1. calico设置</strong><!-- raw HTML omitted -->
 编辑/lib/systemd/system/kube-calico.service文件，参考master节点的内容，只需要修改一下NODENAME就可以了，然后启动服务</p>
-
-<p><strong>2. kubelet设置</strong><br>
+<p><strong>2. kubelet设置</strong><!-- raw HTML omitted -->
 设置kubelet参数：</p>
-
 <pre><code>kubectl config set-cluster kubernetes \
         --certificate-authority=/etc/kubernetes/ca/ca.pem \
         --embed-certs=true \
@@ -834,15 +696,9 @@ kubectl config set-context default \
 kubectl config use-context default --kubeconfig=bootstrap.kubeconfig
 
 mv bootstrap.kubeconfig /etc/kubernetes/
-</code></pre>
-
-<p>设置cni：</p>
-
+</code></pre><p>设置cni：</p>
 <pre><code>cd /etc/cni/net.d/
-</code></pre>
-
-<p>编辑10-calico.conf文件，内容如下：</p>
-
+</code></pre><p>编辑10-calico.conf文件，内容如下：</p>
 <pre><code>{
     &quot;name&quot;: &quot;calico-k8s-network&quot;,
     &quot;cniVersion&quot;: &quot;0.1.0&quot;,
@@ -859,10 +715,7 @@ mv bootstrap.kubeconfig /etc/kubernetes/
         &quot;kubeconfig&quot;: &quot;/etc/kubernetes/kubelet.kubeconfig&quot;
     }
 }
-</code></pre>
-
-<p>编辑/lib/systemd/system/kubelet.service文件，内容如下：</p>
-
+</code></pre><p>编辑/lib/systemd/system/kubelet.service文件，内容如下：</p>
 <pre><code>[Unit]
 Description=Kubernetes Kubelet
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
@@ -898,29 +751,16 @@ RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
-</code></pre>
-
-<p>启动服务：</p>
-
+</code></pre><p>启动服务：</p>
 <pre><code>systemctl daemon-reload
 service kubelet start
-</code></pre>
-
-<p>启动之后，需要去master节点进行授权操作：</p>
-
+</code></pre><p>启动之后，需要去master节点进行授权操作：</p>
 <pre><code>kubectl get csr|grep 'Pending' | awk '{print $1}'| xargs kubectl certificate approve
-</code></pre>
-
-<p><strong>3. kube-proxy设置</strong></p>
-
+</code></pre><p><strong>3. kube-proxy设置</strong></p>
 <p>准备证书：</p>
-
 <pre><code>mkdir -p /etc/kubernetes/ca/kube-proxy
 cd /etc/kubernetes/ca/kube-proxy
-</code></pre>
-
-<p>编辑kube-proxy-csr.json文件，内容如下：</p>
-
+</code></pre><p>编辑kube-proxy-csr.json文件，内容如下：</p>
 <pre><code>{
   &quot;CN&quot;: &quot;system:kube-proxy&quot;,
   &quot;hosts&quot;: [],
@@ -938,19 +778,13 @@ cd /etc/kubernetes/ca/kube-proxy
     }
   ]
 }
-</code></pre>
-
-<p>签发证书：</p>
-
+</code></pre><p>签发证书：</p>
 <pre><code>cfssl gencert \
         -ca=/etc/kubernetes/ca/ca.pem \
         -ca-key=/etc/kubernetes/ca/ca-key.pem \
         -config=/etc/kubernetes/ca/ca-config.json \
         -profile=kubernetes kube-proxy-csr.json | cfssljson -bare kube-proxy
-</code></pre>
-
-<p>生成各种配置文件：</p>
-
+</code></pre><p>生成各种配置文件：</p>
 <pre><code>kubectl config set-cluster kubernetes \
         --certificate-authority=/etc/kubernetes/ca/ca.pem \
         --embed-certs=true \
@@ -971,10 +805,7 @@ kubectl config set-context default \
 kubectl config use-context default --kubeconfig=kube-proxy.kubeconfig
 
 mv kube-proxy.kubeconfig /etc/kubernetes/kube-proxy.kubeconfig
-</code></pre>
-
-<p>编辑/lib/systemd/system/kube-proxy.service文件，内容如下：</p>
-
+</code></pre><p>编辑/lib/systemd/system/kube-proxy.service文件，内容如下：</p>
 <pre><code>[Unit]
 Description=Kubernetes Kube-Proxy Server
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
@@ -993,58 +824,31 @@ LimitNOFILE=65536
 
 [Install]
 WantedBy=multi-user.target
-</code></pre>
-
-<p>启动服务：</p>
-
+</code></pre><p>启动服务：</p>
 <pre><code>systemctl daemon-reload
 service kube-proxy start
-</code></pre>
-
-<h2 id="总结">总结</h2>
-
+</code></pre><h2 id="总结">总结</h2>
 <p>中间可能会遇到的问题：</p>
-
 <ol>
 <li>calico</li>
 </ol>
-
 <p>calico是以docker的方式运行的，有时候重启服务的时候，之前的container还没杀死，日志里会报错误：</p>
-
 <pre><code>Error response from daemon: Conflict. The container name &quot;/aaa&quot; is already in use by conta
 iner &quot;xxx&quot;.
-</code></pre>
-
-<p>这时候只要删除这个container就可以了:</p>
-
+</code></pre><p>这时候只要删除这个container就可以了:</p>
 <pre><code>docker rm -f xxx
-</code></pre>
-
-<p>如果是报node的名字被占用的错误，到master节点删除就ok了：</p>
-
+</code></pre><p>如果是报node的名字被占用的错误，到master节点删除就ok了：</p>
 <pre><code>calicoctl delete node
-</code></pre>
-
-<ol>
+</code></pre><ol start="2">
 <li>一些常用的命令:</li>
 </ol>
-
 <p>查看集群节点：</p>
-
 <pre><code>kubectl get nodes
-</code></pre>
-
-<p>查看calico节点：</p>
-
+</code></pre><p>查看calico节点：</p>
 <pre><code>calicoctl node status
-</code></pre>
-
-<p>每个服务启动之后，都可以用下面的命令查看服务的日志信息：</p>
-
+</code></pre><p>每个服务启动之后，都可以用下面的命令查看服务的日志信息：</p>
 <pre><code>journalctl -f -u xxx
-</code></pre>
-
-<p>ok。写的好累。</p>
+</code></pre><p>ok。写的好累。</p>
 
     </div>
 
@@ -1072,8 +876,8 @@ iner &quot;xxx&quot;.
 
     <footer class="post-footer">
       <div class="post-tags">
-          <a href="http://localhost:1313/tags/kubernetes/">kubernetes</a>
-          <a href="http://localhost:1313/tags/ubuntu/">ubuntu</a>
+          <a href="http://anakin.github.io/tags/kubernetes/">kubernetes</a>
+          <a href="http://anakin.github.io/tags/ubuntu/">ubuntu</a>
           
         </div>
 
@@ -1160,7 +964,7 @@ iner &quot;xxx&quot;.
     </a>
 
 
-<a href="http://localhost:1313/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+<a href="http://anakin.github.io/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
     class="iconfont" title="rss" target="_blank">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -1185,7 +989,7 @@ iner &quot;xxx&quot;.
     &copy;
     
       2017 -
-    2019
+    2021
     <span class="heart">
       
       <i class="iconfont">

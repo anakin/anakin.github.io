@@ -1,259 +1,311 @@
-<?xml-stylesheet type="text/xsl" href="http://localhost:1313/sitemap.xsl"?>
+<?xml-stylesheet type="text/xsl" href="http://anakin.github.io/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://localhost:1313/</loc>
-    <lastmod>2019-08-03T22:30:44+08:00</lastmod>
-    <priority>0</priority>
+    <loc>http://anakin.github.io/</loc>
+    <lastmod>2021-05-17T13:12:45+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/post/</loc>
-    <lastmod>2019-08-03T22:30:44+08:00</lastmod>
-    <priority>0</priority>
+    <loc>http://anakin.github.io/tags/aws/</loc>
+    <lastmod>2021-05-17T13:12:45+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2019-08-03T22:30:44+08:00</lastmod>
-    <priority>0</priority>
+    <loc>http://anakin.github.io/tags/ecs/</loc>
+    <lastmod>2021-05-17T13:12:45+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/go-micro/</loc>
-    <lastmod>2019-08-03T22:30:44+08:00</lastmod>
-    <priority>0</priority>
+    <loc>http://anakin.github.io/post/mysql-client-on-ecs/</loc>
+    <lastmod>2021-05-17T13:12:45+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/k8s/</loc>
-    <lastmod>2019-08-03T22:30:44+08:00</lastmod>
-    <priority>0</priority>
+    <loc>http://anakin.github.io/tags/mysql/</loc>
+    <lastmod>2021-05-17T13:12:45+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/kubernetes/</loc>
-    <lastmod>2019-08-03T22:30:44+08:00</lastmod>
-    <priority>0</priority>
+    <loc>http://anakin.github.io/post/</loc>
+    <lastmod>2021-05-17T13:12:45+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/post/go-micro-k8s-1/</loc>
+    <loc>http://anakin.github.io/tags/</loc>
+    <lastmod>2021-05-17T13:12:45+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/go-micro/</loc>
     <lastmod>2019-08-03T22:30:44+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/php/</loc>
-    <lastmod>2019-06-14T09:22:14+08:00</lastmod>
-    <priority>0</priority>
+    <loc>http://anakin.github.io/tags/k8s/</loc>
+    <lastmod>2019-08-03T22:30:44+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/post/php-yaf-library/</loc>
+    <loc>http://anakin.github.io/tags/kubernetes/</loc>
+    <lastmod>2019-08-03T22:30:44+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/post/go-micro-k8s-1/</loc>
+    <lastmod>2019-08-03T22:30:44+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/php/</loc>
     <lastmod>2019-06-14T09:22:14+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/yaf/</loc>
+    <loc>http://anakin.github.io/post/php-yaf-library/</loc>
     <lastmod>2019-06-14T09:22:14+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/post/docker-golang-php/</loc>
+    <loc>http://anakin.github.io/tags/yaf/</loc>
+    <lastmod>2019-06-14T09:22:14+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/docker/</loc>
     <lastmod>2019-05-31T21:30:05+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/docker/</loc>
+    <loc>http://anakin.github.io/post/docker-golang-php/</loc>
     <lastmod>2019-05-31T21:30:05+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/golang/</loc>
+    <loc>http://anakin.github.io/tags/golang/</loc>
     <lastmod>2019-05-31T21:30:05+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/laravel/</loc>
-    <lastmod>2019-05-31T12:58:45+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/post/php-laravel-grpc/</loc>
+    <loc>http://anakin.github.io/tags/grpc/</loc>
     <lastmod>2019-05-31T12:58:45+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/grpc/</loc>
+    <loc>http://anakin.github.io/tags/laravel/</loc>
     <lastmod>2019-05-31T12:58:45+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/post/gokit-example/</loc>
+    <loc>http://anakin.github.io/post/php-laravel-grpc/</loc>
+    <lastmod>2019-05-31T12:58:45+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/gokit/</loc>
     <lastmod>2019-05-27T23:14:16+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/gokit/</loc>
+    <loc>http://anakin.github.io/post/gokit-example/</loc>
     <lastmod>2019-05-27T23:14:16+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/ubuntu/</loc>
-    <lastmod>2019-05-23T10:24:06+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/post/create-k8s-4/</loc>
+    <loc>http://anakin.github.io/tags/ubuntu/</loc>
     <lastmod>2019-05-23T10:24:06+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/post/golang-etcd-lock/</loc>
+    <loc>http://anakin.github.io/post/create-k8s-4/</loc>
+    <lastmod>2019-05-23T10:24:06+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/etcd/</loc>
     <lastmod>2019-05-22T16:09:11+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/etcd/</loc>
+    <loc>http://anakin.github.io/post/golang-etcd-lock/</loc>
     <lastmod>2019-05-22T16:09:11+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/lock/</loc>
+    <loc>http://anakin.github.io/tags/lock/</loc>
     <lastmod>2019-05-22T16:09:11+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/fusion/</loc>
-    <lastmod>2019-05-21T18:11:37+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/tags/mac/</loc>
-    <lastmod>2019-05-21T18:11:37+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/tags/ip/</loc>
-    <lastmod>2019-05-21T18:11:37+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/post/fusion-static-ip/</loc>
+    <loc>http://anakin.github.io/tags/fusion/</loc>
     <lastmod>2019-05-21T18:11:37+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/post/create-k8s-3/</loc>
+    <loc>http://anakin.github.io/tags/ip/</loc>
+    <lastmod>2019-05-21T18:11:37+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/mac/</loc>
+    <lastmod>2019-05-21T18:11:37+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/post/fusion-static-ip/</loc>
+    <lastmod>2019-05-21T18:11:37+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/post/create-k8s-3/</loc>
     <lastmod>2019-05-21T16:46:07+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/post/create-k8s-2/</loc>
+    <loc>http://anakin.github.io/post/create-k8s-2/</loc>
     <lastmod>2019-05-20T15:18:19+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/post/create-k8s/</loc>
+    <loc>http://anakin.github.io/post/create-k8s/</loc>
     <lastmod>2019-05-20T10:57:16+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/post/etcd-mvcc/</loc>
+    <loc>http://anakin.github.io/post/etcd-mvcc/</loc>
     <lastmod>2019-05-19T22:52:01+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/mvcc/</loc>
+    <loc>http://anakin.github.io/tags/mvcc/</loc>
     <lastmod>2019-05-19T22:52:01+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/post/redis-rdb-aof/</loc>
+    <loc>http://anakin.github.io/tags/redis/</loc>
     <lastmod>2019-05-17T13:22:22+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/redis/</loc>
+    <loc>http://anakin.github.io/post/redis-rdb-aof/</loc>
     <lastmod>2019-05-17T13:22:22+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/post/golang-redis-lock/</loc>
+    <loc>http://anakin.github.io/post/golang-redis-lock/</loc>
     <lastmod>2019-05-16T20:11:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/tcp/</loc>
-    <lastmod>2019-05-14T12:34:43+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/post/tcp-detail/</loc>
+    <loc>http://anakin.github.io/tags/tcp/</loc>
     <lastmod>2019-05-14T12:34:43+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/post/golang-gc/</loc>
+    <loc>http://anakin.github.io/post/tcp-detail/</loc>
+    <lastmod>2019-05-14T12:34:43+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/gc/</loc>
     <lastmod>2019-05-12T23:05:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/gc/</loc>
+    <loc>http://anakin.github.io/post/golang-gc/</loc>
     <lastmod>2019-05-12T23:05:48+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/categories/</loc>
-    <priority>0</priority>
+    <loc>http://anakin.github.io/categories/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
 </urlset>

@@ -32,10 +32,10 @@
 
 
 
-<meta name="generator" content="Hugo 0.56.3" />
+<meta name="generator" content="Hugo 0.83.1" />
 
 
-<link rel="canonical" href="http://localhost:1313/post/create-k8s/" />
+<link rel="canonical" href="http://anakin.github.io/post/create-k8s/" />
 
 
 
@@ -51,7 +51,7 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.5f696afb662abd14c9a57b5ce751a018b247bd7f22b955668eab514d6c225d74.css" integrity="sha256-X2lq&#43;2YqvRTJpXtc51GgGLJHvX8iuVVmjqtRTWwiXXQ=" media="screen" crossorigin="anonymous">
 
 
 
@@ -60,21 +60,15 @@
 <meta property="og:title" content="手动搭建kubernetes集群（一）" />
 <meta property="og:description" content="最近在看有关k8s的一些知识，想手动搭建一套环境来体验一下，本文详细记录一下搭建的过程。 环境 三台Ubuntu系统的虚拟机，其中一台作为mas" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/create-k8s/" />
-<meta property="article:published_time" content="2019-05-20T10:57:16+08:00" />
-<meta property="article:modified_time" content="2019-05-20T10:57:16+08:00" />
+<meta property="og:url" content="http://anakin.github.io/post/create-k8s/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-05-20T10:57:16&#43;08:00" />
+<meta property="article:modified_time" content="2019-05-20T10:57:16&#43;08:00" />
+
 <meta itemprop="name" content="手动搭建kubernetes集群（一）">
-<meta itemprop="description" content="最近在看有关k8s的一些知识，想手动搭建一套环境来体验一下，本文详细记录一下搭建的过程。 环境 三台Ubuntu系统的虚拟机，其中一台作为mas">
-
-
-<meta itemprop="datePublished" content="2019-05-20T10:57:16&#43;08:00" />
+<meta itemprop="description" content="最近在看有关k8s的一些知识，想手动搭建一套环境来体验一下，本文详细记录一下搭建的过程。 环境 三台Ubuntu系统的虚拟机，其中一台作为mas"><meta itemprop="datePublished" content="2019-05-20T10:57:16&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-20T10:57:16&#43;08:00" />
-<meta itemprop="wordCount" content="922">
-
-
-
-<meta itemprop="keywords" content="kubernetes,ubuntu," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="918">
+<meta itemprop="keywords" content="kubernetes,ubuntu," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="手动搭建kubernetes集群（一）"/>
 <meta name="twitter:description" content="最近在看有关k8s的一些知识，想手动搭建一套环境来体验一下，本文详细记录一下搭建的过程。 环境 三台Ubuntu系统的虚拟机，其中一台作为mas"/>
 
@@ -108,28 +102,28 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
+            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
+            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
+            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
+            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
           
         
       </li>
@@ -217,7 +211,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
+            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
           
 
         
@@ -228,7 +222,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
+            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
           
 
         
@@ -239,7 +233,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
+            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
           
 
         
@@ -250,7 +244,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
+            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
           
 
         
@@ -293,165 +287,119 @@
   <h2 class="post-toc-title">Table of Contents</h2>
   <div class="post-toc-content">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#环境">环境</a></li>
-<li><a href="#步骤1-安装虚拟机">步骤1:安装虚拟机</a></li>
-<li><a href="#步骤2-安装docker">步骤2：安装docker</a></li>
-<li><a href="#步骤3-系统设置">步骤3：系统设置</a></li>
-<li><a href="#步骤4-复制虚拟机">步骤4：复制虚拟机</a></li>
-<li><a href="#步骤5-设置免登陆和hosts文件">步骤5：设置免登陆和hosts文件</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#环境">环境</a></li>
+    <li><a href="#步骤1安装虚拟机">步骤1:安装虚拟机</a></li>
+    <li><a href="#步骤2安装docker">步骤2：安装docker</a></li>
+    <li><a href="#步骤3系统设置">步骤3：系统设置</a></li>
+    <li><a href="#步骤4复制虚拟机">步骤4：复制虚拟机</a></li>
+    <li><a href="#步骤5设置免登陆和hosts文件">步骤5：设置免登陆和hosts文件</a></li>
+  </ul>
 </nav>
   </div>
 </div>
 
     
     <div class="post-content">
-      
-
-<p>最近在看有关k8s的一些知识，想手动搭建一套环境来体验一下，本文详细记录一下搭建的过程。</p>
-
+      <p>最近在看有关k8s的一些知识，想手动搭建一套环境来体验一下，本文详细记录一下搭建的过程。</p>
 <h2 id="环境">环境</h2>
-
 <p>三台Ubuntu系统的虚拟机，其中一台作为master，另外两台作为worker节点</p>
-
-<h2 id="步骤1-安装虚拟机">步骤1:安装虚拟机</h2>
-
-<p>我的笔记本是一台Macbook Pro，首选安装一个虚拟机软件Vmware Fusion，过程略。<br>
-1. 下载好Ubuntu镜像，我选择的是<code>19.04</code>版本。<br>
-2. 打开Fusion，选择New，然后选择“Install from disk or image”,continue
-3. 设置好用户名和密码，中间还可以修改使用的硬盘空间等等，这个过程就不详述了。
-4. 安装好之后，进入系统，找到“terminal”，安装net-tools和ssh server
-    <code>
-    sudo apt install net-tools ssh
-</code></p>
-
-<h2 id="步骤2-安装docker">步骤2：安装docker</h2>
-
+<h2 id="步骤1安装虚拟机">步骤1:安装虚拟机</h2>
+<p>我的笔记本是一台Macbook Pro，首选安装一个虚拟机软件Vmware Fusion，过程略。<!-- raw HTML omitted --></p>
 <ol>
-<li><p>更新包列表：</p>
-
+<li>下载好Ubuntu镜像，我选择的是<code>19.04</code>版本。<!-- raw HTML omitted --></li>
+<li>打开Fusion，选择New，然后选择“Install from disk or image”,continue</li>
+<li>设置好用户名和密码，中间还可以修改使用的硬盘空间等等，这个过程就不详述了。</li>
+<li>安装好之后，进入系统，找到“terminal”，安装net-tools和ssh server
+<pre><code>sudo apt install net-tools ssh
+</code></pre></li>
+</ol>
+<h2 id="步骤2安装docker">步骤2：安装docker</h2>
+<ol>
+<li>更新包列表：
 <pre><code>sudo apt update
 </code></pre></li>
-
-<li><p>让apt支持https方式</p>
-
+<li>让apt支持https方式
 <pre><code>sudo apt install apt-transport-https ca-certificates curl software-properties-common
 </code></pre></li>
-
-<li><p>添加GPG密钥</p>
-
+<li>添加GPG密钥
 <pre><code>curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 </code></pre></li>
-
-<li><p>添加docker源</p>
-
-<pre><code>sudo add-apt-repository &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable&quot;
-</code></pre></li>
-
-<li><p>再次更新apt</p>
-
+<li>添加docker源</li>
+</ol>
+<pre><code> sudo add-apt-repository &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable&quot;
+</code></pre><ol start="5">
+<li>再次更新apt
 <pre><code>sudo apt update
 </code></pre></li>
-
-<li><p>确保从Docker repo安装而不是默认的Ubuntu repo</p>
-
+<li>确保从Docker repo安装而不是默认的Ubuntu repo
 <pre><code>apt-cache policy docker-ce
 </code></pre></li>
-
-<li><p>开始安装docker</p>
-
+<li>开始安装docker
 <pre><code>sudo apt install docker-ce
 </code></pre></li>
-
-<li><p>接受所有ip的数据包转发</p>
-
+<li>接受所有ip的数据包转发
 <pre><code>vi /lib/systemd/system/docker.service
-</code></pre>
-
-<p>找到ExecStart，在这上面加入下面一行</p>
-
+</code></pre><p>找到ExecStart，在这上面加入下面一行</p>
 <pre><code>ExecStartPost=/sbin/iptables -I FORWARD -s 0.0.0.0/0 -j ACCEPT
 </code></pre></li>
-
-<li><p>重启</p>
-
+<li>重启
 <pre><code>sudo systemctl daemon-reload
 sudo service docker restart
 </code></pre></li>
 </ol>
-
-<h2 id="步骤3-系统设置">步骤3：系统设置</h2>
-
+<h2 id="步骤3系统设置">步骤3：系统设置</h2>
 <ol>
-<li><p>关闭防火墙</p>
-
+<li>
+<p>关闭防火墙</p>
 <pre><code>ufw disable
 </code></pre></li>
-
-<li><p>设置系统转发参数</p>
-
+<li>
+<p>设置系统转发参数</p>
 <pre><code>cat &lt;&lt;EOF &gt; /etc/sysctl.d/k8s.conf
-net.ipv4.ip_forward = 1
-net.bridge.bridge-nf-call-ip6tables = 1
-net.bridge.bridge-nf-call-iptables = 1
-net.ipv4.conf.all.rp_filter = 0
-EOF
-</code></pre>
-
-<pre><code>sysctl -p /etc/sysctl.d/k8s.conf
+ net.ipv4.ip_forward = 1
+ net.bridge.bridge-nf-call-ip6tables = 1
+ net.bridge.bridge-nf-call-iptables = 1
+ net.ipv4.conf.all.rp_filter = 0
+ EOF
+</code></pre><pre><code>sysctl -p /etc/sysctl.d/k8s.conf
 </code></pre></li>
-
-<li><p>安装ntp服务，同步时钟</p>
-
+<li>
+<p>安装ntp服务，同步时钟</p>
 <pre><code>sudo apt install ntp
 </code></pre></li>
 </ol>
-
-<h2 id="步骤4-复制虚拟机">步骤4：复制虚拟机</h2>
-
-<p>使用fusion的复制功能，复制出另外两台虚拟机<br>
+<h2 id="步骤4复制虚拟机">步骤4：复制虚拟机</h2>
+<p>使用fusion的复制功能，复制出另外两台虚拟机<!-- raw HTML omitted -->
 关掉刚装好的虚拟机，选择Fusion菜单Virtual Machine下面的Create Full Clone，Fusion就会clone出一个一模一样的虚拟机出来，是不是很方便</p>
-
-<h2 id="步骤5-设置免登陆和hosts文件">步骤5：设置免登陆和hosts文件</h2>
-
+<h2 id="步骤5设置免登陆和hosts文件">步骤5：设置免登陆和hosts文件</h2>
 <ol>
-<li><p>打开三台虚拟机，进入terminal，执行</p>
-
+<li>
+<p>打开三台虚拟机，进入terminal，执行</p>
 <pre><code>ifconfig
-</code></pre>
-
-<p>找到各自的ip地址<br></p></li>
-
-<li><p>打开Mac的terminal，输入下面的命令生成ssh公钥</p>
-
+</code></pre><p>找到各自的ip地址<!-- raw HTML omitted --></p>
+</li>
+<li>
+<p>打开Mac的terminal，输入下面的命令生成ssh公钥</p>
 <pre><code>ssh-keygen -t rsa
 </code></pre></li>
-
-<li><p>将公钥分别拷贝到三台虚拟机上</p>
-
+<li>
+<p>将公钥分别拷贝到三台虚拟机上</p>
 <pre><code>scp .ssh/id_rsa.pub user@xxx.xxx.xxx.xxx:
-</code></pre>
-
-<p>user是虚拟机上的用户名，xxx代表各自的ip地址</p></li>
-
-<li><p>在虚拟机上将公钥追加到.ssh/authorized_keys文件，并修改权限</p>
-
+</code></pre><p>user是虚拟机上的用户名，xxx代表各自的ip地址</p>
+</li>
+<li>
+<p>在虚拟机上将公钥追加到.ssh/authorized_keys文件，并修改权限</p>
 <pre><code>cat id_rsa.pub &gt;&gt; .ssh/authorized_keys
 chmod 600 authorized_keys
 </code></pre></li>
-
-<li><p>分别修改每台虚拟机上的hosts文件，用vim编辑器打开/etc/hosts,添加三台虚拟机的hosts信息，下面是我自己的host信息：</p>
-
+<li>
+<p>分别修改每台虚拟机上的hosts文件，用vim编辑器打开/etc/hosts,添加三台虚拟机的hosts信息，下面是我自己的host信息：</p>
 <pre><code>192.168.32.131 server01
 192.168.32.132 server02
 192.168.32.133 server03
 </code></pre></li>
 </ol>
-
 <p>ok，到现在为止，基本的安装环境应该是准备好了。</p>
 
     </div>
@@ -480,8 +428,8 @@ chmod 600 authorized_keys
 
     <footer class="post-footer">
       <div class="post-tags">
-          <a href="http://localhost:1313/tags/kubernetes/">kubernetes</a>
-          <a href="http://localhost:1313/tags/ubuntu/">ubuntu</a>
+          <a href="http://anakin.github.io/tags/kubernetes/">kubernetes</a>
+          <a href="http://anakin.github.io/tags/ubuntu/">ubuntu</a>
           
         </div>
 
@@ -568,7 +516,7 @@ chmod 600 authorized_keys
     </a>
 
 
-<a href="http://localhost:1313/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+<a href="http://anakin.github.io/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
     class="iconfont" title="rss" target="_blank">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -593,7 +541,7 @@ chmod 600 authorized_keys
     &copy;
     
       2017 -
-    2019
+    2021
     <span class="heart">
       
       <i class="iconfont">

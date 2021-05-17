@@ -32,10 +32,10 @@
 
 
 
-<meta name="generator" content="Hugo 0.56.3" />
+<meta name="generator" content="Hugo 0.83.1" />
 
 
-<link rel="canonical" href="http://localhost:1313/post/php-yaf-library/" />
+<link rel="canonical" href="http://anakin.github.io/post/php-yaf-library/" />
 
 
 
@@ -51,7 +51,7 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.5f696afb662abd14c9a57b5ce751a018b247bd7f22b955668eab514d6c225d74.css" integrity="sha256-X2lq&#43;2YqvRTJpXtc51GgGLJHvX8iuVVmjqtRTWwiXXQ=" media="screen" crossorigin="anonymous">
 
 
 
@@ -60,21 +60,15 @@
 <meta property="og:title" content="php的Yaf框架类加载顺序研究" />
 <meta property="og:description" content="代码 注册ini设置到global_library变量（yaf.c） STD_PHP_INI_ENTRY(&quot;yaf.library&quot;, &quot;&quot;, PHP_INI_ALL, OnUpdateString, global_library, zend_yaf_globals, yaf_globals) 把global_library和local_library都" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/php-yaf-library/" />
-<meta property="article:published_time" content="2019-06-14T09:22:14+08:00" />
-<meta property="article:modified_time" content="2019-06-14T09:22:14+08:00" />
+<meta property="og:url" content="http://anakin.github.io/post/php-yaf-library/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-06-14T09:22:14&#43;08:00" />
+<meta property="article:modified_time" content="2019-06-14T09:22:14&#43;08:00" />
+
 <meta itemprop="name" content="php的Yaf框架类加载顺序研究">
-<meta itemprop="description" content="代码 注册ini设置到global_library变量（yaf.c） STD_PHP_INI_ENTRY(&quot;yaf.library&quot;, &quot;&quot;, PHP_INI_ALL, OnUpdateString, global_library, zend_yaf_globals, yaf_globals) 把global_library和local_library都">
-
-
-<meta itemprop="datePublished" content="2019-06-14T09:22:14&#43;08:00" />
+<meta itemprop="description" content="代码 注册ini设置到global_library变量（yaf.c） STD_PHP_INI_ENTRY(&quot;yaf.library&quot;, &quot;&quot;, PHP_INI_ALL, OnUpdateString, global_library, zend_yaf_globals, yaf_globals) 把global_library和local_library都"><meta itemprop="datePublished" content="2019-06-14T09:22:14&#43;08:00" />
 <meta itemprop="dateModified" content="2019-06-14T09:22:14&#43;08:00" />
 <meta itemprop="wordCount" content="457">
-
-
-
-<meta itemprop="keywords" content="php,yaf," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="php,yaf," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="php的Yaf框架类加载顺序研究"/>
 <meta name="twitter:description" content="代码 注册ini设置到global_library变量（yaf.c） STD_PHP_INI_ENTRY(&quot;yaf.library&quot;, &quot;&quot;, PHP_INI_ALL, OnUpdateString, global_library, zend_yaf_globals, yaf_globals) 把global_library和local_library都"/>
 
@@ -108,28 +102,28 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
+            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
+            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
+            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
+            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
           
         
       </li>
@@ -217,7 +211,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
+            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
           
 
         
@@ -228,7 +222,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
+            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
           
 
         
@@ -239,7 +233,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
+            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
           
 
         
@@ -250,7 +244,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
+            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
           
 
         
@@ -293,31 +287,24 @@
   <h2 class="post-toc-title">Table of Contents</h2>
   <div class="post-toc-content">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#代码">代码</a></li>
-<li><a href="#conclusion">conclusion</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#代码">代码</a></li>
+    <li><a href="#conclusion">conclusion</a></li>
+  </ul>
 </nav>
   </div>
 </div>
 
     
     <div class="post-content">
-      
-
-<h2 id="代码">代码</h2>
-
+      <h2 id="代码">代码</h2>
 <ol>
-<li><p>注册ini设置到global_library变量（yaf.c）</p>
-
+<li>注册ini设置到global_library变量（yaf.c）</li>
+</ol>
 <pre><code>STD_PHP_INI_ENTRY(&quot;yaf.library&quot;, &quot;&quot;,  PHP_INI_ALL, OnUpdateString, global_library, zend_yaf_globals, yaf_globals)
-</code></pre></li>
-
-<li><p>把global_library和local_library都传递给了loader的初始化方法（yaf_application.c）</p>
-
+</code></pre><ol start="2">
+<li>把global_library和local_library都传递给了loader的初始化方法（yaf_application.c）</li>
+</ol>
 <pre><code>if (YAF_G(local_library)) {
 		zend_string *global_library = strlen(YAF_G(global_library))?
 			zend_string_init(YAF_G(global_library), strlen(YAF_G(global_library)), 0) : NULL;
@@ -336,17 +323,12 @@
 			zend_string_release(global_library);
 		}
 	}
-</code></pre>
-
-<p>这里的local_library指的是application.ini文件中设置的application.library 的值</p></li>
-</ol>
-
+</code></pre><p>这里的local_library指的是application.ini文件中设置的application.library	的值</p>
 <p>如果没有设置application.library，就用application目录下的library作为local_library，就是常量YAF_LIBRARY_DIRECTORY_NAME定义的目录。</p>
-
-<ol>
-<li><p>yaf_loader_instance逻辑(yaf_loader.c)
-yaf_loader_instance有三个参数，loader的指针，本地类地址和全局类地址</p>
-
+<ol start="3">
+<li>yaf_loader_instance逻辑(yaf_loader.c)
+yaf_loader_instance有三个参数，loader的指针，本地类地址和全局类地址</li>
+</ol>
 <pre><code>if (library_path) {
 			zend_update_property_str(yaf_loader_ce,
 					instance, ZEND_STRL(YAF_LOADER_PROPERTY_NAME_LIBRARY), library_path);
@@ -356,13 +338,8 @@ yaf_loader_instance有三个参数，loader的指针，本地类地址和全局�
 			zend_update_property_str(yaf_loader_ce,
 					instance, ZEND_STRL(YAF_LOADER_PROPERTY_NAME_GLOBAL_LIB), global_path);
 		}
-</code></pre></li>
-</ol>
-
-<p>两个地址一起注册到yaf_loader_ce。</p>
-
+</code></pre><p>两个地址一起注册到yaf_loader_ce。</p>
 <h2 id="conclusion">conclusion</h2>
-
 <p>定义的位置不影响加载效率。</p>
 
     </div>
@@ -391,8 +368,8 @@ yaf_loader_instance有三个参数，loader的指针，本地类地址和全局�
 
     <footer class="post-footer">
       <div class="post-tags">
-          <a href="http://localhost:1313/tags/php/">php</a>
-          <a href="http://localhost:1313/tags/yaf/">yaf</a>
+          <a href="http://anakin.github.io/tags/php/">php</a>
+          <a href="http://anakin.github.io/tags/yaf/">yaf</a>
           
         </div>
 
@@ -479,7 +456,7 @@ yaf_loader_instance有三个参数，loader的指针，本地类地址和全局�
     </a>
 
 
-<a href="http://localhost:1313/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+<a href="http://anakin.github.io/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
     class="iconfont" title="rss" target="_blank">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -504,7 +481,7 @@ yaf_loader_instance有三个参数，loader的指针，本地类地址和全局�
     &copy;
     
       2017 -
-    2019
+    2021
     <span class="heart">
       
       <i class="iconfont">

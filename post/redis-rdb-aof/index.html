@@ -23,7 +23,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="Anakin" />
-  <meta name="description" content="redis的持久化有两种方式，RDB和AOF ## RDB: 在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成" />
+  <meta name="description" content="redis的持久化有两种方式，RDB和AOF RDB: 在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成一" />
 
   <meta name="keywords" content="anakin, sun, github" />
 
@@ -32,10 +32,10 @@
 
 
 
-<meta name="generator" content="Hugo 0.56.3" />
+<meta name="generator" content="Hugo 0.83.1" />
 
 
-<link rel="canonical" href="http://localhost:1313/post/redis-rdb-aof/" />
+<link rel="canonical" href="http://anakin.github.io/post/redis-rdb-aof/" />
 
 
 
@@ -51,32 +51,26 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.5f696afb662abd14c9a57b5ce751a018b247bd7f22b955668eab514d6c225d74.css" integrity="sha256-X2lq&#43;2YqvRTJpXtc51GgGLJHvX8iuVVmjqtRTWwiXXQ=" media="screen" crossorigin="anonymous">
 
 
 
 
 
 <meta property="og:title" content="Redis持久化" />
-<meta property="og:description" content="redis的持久化有两种方式，RDB和AOF ## RDB: 在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成" />
+<meta property="og:description" content="redis的持久化有两种方式，RDB和AOF RDB: 在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成一" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/redis-rdb-aof/" />
-<meta property="article:published_time" content="2019-05-17T13:22:22+08:00" />
-<meta property="article:modified_time" content="2019-05-17T13:22:22+08:00" />
+<meta property="og:url" content="http://anakin.github.io/post/redis-rdb-aof/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-05-17T13:22:22&#43;08:00" />
+<meta property="article:modified_time" content="2019-05-17T13:22:22&#43;08:00" />
+
 <meta itemprop="name" content="Redis持久化">
-<meta itemprop="description" content="redis的持久化有两种方式，RDB和AOF ## RDB: 在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成">
-
-
-<meta itemprop="datePublished" content="2019-05-17T13:22:22&#43;08:00" />
+<meta itemprop="description" content="redis的持久化有两种方式，RDB和AOF RDB: 在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成一"><meta itemprop="datePublished" content="2019-05-17T13:22:22&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-17T13:22:22&#43;08:00" />
-<meta itemprop="wordCount" content="520">
-
-
-
-<meta itemprop="keywords" content="redis," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="519">
+<meta itemprop="keywords" content="redis," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Redis持久化"/>
-<meta name="twitter:description" content="redis的持久化有两种方式，RDB和AOF ## RDB: 在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成"/>
+<meta name="twitter:description" content="redis的持久化有两种方式，RDB和AOF RDB: 在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成一"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -108,28 +102,28 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
+            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
+            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
+            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
+            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
           
         
       </li>
@@ -217,7 +211,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
+            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
           
 
         
@@ -228,7 +222,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
+            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
           
 
         
@@ -239,7 +233,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
+            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
           
 
         
@@ -250,7 +244,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
+            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
           
 
         
@@ -293,47 +287,36 @@
   <h2 class="post-toc-title">Table of Contents</h2>
   <div class="post-toc-content">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#aof">AOF</a></li>
-<li><a href="#区别">区别</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#rdb">RDB:</a></li>
+    <li><a href="#aof">AOF</a></li>
+    <li><a href="#区别">区别</a></li>
+  </ul>
 </nav>
   </div>
 </div>
 
     
     <div class="post-content">
-      
-
-<p>redis的持久化有两种方式，RDB和AOF
- ## RDB:
-在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成一个dump.rdb文件。Redis 重启会通过加载dump.rdb文件恢复数据。</p>
-
+      <p>redis的持久化有两种方式，RDB和AOF</p>
+<h2 id="rdb">RDB:</h2>
+<p>在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成一个dump.rdb文件。Redis 重启会通过加载dump.rdb文件恢复数据。</p>
 <ul>
-<li><p>配置方法：</p>
-
+<li>配置方法：</li>
+</ul>
 <pre><code>save 900 1
 save 300 10
 save 60 10000
-</code></pre>
-
-<p>意思是， 900秒内有1个更改，300秒内有10个更改以及60秒内有10000个更改，则将内存中的数据快照写入磁盘。</p></li>
-
-<li><p>恢复方法</p></li>
-</ul>
-
-<p>将dump.rdb 文件拷贝到redis的安装目录的bin目录下，重启redis服务即可</p>
-
-<h2 id="aof">AOF</h2>
-
-<p>采用日志的形式来记录每个写操作，并追加到文件中。Redis 重启的会根据日志文件的内容将写指令从前到后执行一次以完成数据的恢复工作。</p>
-
+</code></pre><p>意思是， 900秒内有1个更改，300秒内有10个更改以及60秒内有10000个更改，则将内存中的数据快照写入磁盘。</p>
 <ul>
-<li><p>配置方法</p>
-
+<li>恢复方法</li>
+</ul>
+<p>将dump.rdb 文件拷贝到redis的安装目录的bin目录下，重启redis服务即可</p>
+<h2 id="aof">AOF</h2>
+<p>采用日志的形式来记录每个写操作，并追加到文件中。Redis 重启的会根据日志文件的内容将写指令从前到后执行一次以完成数据的恢复工作。</p>
+<ul>
+<li>配置方法</li>
+</ul>
 <pre><code>appendonly yes
 appendfilename &quot;appendonly.aof&quot;
 #指定更新条件
@@ -343,15 +326,11 @@ appendfsync everysec
 #配置重写触发机制
 auto-aof-rewrite-percentage 100
 auto-aof-rewrite-min-size 64mb
-</code></pre></li>
-
-<li><p>恢复方法</p></li>
+</code></pre><ul>
+<li>恢复方法</li>
 </ul>
-
 <p>将appendonly.aof 文件拷贝到redis的安装目录的bin目录下，重启redis服务即可。如果因为某些原因导致appendonly.aof 文件格式异常，从而导致数据还原失败，可以通过命令redis-check-aof &ndash;fix appendonly.aof 进行修复</p>
-
 <h2 id="区别">区别</h2>
-
 <p>RDB通过fork的方式进行处理，性能更好
 AOF备份所有的操作，数据更完整，但是效率略差，文件相对较大
 实际环境中，可以两者同时使用</p>
@@ -382,7 +361,7 @@ AOF备份所有的操作，数据更完整，但是效率略差，文件相对�
 
     <footer class="post-footer">
       <div class="post-tags">
-          <a href="http://localhost:1313/tags/redis/">redis</a>
+          <a href="http://anakin.github.io/tags/redis/">redis</a>
           
         </div>
 
@@ -469,7 +448,7 @@ AOF备份所有的操作，数据更完整，但是效率略差，文件相对�
     </a>
 
 
-<a href="http://localhost:1313/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+<a href="http://anakin.github.io/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
     class="iconfont" title="rss" target="_blank">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -494,7 +473,7 @@ AOF备份所有的操作，数据更完整，但是效率略差，文件相对�
     &copy;
     
       2017 -
-    2019
+    2021
     <span class="heart">
       
       <i class="iconfont">

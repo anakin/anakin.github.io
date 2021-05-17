@@ -32,10 +32,10 @@
 
 
 
-<meta name="generator" content="Hugo 0.56.3" />
+<meta name="generator" content="Hugo 0.83.1" />
 
 
-<link rel="canonical" href="http://localhost:1313/post/etcd-mvcc/" />
+<link rel="canonical" href="http://anakin.github.io/post/etcd-mvcc/" />
 
 
 
@@ -51,7 +51,7 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.5f696afb662abd14c9a57b5ce751a018b247bd7f22b955668eab514d6c225d74.css" integrity="sha256-X2lq&#43;2YqvRTJpXtc51GgGLJHvX8iuVVmjqtRTWwiXXQ=" media="screen" crossorigin="anonymous">
 
 
 
@@ -60,21 +60,15 @@
 <meta property="og:title" content="Etcd实现MVCC的原理" />
 <meta property="og:description" content="etcd满足的是CAP理论中的CP，实现了最终的强一致，使用Raft协议，Quorum机制（大多数同意原则）, MVCC的意思 Multi-Version Concurrency Control 多版本并发" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/etcd-mvcc/" />
-<meta property="article:published_time" content="2019-05-19T22:52:01+08:00" />
-<meta property="article:modified_time" content="2019-05-19T22:52:01+08:00" />
+<meta property="og:url" content="http://anakin.github.io/post/etcd-mvcc/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-05-19T22:52:01&#43;08:00" />
+<meta property="article:modified_time" content="2019-05-19T22:52:01&#43;08:00" />
+
 <meta itemprop="name" content="Etcd实现MVCC的原理">
-<meta itemprop="description" content="etcd满足的是CAP理论中的CP，实现了最终的强一致，使用Raft协议，Quorum机制（大多数同意原则）, MVCC的意思 Multi-Version Concurrency Control 多版本并发">
-
-
-<meta itemprop="datePublished" content="2019-05-19T22:52:01&#43;08:00" />
+<meta itemprop="description" content="etcd满足的是CAP理论中的CP，实现了最终的强一致，使用Raft协议，Quorum机制（大多数同意原则）, MVCC的意思 Multi-Version Concurrency Control 多版本并发"><meta itemprop="datePublished" content="2019-05-19T22:52:01&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-19T22:52:01&#43;08:00" />
-<meta itemprop="wordCount" content="676">
-
-
-
-<meta itemprop="keywords" content="etcd,mvcc," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="675">
+<meta itemprop="keywords" content="etcd,mvcc," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Etcd实现MVCC的原理"/>
 <meta name="twitter:description" content="etcd满足的是CAP理论中的CP，实现了最终的强一致，使用Raft协议，Quorum机制（大多数同意原则）, MVCC的意思 Multi-Version Concurrency Control 多版本并发"/>
 
@@ -108,28 +102,28 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
+            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
+            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
+            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
+            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
           
         
       </li>
@@ -217,7 +211,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/">Home</a>
+            <a class="menu-item-link" href="http://anakin.github.io/">Home</a>
           
 
         
@@ -228,7 +222,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/post/">Archives</a>
+            <a class="menu-item-link" href="http://anakin.github.io/post/">Archives</a>
           
 
         
@@ -239,7 +233,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/tags/">Tags</a>
+            <a class="menu-item-link" href="http://anakin.github.io/tags/">Tags</a>
           
 
         
@@ -250,7 +244,7 @@
         
           
           
-            <a class="menu-item-link" href="http://localhost:1313/categories/">Categories</a>
+            <a class="menu-item-link" href="http://anakin.github.io/categories/">Categories</a>
           
 
         
@@ -293,31 +287,21 @@
   <h2 class="post-toc-title">Table of Contents</h2>
   <div class="post-toc-content">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#mvcc的意思">MVCC的意思</a></li>
-<li><a href="#实现原理">实现原理</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#mvcc的意思">MVCC的意思</a></li>
+    <li><a href="#实现原理">实现原理</a></li>
+  </ul>
 </nav>
   </div>
 </div>
 
     
     <div class="post-content">
-      
-
-<p>etcd满足的是CAP理论中的CP，实现了最终的强一致，使用Raft协议，Quorum机制（大多数同意原则）,</p>
-
+      <p>etcd满足的是CAP理论中的CP，实现了最终的强一致，使用Raft协议，Quorum机制（大多数同意原则）,</p>
 <h2 id="mvcc的意思">MVCC的意思</h2>
-
 <p>Multi-Version Concurrency Control 多版本并发控制，目的是为了实现并发访问</p>
-
 <h2 id="实现原理">实现原理</h2>
-
 <p>在etcd中，MVCC是如何实现的呢，先来看一下相关的代码：</p>
-
 <pre><code>type revision struct {
 main int64
 sub int64
@@ -334,27 +318,27 @@ key         []byte
 modified    revision 
 generations []generation
 } 
-</code></pre>
-
-<p>根据代码，可以看出：
-* 每个tx事务有唯一事务ID，在etcd中叫做main ID，全局递增不重复。</p>
-
+</code></pre><p>根据代码，可以看出：</p>
 <ul>
-<li><p>一个tx可以包含多个修改操作（put和delete），每一个操作叫做一个revision（修订），共享同一个main ID。</p></li>
-
-<li><p>一个tx内连续的多个修改操作会被从0递增编号，这个编号叫做sub ID。</p></li>
-
-<li><p>每个revision由（main ID，sub ID）唯一标识。</p></li>
-
-<li><p>多个版本的修改历史，保存在generations中</p></li>
+<li>
+<p>每个tx事务有唯一事务ID，在etcd中叫做main ID，全局递增不重复。</p>
+</li>
+<li>
+<p>一个tx可以包含多个修改操作（put和delete），每一个操作叫做一个revision（修订），共享同一个main ID。</p>
+</li>
+<li>
+<p>一个tx内连续的多个修改操作会被从0递增编号，这个编号叫做sub ID。</p>
+</li>
+<li>
+<p>每个revision由（main ID，sub ID）唯一标识。</p>
+</li>
+<li>
+<p>多个版本的修改历史，保存在generations中</p>
+</li>
 </ul>
-
 <p>每一次操作行为都被单独记录下来，用户value保存到bbolt中。</p>
-
 <p>在bbolt中，每个revision将作为key，即序列化（revision.main+revision.sub）作为key。因此，我们先通过内存btree在keyIndex.generations[0].revs中找到最后一条revision，即可去bbolt中读取对应的数据。</p>
-
 <p>相应的，etcd支持按key前缀查询，其实也就是遍历btree的同时根据revision去bbolt中获取用户的value。</p>
-
 <p>总结一下就是，内存btree维护的是用户key =&gt; keyIndex的映射，keyIndex内维护多版本的revision信息，而revision可以映射到磁盘bbolt中的用户value。</p>
 
     </div>
@@ -383,8 +367,8 @@ generations []generation
 
     <footer class="post-footer">
       <div class="post-tags">
-          <a href="http://localhost:1313/tags/etcd/">etcd</a>
-          <a href="http://localhost:1313/tags/mvcc/">mvcc</a>
+          <a href="http://anakin.github.io/tags/etcd/">etcd</a>
+          <a href="http://anakin.github.io/tags/mvcc/">mvcc</a>
           
         </div>
 
@@ -471,7 +455,7 @@ generations []generation
     </a>
 
 
-<a href="http://localhost:1313/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+<a href="http://anakin.github.io/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
     class="iconfont" title="rss" target="_blank">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -496,7 +480,7 @@ generations []generation
     &copy;
     
       2017 -
-    2019
+    2021
     <span class="heart">
       
       <i class="iconfont">
