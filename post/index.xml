@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 17 May 2021 13:12:45 +0800</lastBuildDate><atom:link href="http://anakin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 17 May 2021 13:58:58 +0800</lastBuildDate><atom:link href="http://anakin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Oauth2 Authcode Logic</title>
+      <link>http://anakin.github.io/post/oauth2-authcode-logic/</link>
+      <pubDate>Mon, 17 May 2021 13:58:58 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/oauth2-authcode-logic/</guid>
+      <description>Oauth2协议中，authcode也就是授权码模式的逻辑是需要用户参与的授权方式。它的步骤如下： （A）用户访问客户端，后者将前者导向认证服</description>
+    </item>
+    
     <item>
       <title>How to install mysql client on AWS ECS task</title>
       <link>http://anakin.github.io/post/mysql-client-on-ecs/</link>
