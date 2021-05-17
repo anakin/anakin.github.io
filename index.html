@@ -7,7 +7,7 @@
   
 
 <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"/>
 
 <meta name="MobileOptimized" content="width"/>
 <meta name="HandheldFriendly" content="true"/>
@@ -35,7 +35,8 @@
 
 
 <link rel="canonical" href="http://anakin.github.io/" />
-<link href="%7balternate%20%7bRSS%20application/rss&#43;xml%20%20index%20alternate%20%20false%20false%20true%20false%20false%200%7d%20/index.xml%20http://anakin.github.io/index.xml%7d" rel="alternate" type="application/rss+xml" title="Anakin- 奔向NB的生活" />
+<link href="/index.xml" rel="alternate" type="application/rss+xml" title="Anakin- 奔向NB的生活" />
+
 
 
 
@@ -51,7 +52,7 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.5f696afb662abd14c9a57b5ce751a018b247bd7f22b955668eab514d6c225d74.css" integrity="sha256-X2lq&#43;2YqvRTJpXtc51GgGLJHvX8iuVVmjqtRTWwiXXQ=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.fa4b2b9f31b5c6d0b683db81157a9226e17b06e61911791ab547242a4a0556f2.css" integrity="sha256-&#43;ksrnzG1xtC2g9uBFXqSJuF7BuYZEXkatUckKkoFVvI=" media="screen" crossorigin="anonymous">
 
 
 
@@ -123,6 +124,8 @@
         
       </li>
     
+
+    
   </ul>
 </nav>
 
@@ -189,6 +192,8 @@
 
   
 
+  
+
   <header id="header" class="header container">
     <div class="logo-wrapper">
   <a href="/" class="logo">
@@ -246,6 +251,10 @@
 
       </li>
     
+
+    
+    
+
     
   </ul>
 </nav>
@@ -257,15 +266,18 @@
       <div class="content-wrapper">
         <div id="content" class="content container">
           
-  <section id="posts" class="posts">
+<section id="posts" class="posts">
+  
+  
     
-    
-    
-      <article class="post bg-white">
+  
+  
+  
+    <article class="post bg-white">
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/post/">Posts</a>
+      <a class="post-link" href="/post/oauth2-authcode-logic/">Oauth2 Authcode Logic</a>
     </h1>
     
     <div class="post-meta">
@@ -282,24 +294,310 @@
   <div class="post-content">
     
     <div class="post-summary">
-      
+      Oauth2协议中，authcode也就是授权码模式的逻辑是需要用户参与的授权方式。它的步骤如下： （A）用户访问客户端，后者将前者导向认证服
     </div>
     <div class="read-more">
-      <a href="/post/" class="read-more-link">Read more</a>
+      <a href="/post/oauth2-authcode-logic/" class="read-more-link">Read more</a>
     </div>
     
   </div>
 </article>
 
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/mysql-client-on-ecs/">How to install mysql client on AWS ECS task</a>
+    </h1>
     
-  </section>
+    <div class="post-meta">
+      <time datetime="2021-05-17" class="post-time">
+        2021-05-17
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      If we need to install MySQL client on an AWS ECS task, Here is the steps:
+ install wget  apt install wget install MySQL client  wget [https://dev.mysql.com/get/mysql-apt-config_0.8.16-1_all.deb](https://dev.mysql.com/get/mysql-apt-config_0.8.16-1_all.deb) apt install lsb-release gnupg -y dpkg -i mysql-apt-config_0.8.16-1_all.deb apt update apt install mysql-client -y when connect to MySQL server add param:  --ssl-mode=DISABLED 
+    </div>
+    <div class="read-more">
+      <a href="/post/mysql-client-on-ecs/" class="read-more-link">Read more</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/go-micro-k8s-1/">在kubernetes上部署Go Micro代码(一)</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2019-08-03" class="post-time">
+        2019-08-03
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      环境准备 用kubeadm安装好kubernetes环境，我用的测试环境是单节点的，master node和worker node部署在同一台机器
+    </div>
+    <div class="read-more">
+      <a href="/post/go-micro-k8s-1/" class="read-more-link">Read more</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/php-yaf-library/">php的Yaf框架类加载顺序研究</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2019-06-14" class="post-time">
+        2019-06-14
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      代码 注册ini设置到global_library变量（yaf.c） STD_PHP_INI_ENTRY(&quot;yaf.library&quot;, &quot;&quot;, PHP_INI_ALL, OnUpdateString, global_library, zend_yaf_globals, yaf_globals) 把global_library和local_library都
+    </div>
+    <div class="read-more">
+      <a href="/post/php-yaf-library/" class="read-more-link">Read more</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/docker-golang-php/">Docker部署完整的PHP-RPC-Golang环境</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2019-05-31" class="post-time">
+        2019-05-31
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      完全基于docker部署一个php通过rpc访问golang的环境。 基本架构 我们用PHP的Laravel框架来实现一个用户登录的Restfu
+    </div>
+    <div class="read-more">
+      <a href="/post/docker-golang-php/" class="read-more-link">Read more</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/php-laravel-grpc/">Laravel整合gRPC</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2019-05-31" class="post-time">
+        2019-05-31
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      最近需要用Laravel实现一个Rest的API，后端调用Golang的RPC服务，记录一下整合的过程。 环境准备 php安装grpc和prot
+    </div>
+    <div class="read-more">
+      <a href="/post/php-laravel-grpc/" class="read-more-link">Read more</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/gokit-example/">Gokit创建微服务的例子(翻译)</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2019-05-27" class="post-time">
+        2019-05-27
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      第一原理 让我们创建一个Go kit 服务，我们暂时只用一个main.go文件。你的事务逻辑 你的服务从你的事务逻辑开始。在Go kit里，我们用一个in
+    </div>
+    <div class="read-more">
+      <a href="/post/gokit-example/" class="read-more-link">Read more</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/create-k8s-4/">手动搭建kubernetes集群（四）</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2019-05-23" class="post-time">
+        2019-05-23
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      开始改造我们之前搭建的基础集群，加上安全机制。 准备工作 1. 停止master节点的所有服务查看已有的service kubectl get services 删除service（例如
+    </div>
+    <div class="read-more">
+      <a href="/post/create-k8s-4/" class="read-more-link">Read more</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/golang-etcd-lock/">Golang通过ETCD实现分布式锁</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2019-05-22" class="post-time">
+        2019-05-22
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      之前写过用redis实现的分布式锁，这次用etcd来实现一个。 原理 首先获取一个etcd的租约，拿着这个租约用etcd的事务操作去设置一个ke
+    </div>
+    <div class="read-more">
+      <a href="/post/golang-etcd-lock/" class="read-more-link">Read more</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/post/fusion-static-ip/">给Mac上的Fusion虚拟机设置固定ip地址</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2019-05-21" class="post-time">
+        2019-05-21
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      因为最近需要安装k8s的本地测试环境，所以使用Mac上的Vmware Fusion安装了几台ubuntu系统的虚拟机，某次重启的时候发现ssh
+    </div>
+    <div class="read-more">
+      <a href="/post/fusion-static-ip/" class="read-more-link">Read more</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+</section>
+
+
+
+
+
+
+  
+  
+  
 
   
   
 
-
-
-  
   
   
 
@@ -308,9 +606,19 @@
 
   
   
-
-  
-  
+  <nav class="pagination">
+    <ul>
+      
+      <li  class="active" >
+        <a href="/">1</a>
+      </li>
+      
+      <li >
+        <a href="/page/2/">2</a>
+      </li>
+      
+    </ul>
+  </nav>
 
   
   
@@ -425,11 +733,19 @@
 
 
 
+
+
+
+
+
+
   
     <script type="text/javascript" src="/js/load-photoswipe.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
   
+
+
 
 
 
