@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 17 May 2021 13:58:58 +0800</lastBuildDate><atom:link href="http://anakin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 18 May 2021 17:48:23 +0800</lastBuildDate><atom:link href="http://anakin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Php Call Lambda function through Cloudmap</title>
+      <link>http://anakin.github.io/post/php-call-lambda-cloudmap/</link>
+      <pubDate>Tue, 18 May 2021 17:48:23 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/php-call-lambda-cloudmap/</guid>
+      <description>Cloudmap是AWS的服务发现工具，假设我们已经有一个开发好的Lambda function，并且注册到了Cloudmap中，我们需要从P</description>
+    </item>
+    
     <item>
       <title>Oauth2 Authcode Logic</title>
       <link>http://anakin.github.io/post/oauth2-authcode-logic/</link>

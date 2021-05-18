@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Oauth2 Authcode Logic - Anakin- 奔向NB的生活</title>
+  <title>Php Call Lambda function through Cloudmap - Anakin- 奔向NB的生活</title>
   
 
 <meta name="renderer" content="webkit" />
@@ -23,7 +23,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="Anakin" />
-  <meta name="description" content="Oauth2协议中，authcode也就是授权码模式的逻辑是需要用户参与的授权方式。它的步骤如下： （A）用户访问客户端，后者将前者导向认证服" />
+  <meta name="description" content="Cloudmap是AWS的服务发现工具，假设我们已经有一个开发好的Lambda function，并且注册到了Cloudmap中，我们需要从P" />
 
   <meta name="keywords" content="anakin, sun, github" />
 
@@ -35,7 +35,7 @@
 <meta name="generator" content="Hugo 0.83.1" />
 
 
-<link rel="canonical" href="http://anakin.github.io/post/oauth2-authcode-logic/" />
+<link rel="canonical" href="http://anakin.github.io/post/php-call-lambda-cloudmap/" />
 
 
 
@@ -59,20 +59,20 @@
 
 
 
-<meta property="og:title" content="Oauth2 Authcode Logic" />
-<meta property="og:description" content="Oauth2协议中，authcode也就是授权码模式的逻辑是需要用户参与的授权方式。它的步骤如下： （A）用户访问客户端，后者将前者导向认证服" />
+<meta property="og:title" content="Php Call Lambda function through Cloudmap" />
+<meta property="og:description" content="Cloudmap是AWS的服务发现工具，假设我们已经有一个开发好的Lambda function，并且注册到了Cloudmap中，我们需要从P" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://anakin.github.io/post/oauth2-authcode-logic/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-05-17T13:58:58&#43;08:00" />
-<meta property="article:modified_time" content="2021-05-17T13:58:58&#43;08:00" />
+<meta property="og:url" content="http://anakin.github.io/post/php-call-lambda-cloudmap/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-05-18T17:48:23&#43;08:00" />
+<meta property="article:modified_time" content="2021-05-18T17:48:23&#43;08:00" />
 
-<meta itemprop="name" content="Oauth2 Authcode Logic">
-<meta itemprop="description" content="Oauth2协议中，authcode也就是授权码模式的逻辑是需要用户参与的授权方式。它的步骤如下： （A）用户访问客户端，后者将前者导向认证服"><meta itemprop="datePublished" content="2021-05-17T13:58:58&#43;08:00" />
-<meta itemprop="dateModified" content="2021-05-17T13:58:58&#43;08:00" />
-<meta itemprop="wordCount" content="502">
-<meta itemprop="keywords" content="oauth2," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Oauth2 Authcode Logic"/>
-<meta name="twitter:description" content="Oauth2协议中，authcode也就是授权码模式的逻辑是需要用户参与的授权方式。它的步骤如下： （A）用户访问客户端，后者将前者导向认证服"/>
+<meta itemprop="name" content="Php Call Lambda function through Cloudmap">
+<meta itemprop="description" content="Cloudmap是AWS的服务发现工具，假设我们已经有一个开发好的Lambda function，并且注册到了Cloudmap中，我们需要从P"><meta itemprop="datePublished" content="2021-05-18T17:48:23&#43;08:00" />
+<meta itemprop="dateModified" content="2021-05-18T17:48:23&#43;08:00" />
+<meta itemprop="wordCount" content="470">
+<meta itemprop="keywords" content="php,lambda,cloudmap," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Php Call Lambda function through Cloudmap"/>
+<meta name="twitter:description" content="Cloudmap是AWS的服务发现工具，假设我们已经有一个开发好的Lambda function，并且注册到了Cloudmap中，我们需要从P"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -274,11 +274,11 @@
           <article class="post bg-white">
     
     <header class="post-header">
-      <h1 class="post-title">Oauth2 Authcode Logic</h1>
+      <h1 class="post-title">Php Call Lambda function through Cloudmap</h1>
       
       <div class="post-meta">
-        <time datetime="2021-05-17" class="post-time">
-          2021-05-17
+        <time datetime="2021-05-18" class="post-time">
+          2021-05-18
         </time>
         
         
@@ -302,56 +302,80 @@
 
     
     <div class="post-content">
-      <p>Oauth2协议中，authcode也就是授权码模式的逻辑是需要用户参与的授权方式。它的步骤如下：</p>
-<ul>
-<li>
-<p>（A）用户访问客户端，后者将前者导向认证服务器。</p>
-</li>
-<li>
-<p>（B）用户选择是否给予客户端授权。</p>
-</li>
-<li>
-<p>（C）假设用户给予授权，认证服务器将用户导向客户端事先指定的&quot;重定向URI&quot;（redirection URI），同时附上一个授权码。</p>
-</li>
-<li>
-<p>（D）客户端收到授权码，附上早先的&quot;重定向URI&quot;，向认证服务器申请令牌。这一步是在客户端的后台的服务器上完成的，对用户不可见。</p>
-</li>
-<li>
-<p>（E）认证服务器核对了授权码和重定向URI，确认无误后，向客户端发送访问令牌（access token）和更新令牌（refresh token）。</p>
-</li>
-</ul>
-<p>对应的后台api接口逻辑和参数大致如下：</p>
+      <p>Cloudmap是AWS的服务发现工具，假设我们已经有一个开发好的Lambda function，并且注册到了Cloudmap中，我们需要从PHP开发的服务中通过服务发现调用该Lambda，首先我们已知该服务注册的namespace以及service name，下面是实现过程：</p>
 <ol>
-<li>applyAuthCode（需要用户登录获取用户ID，然后把code和userid保存在redis中，短时间内过期）
-<ol>
-<li>response_type=code</li>
-<li>scope</li>
-<li>client_id</li>
-<li>state=random string</li>
+<li>首先用golang实现一个Lambda，并注册到Cloudmap，golang的逻辑就不赘述了，主要是如何注册到Cloudmap，假设namespace为my-namespace，service name为 my-service，下面是通过AWS的SAM部署Lambda function时，template.yaml文件的主要内容：</li>
 </ol>
-</li>
-<li>applyToken（根据code找到userid，生成access_token和refresh_token，保存数据库中，较长时间过期）
-<ol>
-<li>code</li>
-<li>client_id</li>
-<li>client_secret</li>
-<li>grant_type=authorization_code/refresh_token</li>
+<pre><code>Resources:
+  DemoFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: controllers/demo/
+      Handler: main
+      Runtime: go1.x
+      Tracing: Active 
+      Policies:
+        - VPCAccessPolicy:
+            Description: &quot;Gives access to create, delete, describe and detach ENIs&quot;
+            Resource: &quot;*&quot;
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref ParameterSecurityGroup
+        SubnetIds:
+          - !Ref ParameterSubNet1
+          - !Ref ParameterSubNet2
+  DemoNameSpace:
+    Type: AWS::ServiceDiscovery::HttpNamespace
+    Properties:
+      Name: my-namespace
+  DemoService:
+    Type: AWS::ServiceDiscovery::Service
+    Properties:
+      Name: my-service
+      NamespaceId: !Ref DemoNameSpace
+  DemoInstance:
+    Type: AWS::ServiceDiscovery::Instance
+    Properties:
+      InstanceAttributes:
+        env: prod
+      InstanceId: !Ref DemoFunction
+      ServiceId: !Ref DemoService
+</code></pre><ol start="2">
+<li>通过composer引用AWS的PHP SDK</li>
 </ol>
-</li>
-<li>inquiryUserInfo（根据userid获取用户信息）
-<ol>
-<li>access_token</li>
-<li>client_id</li>
+<pre><code>composer require aws/aws-sdk-php
+</code></pre><ol start="3">
+<li>开发php代码如下：</li>
 </ol>
-</li>
-<li>revoke
-<ol>
-<li>access_token</li>
-<li>client_id</li>
-</ol>
-</li>
-</ol>
+<pre><code>&lt;?php
+require 'vendor/autoload.php';
 
+use Aws\Credentials\Credentials;
+use Aws\Lambda\LambdaClient;
+use Aws\ServiceDiscovery\ServiceDiscoveryClient;
+
+$credentials = new Aws\Credentials\Credentials('access_key', 'access_secret');
+$client = new Aws\ServiceDiscovery\ServiceDiscoveryClient([
+    'version' =&gt; 'latest',
+    'region' =&gt; 'ap-southeast-1',
+    'credentials' =&gt; $credentials,
+]);
+$result = $client-&gt;discoverInstances([
+    'NamespaceName' =&gt; 'my-namespace',
+    'ServiceName' =&gt; 'my-service',
+    'QueryParameters' =&gt; ['env' =&gt; 'prod'],
+]);
+$lambdaClient = new Aws\Lambda\LambdaClient([
+    'version' =&gt; 'latest',
+    'region' =&gt; 'ap-southeast-1',
+    'credentials' =&gt; $credentials,
+]);
+$fn = $result['Instances'][0][&quot;InstanceId&quot;];
+$res = $lambdaClient-&gt;invoke([
+    &quot;FunctionName&quot; =&gt; $fn,
+]);
+print_r($res-&gt;get(&quot;Payload&quot;)-&gt;__toString())
+</code></pre>
     </div>
 
     
@@ -364,7 +388,7 @@
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
     <span class="item-content">
-      2021-05-17
+      2021-05-18
       
     </span>
   </p>
@@ -381,29 +405,18 @@
 
     <footer class="post-footer">
       <div class="post-tags">
-          <a href="http://anakin.github.io/tags/oauth2/">oauth2</a>
+          <a href="http://anakin.github.io/tags/php/">php</a>
+          <a href="http://anakin.github.io/tags/lambda/">lambda</a>
+          <a href="http://anakin.github.io/tags/cloudmap/">cloudmap</a>
           
         </div>
 
       
       <nav class="post-nav">
         
-          <a class="prev" href="/post/php-call-lambda-cloudmap/">
-            
-            <i class="iconfont">
-              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
-  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  width="18" height="18">
-  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
-</svg>
-
-            </i>
-            <span class="prev-text nav-default">Php Call Lambda function through Cloudmap</span>
-            <span class="prev-text nav-mobile">Prev</span>
-          </a>
         
-          <a class="next" href="/post/mysql-client-on-ecs/">
-            <span class="next-text nav-default">How to install mysql client on AWS ECS task</span>
+          <a class="next" href="/post/oauth2-authcode-logic/">
+            <span class="next-text nav-default">Oauth2 Authcode Logic</span>
             <span class="prev-text nav-mobile">Next</span>
             
             <i class="iconfont">

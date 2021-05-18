@@ -6,10 +6,94 @@
     <description>Recent content on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 17 May 2021 13:58:58 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 18 May 2021 17:48:23 +0800</lastBuildDate>
     
         <atom:link href="http://anakin.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Php Call Lambda function through Cloudmap</title>
+      <link>http://anakin.github.io/post/php-call-lambda-cloudmap/</link>
+      <pubDate>Tue, 18 May 2021 17:48:23 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/php-call-lambda-cloudmap/</guid>
+      
+        <description>&lt;p&gt;Cloudmap是AWS的服务发现工具，假设我们已经有一个开发好的Lambda function，并且注册到了Cloudmap中，我们需要从PHP开发的服务中通过服务发现调用该Lambda，首先我们已知该服务注册的namespace以及service name，下面是实现过程：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;首先用golang实现一个Lambda，并注册到Cloudmap，golang的逻辑就不赘述了，主要是如何注册到Cloudmap，假设namespace为my-namespace，service name为 my-service，下面是通过AWS的SAM部署Lambda function时，template.yaml文件的主要内容：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;Resources:
+  DemoFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: controllers/demo/
+      Handler: main
+      Runtime: go1.x
+      Tracing: Active 
+      Policies:
+        - VPCAccessPolicy:
+            Description: &amp;quot;Gives access to create, delete, describe and detach ENIs&amp;quot;
+            Resource: &amp;quot;*&amp;quot;
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref ParameterSecurityGroup
+        SubnetIds:
+          - !Ref ParameterSubNet1
+          - !Ref ParameterSubNet2
+  DemoNameSpace:
+    Type: AWS::ServiceDiscovery::HttpNamespace
+    Properties:
+      Name: my-namespace
+  DemoService:
+    Type: AWS::ServiceDiscovery::Service
+    Properties:
+      Name: my-service
+      NamespaceId: !Ref DemoNameSpace
+  DemoInstance:
+    Type: AWS::ServiceDiscovery::Instance
+    Properties:
+      InstanceAttributes:
+        env: prod
+      InstanceId: !Ref DemoFunction
+      ServiceId: !Ref DemoService
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;通过composer引用AWS的PHP SDK&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;composer require aws/aws-sdk-php
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;开发php代码如下：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+require &#39;vendor/autoload.php&#39;;
+
+use Aws\Credentials\Credentials;
+use Aws\Lambda\LambdaClient;
+use Aws\ServiceDiscovery\ServiceDiscoveryClient;
+
+$credentials = new Aws\Credentials\Credentials(&#39;access_key&#39;, &#39;access_secret&#39;);
+$client = new Aws\ServiceDiscovery\ServiceDiscoveryClient([
+    &#39;version&#39; =&amp;gt; &#39;latest&#39;,
+    &#39;region&#39; =&amp;gt; &#39;ap-southeast-1&#39;,
+    &#39;credentials&#39; =&amp;gt; $credentials,
+]);
+$result = $client-&amp;gt;discoverInstances([
+    &#39;NamespaceName&#39; =&amp;gt; &#39;my-namespace&#39;,
+    &#39;ServiceName&#39; =&amp;gt; &#39;my-service&#39;,
+    &#39;QueryParameters&#39; =&amp;gt; [&#39;env&#39; =&amp;gt; &#39;prod&#39;],
+]);
+$lambdaClient = new Aws\Lambda\LambdaClient([
+    &#39;version&#39; =&amp;gt; &#39;latest&#39;,
+    &#39;region&#39; =&amp;gt; &#39;ap-southeast-1&#39;,
+    &#39;credentials&#39; =&amp;gt; $credentials,
+]);
+$fn = $result[&#39;Instances&#39;][0][&amp;quot;InstanceId&amp;quot;];
+$res = $lambdaClient-&amp;gt;invoke([
+    &amp;quot;FunctionName&amp;quot; =&amp;gt; $fn,
+]);
+print_r($res-&amp;gt;get(&amp;quot;Payload&amp;quot;)-&amp;gt;__toString())
+&lt;/code&gt;&lt;/pre&gt;</description>
+      
+    </item>
     
     <item>
       <title>Oauth2 Authcode Logic</title>
