@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Archive - Anakin- 奔向NB的生活</title>
+  <title>Gitlab Pipeline Trigger - Anakin- 奔向NB的生活</title>
   
 
 <meta name="renderer" content="webkit" />
@@ -23,7 +23,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="Anakin" />
-  <meta name="description" content="anakin sun golang github." />
+  <meta name="description" content="使用Gitlab作为CI/CD工具，有的情况下需要从一个项目中触发两一个项目的pipeline，例如这样的场景：Project A是某个服务，" />
+
   <meta name="keywords" content="anakin, sun, github" />
 
 
@@ -34,8 +35,8 @@
 <meta name="generator" content="Hugo 0.83.1" />
 
 
-<link rel="canonical" href="http://anakin.github.io/post/" />
-<link href="/post/index.xml" rel="alternate" type="application/rss+xml" title="Anakin- 奔向NB的生活" />
+<link rel="canonical" href="http://anakin.github.io/post/gitlab-pipeline-trigger/" />
+
 
 
 
@@ -58,15 +59,20 @@
 
 
 
-<meta property="og:title" content="Posts" />
-<meta property="og:description" content="anakin sun golang github." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="http://anakin.github.io/post/" />
+<meta property="og:title" content="Gitlab Pipeline Trigger" />
+<meta property="og:description" content="使用Gitlab作为CI/CD工具，有的情况下需要从一个项目中触发两一个项目的pipeline，例如这样的场景：Project A是某个服务，" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://anakin.github.io/post/gitlab-pipeline-trigger/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-05-19T16:02:36&#43;08:00" />
+<meta property="article:modified_time" content="2021-05-19T16:02:36&#43;08:00" />
 
-<meta itemprop="name" content="Posts">
-<meta itemprop="description" content="anakin sun golang github."><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Posts"/>
-<meta name="twitter:description" content="anakin sun golang github."/>
+<meta itemprop="name" content="Gitlab Pipeline Trigger">
+<meta itemprop="description" content="使用Gitlab作为CI/CD工具，有的情况下需要从一个项目中触发两一个项目的pipeline，例如这样的场景：Project A是某个服务，"><meta itemprop="datePublished" content="2021-05-19T16:02:36&#43;08:00" />
+<meta itemprop="dateModified" content="2021-05-19T16:02:36&#43;08:00" />
+<meta itemprop="wordCount" content="460">
+<meta itemprop="keywords" content="gitlab,trigger," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Gitlab Pipeline Trigger"/>
+<meta name="twitter:description" content="使用Gitlab作为CI/CD工具，有的情况下需要从一个项目中触发两一个项目的pipeline，例如这样的场景：Project A是某个服务，"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -218,7 +224,7 @@
 
       </li>
     
-        <li class="menu-item active">
+        <li class="menu-item">
         
           
           
@@ -265,180 +271,130 @@
     <main id="main" class="main bg-llight">
       <div class="content-wrapper">
         <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">Gitlab Pipeline Trigger</h1>
+      
+      <div class="post-meta">
+        <time datetime="2021-05-19" class="post-time">
+          2021-05-19
+        </time>
+        
+        
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Table of Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+
+    
+    <div class="post-content">
+      <p>使用Gitlab作为CI/CD工具，有的情况下需要从一个项目中触发两一个项目的pipeline，例如这样的场景：Project A是某个服务，Project B是一个统一的自动化测试服务，我们需要在Project A部署完成之后，自动触发B的pipeline来做自动化测试。</p>
+<p>其中的两种实现方式如下：</p>
+<ol>
+<li>在 Project A中创建单独的job，通过gitlab的trigger关键字触发B的pipeline，只需要指定项目的路径以及对应的分支</li>
+</ol>
+<pre><code>TEST-STAGE:
+  stage: test-stage
+  trigger:
+    project: path/project_b
+    branch: master
+</code></pre><ol start="2">
+<li>从Project A中的某个job中通过脚本调用Project B的pipeline api
+首先需要在B项目中设置一个trigger token，找到B项目的setting&ndash;&gt;CI/CD&ndash;&gt;Pipeline triggers，创建一个新的trigger，记住分配好的token</li>
+</ol>
+<p>然后在Project A中的某个job下，执行如下的script：</p>
+<pre><code>curl --request POST --form &quot;token=token_here&quot; --form ref=master &quot;https://gitlab.servername/api/v4/projects/project_id/trigger/pipeline
+</code></pre><p>注意：通过ref参数指定分支名称；其中的project_id是Project B的id，可以在项目的页面中找到。</p>
+
+    </div>
+
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Anakin</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+      2021-05-19
+      
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="http://anakin.github.io/tags/gitlab/">gitlab</a>
+          <a href="http://anakin.github.io/tags/trigger/">trigger</a>
           
-<section id="archive" class="archive">
-    <div class="archive-title">
-      <span class="archive-post-counter">
-          20 posts In Total
-      </span>
-    </div>
-    
-      <div class="collection-title">
-        <h2 class="archive-year">2021</h2>
-      </div>
+        </div>
 
-    <div class="archive-post">
-      <time datetime="2021-05-19" class="archive-post-time">
-        2021-05-19
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/gitlab-pipeline-trigger/" class="archive-post-link">
-          Gitlab Pipeline Trigger
-        </a>
-      </span>
-    </div>
-    
-
-    <div class="archive-post">
-      <time datetime="2021-05-18" class="archive-post-time">
-        2021-05-18
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/php-call-lambda-cloudmap/" class="archive-post-link">
-          Php Call Lambda function through Cloudmap
-        </a>
-      </span>
-    </div>
-    
-
-    <div class="archive-post">
-      <time datetime="2021-05-17" class="archive-post-time">
-        2021-05-17
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/oauth2-authcode-logic/" class="archive-post-link">
-          Oauth2 Authcode Logic
-        </a>
-      </span>
-    </div>
-    
-
-    <div class="archive-post">
-      <time datetime="2021-05-17" class="archive-post-time">
-        2021-05-17
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/mysql-client-on-ecs/" class="archive-post-link">
-          How to install mysql client on AWS ECS task
-        </a>
-      </span>
-    </div>
-    
-      <div class="collection-title">
-        <h2 class="archive-year">2019</h2>
-      </div>
-
-    <div class="archive-post">
-      <time datetime="2019-08-03" class="archive-post-time">
-        2019-08-03
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/go-micro-k8s-1/" class="archive-post-link">
-          在kubernetes上部署Go Micro代码(一)
-        </a>
-      </span>
-    </div>
-    
-
-    <div class="archive-post">
-      <time datetime="2019-06-14" class="archive-post-time">
-        2019-06-14
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/php-yaf-library/" class="archive-post-link">
-          php的Yaf框架类加载顺序研究
-        </a>
-      </span>
-    </div>
-    
-
-    <div class="archive-post">
-      <time datetime="2019-05-31" class="archive-post-time">
-        2019-05-31
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/docker-golang-php/" class="archive-post-link">
-          Docker部署完整的PHP-RPC-Golang环境
-        </a>
-      </span>
-    </div>
-    
-
-    <div class="archive-post">
-      <time datetime="2019-05-31" class="archive-post-time">
-        2019-05-31
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/php-laravel-grpc/" class="archive-post-link">
-          Laravel整合gRPC
-        </a>
-      </span>
-    </div>
-    
-
-    <div class="archive-post">
-      <time datetime="2019-05-27" class="archive-post-time">
-        2019-05-27
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/gokit-example/" class="archive-post-link">
-          Gokit创建微服务的例子(翻译)
-        </a>
-      </span>
-    </div>
-    
-
-    <div class="archive-post">
-      <time datetime="2019-05-23" class="archive-post-time">
-        2019-05-23
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/create-k8s-4/" class="archive-post-link">
-          手动搭建kubernetes集群（四）
-        </a>
-      </span>
-    </div></section>
-
-
-
-
-
-
-  
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-  <nav class="pagination">
-    <ul>
       
-      <li  class="active" >
-        <a href="/post/">1</a>
-      </li>
-      
-      <li >
-        <a href="/post/page/2/">2</a>
-      </li>
-      
-    </ul>
-  </nav>
+      <nav class="post-nav">
+        
+        
+          <a class="next" href="/post/php-call-lambda-cloudmap/">
+            <span class="next-text nav-default">Php Call Lambda function through Cloudmap</span>
+            <span class="prev-text nav-mobile">Next</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
+  </article>
 
   
   
 
+  
+  
 
+  
 
+  
+  
 
+  
+
+  
+
+  
+
+    
+
+  
 
         </div>
       </div>

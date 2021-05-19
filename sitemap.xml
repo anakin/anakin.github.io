@@ -3,7 +3,42 @@
   
   <url>
     <loc>http://anakin.github.io/</loc>
-    <lastmod>2021-05-18T17:48:23+08:00</lastmod>
+    <lastmod>2021-05-19T16:02:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/gitlab/</loc>
+    <lastmod>2021-05-19T16:02:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/post/gitlab-pipeline-trigger/</loc>
+    <lastmod>2021-05-19T16:02:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/post/</loc>
+    <lastmod>2021-05-19T16:02:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/</loc>
+    <lastmod>2021-05-19T16:02:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/trigger/</loc>
+    <lastmod>2021-05-19T16:02:36+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -31,20 +66,6 @@
   
   <url>
     <loc>http://anakin.github.io/post/php-call-lambda-cloudmap/</loc>
-    <lastmod>2021-05-18T17:48:23+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://anakin.github.io/post/</loc>
-    <lastmod>2021-05-18T17:48:23+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://anakin.github.io/tags/</loc>
     <lastmod>2021-05-18T17:48:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

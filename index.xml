@@ -6,10 +6,38 @@
     <description>Recent content on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 18 May 2021 17:48:23 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 19 May 2021 16:02:36 +0800</lastBuildDate>
     
         <atom:link href="http://anakin.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Gitlab Pipeline Trigger</title>
+      <link>http://anakin.github.io/post/gitlab-pipeline-trigger/</link>
+      <pubDate>Wed, 19 May 2021 16:02:36 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/gitlab-pipeline-trigger/</guid>
+      
+        <description>&lt;p&gt;使用Gitlab作为CI/CD工具，有的情况下需要从一个项目中触发两一个项目的pipeline，例如这样的场景：Project A是某个服务，Project B是一个统一的自动化测试服务，我们需要在Project A部署完成之后，自动触发B的pipeline来做自动化测试。&lt;/p&gt;
+&lt;p&gt;其中的两种实现方式如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在 Project A中创建单独的job，通过gitlab的trigger关键字触发B的pipeline，只需要指定项目的路径以及对应的分支&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;TEST-STAGE:
+  stage: test-stage
+  trigger:
+    project: path/project_b
+    branch: master
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;从Project A中的某个job中通过脚本调用Project B的pipeline api
+首先需要在B项目中设置一个trigger token，找到B项目的setting&amp;ndash;&amp;gt;CI/CD&amp;ndash;&amp;gt;Pipeline triggers，创建一个新的trigger，记住分配好的token&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;然后在Project A中的某个job下，执行如下的script：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;curl --request POST --form &amp;quot;token=token_here&amp;quot; --form ref=master &amp;quot;https://gitlab.servername/api/v4/projects/project_id/trigger/pipeline
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;注意：通过ref参数指定分支名称；其中的project_id是Project B的id，可以在项目的页面中找到。&lt;/p&gt;
+</description>
+      
+    </item>
     
     <item>
       <title>Php Call Lambda function through Cloudmap</title>
