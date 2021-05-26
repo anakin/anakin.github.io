@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Anakin- 奔向NB的生活</title>
+  <title>Using Aws Documentdb With Golang - Anakin- 奔向NB的生活</title>
   
 
 <meta name="renderer" content="webkit" />
@@ -23,7 +23,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="Anakin" />
-  <meta name="description" content="anakin sun golang github." />
+  <meta name="description" content="Background AWS Document DB是基本兼容Mongo DB的AWS服务，Mongo DB是比较流行的非结构化文档数据库。使用Golang操作Document DB的方法" />
+
   <meta name="keywords" content="anakin, sun, github" />
 
 
@@ -34,8 +35,8 @@
 <meta name="generator" content="Hugo 0.83.1" />
 
 
-<link rel="canonical" href="http://anakin.github.io/" />
-<link href="/index.xml" rel="alternate" type="application/rss+xml" title="Anakin- 奔向NB的生活" />
+<link rel="canonical" href="http://anakin.github.io/post/using-aws-documentdb-with-golang/" />
+
 
 
 
@@ -58,15 +59,20 @@
 
 
 
-<meta property="og:title" content="Anakin- 奔向NB的生活" />
-<meta property="og:description" content="anakin sun golang github." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="http://anakin.github.io/" />
+<meta property="og:title" content="Using Aws Documentdb With Golang" />
+<meta property="og:description" content="Background AWS Document DB是基本兼容Mongo DB的AWS服务，Mongo DB是比较流行的非结构化文档数据库。使用Golang操作Document DB的方法" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://anakin.github.io/post/using-aws-documentdb-with-golang/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-05-26T15:23:15&#43;08:00" />
+<meta property="article:modified_time" content="2021-05-26T15:23:15&#43;08:00" />
 
-<meta itemprop="name" content="Anakin- 奔向NB的生活">
-<meta itemprop="description" content="anakin sun golang github."><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Anakin- 奔向NB的生活"/>
-<meta name="twitter:description" content="anakin sun golang github."/>
+<meta itemprop="name" content="Using Aws Documentdb With Golang">
+<meta itemprop="description" content="Background AWS Document DB是基本兼容Mongo DB的AWS服务，Mongo DB是比较流行的非结构化文档数据库。使用Golang操作Document DB的方法"><meta itemprop="datePublished" content="2021-05-26T15:23:15&#43;08:00" />
+<meta itemprop="dateModified" content="2021-05-26T15:23:15&#43;08:00" />
+<meta itemprop="wordCount" content="794">
+<meta itemprop="keywords" content="golang,documentdb,aws," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Using Aws Documentdb With Golang"/>
+<meta name="twitter:description" content="Background AWS Document DB是基本兼容Mongo DB的AWS服务，Mongo DB是比较流行的非结构化文档数据库。使用Golang操作Document DB的方法"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -207,7 +213,7 @@
   <ul id="menu" class="menu">
     
     
-        <li class="menu-item active">
+        <li class="menu-item">
         
           
           
@@ -265,334 +271,224 @@
     <main id="main" class="main bg-llight">
       <div class="content-wrapper">
         <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">Using Aws Documentdb With Golang</h1>
+      
+      <div class="post-meta">
+        <time datetime="2021-05-26" class="post-time">
+          2021-05-26
+        </time>
+        
+        
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Table of Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#background">Background</a></li>
+    <li><a href="#code">Code</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+
+    
+    <div class="post-content">
+      <h2 id="background">Background</h2>
+<p>AWS Document DB是基本兼容Mongo DB的AWS服务，Mongo DB是比较流行的非结构化文档数据库。使用Golang操作Document DB的方法和操作Mongo DB的方法基本相同，用的也是mongo官方提供的package。</p>
+<h2 id="code">Code</h2>
+<ol>
+<li>连接数据库</li>
+</ol>
+<p>假设我们已经在AWS Console中建立好了一个Document DB，数据库名字为demodb，并已经设置好了用户和密码。连接数据库的时候，需要用ssl方式作为authentication，所以我们
+首先需要下载aws的ssl certificate文件：</p>
+<pre><code>wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
+</code></pre><p>下载之后，新建一个go文件保存证书的内容，例如在util目录下创建cert.go，内容如下：</p>
+<pre><code>package util
+const CERT=`-----BEGIN CERTIFICATE-----
+xxx
+-----END CERTIFICATE-----`
+`
+</code></pre><p>以方便程序中调用。</p>
+<p>编写连接数据的部分：</p>
+<pre><code>var Conn *mongo.Database
+
+const (
+	// Timeout operations after N seconds
+	connectTimeout = 10
+	// Which instances to read from
+	readPreference           = &quot;secondaryPreferred&quot;
+	connectionStringTemplate = &quot;mongodb://%s:%s@%s/sample-database?ssl=true&amp;replicaSet=rs0&amp;readpreference=%s&quot;
+)
+
+func InitDB() error {
+	clusterEndpoint := os.Getenv(&quot;DOC_DB_HOST&quot;)
+	username := os.Getenv(&quot;DOC_DB_USER&quot;)
+	password := os.Getenv(&quot;DOC_DB_PASS&quot;)
+	database := os.Getenv(&quot;DOC_DB_NAME&quot;)
+	connectionURI := fmt.Sprintf(connectionStringTemplate, username, password, clusterEndpoint, readPreference)
+
+	tlsConfig, err := getCustomTLSConfig()
+	if err != nil {
+		log.Fatalf(&quot;Failed getting TLS configuration: %v&quot;, err)
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(connectionURI).SetTLSConfig(tlsConfig))
+	if err != nil {
+		log.Fatalf(&quot;Failed to connect to cluster: %v&quot;, err)
+	}
+	err = client.Ping(context.TODO(), nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	Conn = client.Database(database)
+	return err
+}
+
+func getCustomTLSConfig() (*tls.Config, error) {
+	tlsConfig := new(tls.Config)
+	certs := []byte(util.CERT)
+
+	tlsConfig.RootCAs = x509.NewCertPool()
+	ok := tlsConfig.RootCAs.AppendCertsFromPEM(certs)
+
+	if !ok {
+		return tlsConfig, errors.New(&quot;Failed parsing pem file&quot;)
+	}
+
+	return tlsConfig, nil
+}
+</code></pre><ol start="2">
+<li>选择表</li>
+</ol>
+<pre><code>coll := Conn.Collection(&quot;demo&quot;)
+</code></pre><ol start="3">
+<li>定义表结构</li>
+</ol>
+<p>接下来就可以操作数据库中的Collection了，假设我们创建一个叫做demo的表，首先定义表结构的struct：</p>
+<pre><code>type Demo struct {
+	ID        primitive.ObjectID `bson:&quot;_id&quot; json:&quot;id,omitempty&quot;`
+	Title     string             `bson:&quot;title&quot; json:&quot;title&quot;`
+	Body      string             `bson:&quot;body&quot; json:&quot;body&quot;`
+	CreatedAt time.Time          `bson:&quot;created_at&quot; json:&quot;created_at,omitempty&quot;`
+	UpdatedAt time.Time          `bson:&quot;updated_at&quot; json:&quot;updated_at,omitempty&quot;`
+}
+</code></pre><p>其中ID使用primitive包的方法自动生成。</p>
+<ol start="4">
+<li>插入数据：</li>
+</ol>
+<pre><code>record := Demo{}
+record.ID = primitive.NewObjectID()
+record.Title = &quot;demotitle&quot;
+record.Body = &quot;test content&quot;
+record.SessionId = &quot;2&quot;
+record.CreatedAt = time.Now()
+record.UpdatedAt = time.Now()
+
+res, err := coll.InsertOne(context.Background(), record)
+</code></pre><ol start="5">
+<li>查询单条数据：</li>
+</ol>
+<pre><code>filter := bson.D{{&quot;title&quot;, &quot;demotitle&quot;}}
+var res Demo
+e = coll.FindOne(context.TODO(), filter).Decode(&amp;res)
+</code></pre><ol start="6">
+<li>查询多条数据：</li>
+</ol>
+<pre><code>filter := bson.D{{&quot;title&quot;, &quot;demotitle&quot;}}
+var res []Demo
+cur,err := coll.Find(context.TODO(), filter)
+err = cur.All(context.Background(), &amp;res)
+</code></pre><ol start="7">
+<li>更新数据：</li>
+</ol>
+<pre><code>filter := bson.D{{&quot;title&quot;, &quot;demotitle&quot;}}
+update := bson.D{
+    {&quot;$set&quot;, bson.D{
+        {&quot;body&quot;, &quot;demobody&quot;},
+    }},
+}
+ 
+_, e = coll.UpdateOne(context.TODO(), filter, update)
+</code></pre><ol start="8">
+<li>删除数据：</li>
+</ol>
+<pre><code>//clear all data of the collection
+_, e = coll.DeleteMany(context.TODO(), bson.D{{}})
+</code></pre><h2 id="conclusion">Conclusion</h2>
+<p>这里只是列出了使用Golang操作Document DB的一些简单操作，实际上在使用过程中，会涉及到一些复杂的查询，比如group by,order by,limit 等等，这时就需要用到aggragate方法，相对于SQL语句来说，会稍微复杂一些。</p>
+
+    </div>
+
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Anakin</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+      2021-05-26
+      
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="http://anakin.github.io/tags/golang/">golang</a>
+          <a href="http://anakin.github.io/tags/documentdb/">documentdb</a>
+          <a href="http://anakin.github.io/tags/aws/">aws</a>
           
-<section id="posts" class="posts">
-  
-  
-    
-  
-  
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/create-k8s-4/">手动搭建kubernetes集群（四）</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-23" class="post-time">
-        2019-05-23
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      开始改造我们之前搭建的基础集群，加上安全机制。 准备工作 1. 停止master节点的所有服务查看已有的service kubectl get services 删除service（例如
-    </div>
-    <div class="read-more">
-      <a href="/post/create-k8s-4/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
+        </div>
 
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
       
-      <a class="post-link" href="/post/golang-etcd-lock/">Golang通过ETCD实现分布式锁</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-22" class="post-time">
-        2019-05-22
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      之前写过用redis实现的分布式锁，这次用etcd来实现一个。 原理 首先获取一个etcd的租约，拿着这个租约用etcd的事务操作去设置一个ke
-    </div>
-    <div class="read-more">
-      <a href="/post/golang-etcd-lock/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
+      <nav class="post-nav">
+        
+        
+          <a class="next" href="/post/gitlab-pipeline-trigger/">
+            <span class="next-text nav-default">Gitlab Pipeline Trigger</span>
+            <span class="prev-text nav-mobile">Next</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
 
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/fusion-static-ip/">给Mac上的Fusion虚拟机设置固定ip地址</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-21" class="post-time">
-        2019-05-21
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      因为最近需要安装k8s的本地测试环境，所以使用Mac上的Vmware Fusion安装了几台ubuntu系统的虚拟机，某次重启的时候发现ssh
-    </div>
-    <div class="read-more">
-      <a href="/post/fusion-static-ip/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/create-k8s-3/">手动搭建kubernetes集群（三）</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-21" class="post-time">
-        2019-05-21
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      本文是这个系列的第三篇文章，前两篇记录了搭建一个k8s集群的过程，但是之前搭建好的集群少了很重要的一个部分，就是安全相关的功能，包括认证、授
-    </div>
-    <div class="read-more">
-      <a href="/post/create-k8s-3/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/create-k8s-2/">手动搭建kubernetes集群（二）</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-20" class="post-time">
-        2019-05-20
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      根据前文准备好的环境，我们现在来一步步的搭建一个基础的k8s集群注意，这里的配置信息都是按照我自己的虚拟环境来写的。把server01作为m
-    </div>
-    <div class="read-more">
-      <a href="/post/create-k8s-2/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/create-k8s/">手动搭建kubernetes集群（一）</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-20" class="post-time">
-        2019-05-20
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      最近在看有关k8s的一些知识，想手动搭建一套环境来体验一下，本文详细记录一下搭建的过程。 环境 三台Ubuntu系统的虚拟机，其中一台作为mas
-    </div>
-    <div class="read-more">
-      <a href="/post/create-k8s/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/etcd-mvcc/">Etcd实现MVCC的原理</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-19" class="post-time">
-        2019-05-19
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      etcd满足的是CAP理论中的CP，实现了最终的强一致，使用Raft协议，Quorum机制（大多数同意原则）, MVCC的意思 Multi-Version Concurrency Control 多版本并发
-    </div>
-    <div class="read-more">
-      <a href="/post/etcd-mvcc/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/redis-rdb-aof/">Redis持久化</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-17" class="post-time">
-        2019-05-17
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      redis的持久化有两种方式，RDB和AOF RDB: 在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成一
-    </div>
-    <div class="read-more">
-      <a href="/post/redis-rdb-aof/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/golang-redis-lock/">Golang利用redis实现分布式锁</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-16" class="post-time">
-        2019-05-16
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      原理 使用SETNX命令(SET if Not eXists) SETNX key value 将 key 的值设为 value，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。 设置成功，返回 1 。
-    </div>
-    <div class="read-more">
-      <a href="/post/golang-redis-lock/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/tcp-detail/">TCP协议细节学习</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-14" class="post-time">
-        2019-05-14
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      TCP协议中包含ip信息么 TCP协议中并不包含ip信息，ip信息是在第三层处理的，TCP中处理的是端口信息 MSS的值是如何计算的 TCP协议中
-    </div>
-    <div class="read-more">
-      <a href="/post/tcp-detail/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-</section>
-
-
-
-
-
-
-  
-  
-  
+            </i>
+          </a>
+      </nav>
+    </footer>
+  </article>
 
   
   
@@ -601,34 +497,19 @@
   
 
   
-  
-
-  
-  
-  <nav class="pagination">
-    <ul>
-      
-      <li >
-        <a href="/">1</a>
-      </li>
-      
-      <li  class="active" >
-        <a href="/page/2/">2</a>
-      </li>
-      
-      <li >
-        <a href="/page/3/">3</a>
-      </li>
-      
-    </ul>
-  </nav>
 
   
   
 
+  
 
+  
 
+  
 
+    
+
+  
 
         </div>
       </div>

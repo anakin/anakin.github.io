@@ -6,10 +6,146 @@
     <description>Recent content on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 19 May 2021 16:02:36 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 26 May 2021 15:23:15 +0800</lastBuildDate>
     
         <atom:link href="http://anakin.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Using Aws Documentdb With Golang</title>
+      <link>http://anakin.github.io/post/using-aws-documentdb-with-golang/</link>
+      <pubDate>Wed, 26 May 2021 15:23:15 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/using-aws-documentdb-with-golang/</guid>
+      
+        <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
+&lt;p&gt;AWS Document DB是基本兼容Mongo DB的AWS服务，Mongo DB是比较流行的非结构化文档数据库。使用Golang操作Document DB的方法和操作Mongo DB的方法基本相同，用的也是mongo官方提供的package。&lt;/p&gt;
+&lt;h2 id=&#34;code&#34;&gt;Code&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;连接数据库&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;假设我们已经在AWS Console中建立好了一个Document DB，数据库名字为demodb，并已经设置好了用户和密码。连接数据库的时候，需要用ssl方式作为authentication，所以我们
+首先需要下载aws的ssl certificate文件：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;下载之后，新建一个go文件保存证书的内容，例如在util目录下创建cert.go，内容如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package util
+const CERT=`-----BEGIN CERTIFICATE-----
+xxx
+-----END CERTIFICATE-----`
+`
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;以方便程序中调用。&lt;/p&gt;
+&lt;p&gt;编写连接数据的部分：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var Conn *mongo.Database
+
+const (
+	// Timeout operations after N seconds
+	connectTimeout = 10
+	// Which instances to read from
+	readPreference           = &amp;quot;secondaryPreferred&amp;quot;
+	connectionStringTemplate = &amp;quot;mongodb://%s:%s@%s/sample-database?ssl=true&amp;amp;replicaSet=rs0&amp;amp;readpreference=%s&amp;quot;
+)
+
+func InitDB() error {
+	clusterEndpoint := os.Getenv(&amp;quot;DOC_DB_HOST&amp;quot;)
+	username := os.Getenv(&amp;quot;DOC_DB_USER&amp;quot;)
+	password := os.Getenv(&amp;quot;DOC_DB_PASS&amp;quot;)
+	database := os.Getenv(&amp;quot;DOC_DB_NAME&amp;quot;)
+	connectionURI := fmt.Sprintf(connectionStringTemplate, username, password, clusterEndpoint, readPreference)
+
+	tlsConfig, err := getCustomTLSConfig()
+	if err != nil {
+		log.Fatalf(&amp;quot;Failed getting TLS configuration: %v&amp;quot;, err)
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(connectionURI).SetTLSConfig(tlsConfig))
+	if err != nil {
+		log.Fatalf(&amp;quot;Failed to connect to cluster: %v&amp;quot;, err)
+	}
+	err = client.Ping(context.TODO(), nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	Conn = client.Database(database)
+	return err
+}
+
+func getCustomTLSConfig() (*tls.Config, error) {
+	tlsConfig := new(tls.Config)
+	certs := []byte(util.CERT)
+
+	tlsConfig.RootCAs = x509.NewCertPool()
+	ok := tlsConfig.RootCAs.AppendCertsFromPEM(certs)
+
+	if !ok {
+		return tlsConfig, errors.New(&amp;quot;Failed parsing pem file&amp;quot;)
+	}
+
+	return tlsConfig, nil
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;选择表&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;coll := Conn.Collection(&amp;quot;demo&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;定义表结构&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;接下来就可以操作数据库中的Collection了，假设我们创建一个叫做demo的表，首先定义表结构的struct：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;type Demo struct {
+	ID        primitive.ObjectID `bson:&amp;quot;_id&amp;quot; json:&amp;quot;id,omitempty&amp;quot;`
+	Title     string             `bson:&amp;quot;title&amp;quot; json:&amp;quot;title&amp;quot;`
+	Body      string             `bson:&amp;quot;body&amp;quot; json:&amp;quot;body&amp;quot;`
+	CreatedAt time.Time          `bson:&amp;quot;created_at&amp;quot; json:&amp;quot;created_at,omitempty&amp;quot;`
+	UpdatedAt time.Time          `bson:&amp;quot;updated_at&amp;quot; json:&amp;quot;updated_at,omitempty&amp;quot;`
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其中ID使用primitive包的方法自动生成。&lt;/p&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;插入数据：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;record := Demo{}
+record.ID = primitive.NewObjectID()
+record.Title = &amp;quot;demotitle&amp;quot;
+record.Body = &amp;quot;test content&amp;quot;
+record.SessionId = &amp;quot;2&amp;quot;
+record.CreatedAt = time.Now()
+record.UpdatedAt = time.Now()
+
+res, err := coll.InsertOne(context.Background(), record)
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;查询单条数据：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;filter := bson.D{{&amp;quot;title&amp;quot;, &amp;quot;demotitle&amp;quot;}}
+var res Demo
+e = coll.FindOne(context.TODO(), filter).Decode(&amp;amp;res)
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;6&#34;&gt;
+&lt;li&gt;查询多条数据：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;filter := bson.D{{&amp;quot;title&amp;quot;, &amp;quot;demotitle&amp;quot;}}
+var res []Demo
+cur,err := coll.Find(context.TODO(), filter)
+err = cur.All(context.Background(), &amp;amp;res)
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;7&#34;&gt;
+&lt;li&gt;更新数据：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;filter := bson.D{{&amp;quot;title&amp;quot;, &amp;quot;demotitle&amp;quot;}}
+update := bson.D{
+    {&amp;quot;$set&amp;quot;, bson.D{
+        {&amp;quot;body&amp;quot;, &amp;quot;demobody&amp;quot;},
+    }},
+}
+ 
+_, e = coll.UpdateOne(context.TODO(), filter, update)
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;8&#34;&gt;
+&lt;li&gt;删除数据：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;//clear all data of the collection
+_, e = coll.DeleteMany(context.TODO(), bson.D{{}})
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;这里只是列出了使用Golang操作Document DB的一些简单操作，实际上在使用过程中，会涉及到一些复杂的查询，比如group by,order by,limit 等等，这时就需要用到aggragate方法，相对于SQL语句来说，会稍微复杂一些。&lt;/p&gt;
+</description>
+      
+    </item>
     
     <item>
       <title>Gitlab Pipeline Trigger</title>
@@ -2726,35 +2862,6 @@ TIME-WAIT状态如果过多，会占用系统资源。Linux下有几个参数可
 &lt;p&gt;net.ipv4.tcp_tw_recycle = 1 表示开启TCP连接中TIME-WAIT sockets的快速回收，默认为0，表示关闭。&lt;/p&gt;
 &lt;p&gt;net.ipv4.tcp_max_tw_buckets = 5000表示系统同时保持TIME_WAIT套接字的最大数量，如果超过这个数字，TIME_WAIT套接字将立刻被清除并打印警告信息。默认为180000，改为5000。&lt;/p&gt;
 &lt;p&gt;然而，从TCP状态转换图可以看出，主动进行关闭的链接才会进入TIME-WAIT状态，所以最好的办法：尽量不要让服务器主动关闭链接，除非一些异常情况，如客户端协议错误、客户端超时等等。&lt;/p&gt;
-</description>
-      
-    </item>
-    
-    <item>
-      <title>Golang的GC学习</title>
-      <link>http://anakin.github.io/post/golang-gc/</link>
-      <pubDate>Sun, 12 May 2019 23:05:48 +0800</pubDate>
-      
-      <guid>http://anakin.github.io/post/golang-gc/</guid>
-      
-        <description>&lt;h2 id=&#34;stw触发的时间&#34;&gt;STW触发的时间&lt;/h2&gt;
-&lt;p&gt;一次GC有两次触发STW，一次是GC的开始阶段，主要是开启写屏障和辅助GC等操作
-另外就是表记完成之后，重新扫描部分根对象，禁用写屏障&lt;/p&gt;
-&lt;h2 id=&#34;gc的触发条件&#34;&gt;GC的触发条件&lt;/h2&gt;
-&lt;p&gt;GC在满足一定条件后会被触发, 触发条件有以下几种:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;gcTriggerAlways: 强制触发GC&lt;/li&gt;
-&lt;li&gt;gcTriggerHeap: 当前分配的内存达到一定值就触发GC&lt;/li&gt;
-&lt;li&gt;gcTriggerTime: 当一定时间没有执行过GC就触发GC&lt;/li&gt;
-&lt;li&gt;gcTriggerCycle: 要求启动新一轮的GC, 已启动则跳过, 手动触发GC的runtime.GC()会使用这个条件&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;三色标记的过程&#34;&gt;三色标记的过程&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;所有对象最开始都是白色。&lt;/li&gt;
-&lt;li&gt;从 root 开始找到所有可达对象，标记为灰色，放入待处理队列。&lt;/li&gt;
-&lt;li&gt;遍历灰色对象队列，将其引用对象标记为灰色放入待处理队列，自身标记为黑色。&lt;/li&gt;
-&lt;li&gt;处理完灰色对象队列，执行清扫工作。&lt;/li&gt;
-&lt;/ul&gt;
 </description>
       
     </item>

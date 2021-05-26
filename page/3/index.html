@@ -277,12 +277,12 @@
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/post/create-k8s-4/">手动搭建kubernetes集群（四）</a>
+      <a class="post-link" href="/post/golang-gc/">Golang的GC学习</a>
     </h1>
     
     <div class="post-meta">
-      <time datetime="2019-05-23" class="post-time">
-        2019-05-23
+      <time datetime="2019-05-12" class="post-time">
+        2019-05-12
       </time>
       
       
@@ -294,289 +294,10 @@
   <div class="post-content">
     
     <div class="post-summary">
-      开始改造我们之前搭建的基础集群，加上安全机制。 准备工作 1. 停止master节点的所有服务查看已有的service kubectl get services 删除service（例如
+      STW触发的时间 一次GC有两次触发STW，一次是GC的开始阶段，主要是开启写屏障和辅助GC等操作 另外就是表记完成之后，重新扫描部分根对象，禁
     </div>
     <div class="read-more">
-      <a href="/post/create-k8s-4/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/golang-etcd-lock/">Golang通过ETCD实现分布式锁</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-22" class="post-time">
-        2019-05-22
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      之前写过用redis实现的分布式锁，这次用etcd来实现一个。 原理 首先获取一个etcd的租约，拿着这个租约用etcd的事务操作去设置一个ke
-    </div>
-    <div class="read-more">
-      <a href="/post/golang-etcd-lock/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/fusion-static-ip/">给Mac上的Fusion虚拟机设置固定ip地址</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-21" class="post-time">
-        2019-05-21
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      因为最近需要安装k8s的本地测试环境，所以使用Mac上的Vmware Fusion安装了几台ubuntu系统的虚拟机，某次重启的时候发现ssh
-    </div>
-    <div class="read-more">
-      <a href="/post/fusion-static-ip/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/create-k8s-3/">手动搭建kubernetes集群（三）</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-21" class="post-time">
-        2019-05-21
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      本文是这个系列的第三篇文章，前两篇记录了搭建一个k8s集群的过程，但是之前搭建好的集群少了很重要的一个部分，就是安全相关的功能，包括认证、授
-    </div>
-    <div class="read-more">
-      <a href="/post/create-k8s-3/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/create-k8s-2/">手动搭建kubernetes集群（二）</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-20" class="post-time">
-        2019-05-20
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      根据前文准备好的环境，我们现在来一步步的搭建一个基础的k8s集群注意，这里的配置信息都是按照我自己的虚拟环境来写的。把server01作为m
-    </div>
-    <div class="read-more">
-      <a href="/post/create-k8s-2/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/create-k8s/">手动搭建kubernetes集群（一）</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-20" class="post-time">
-        2019-05-20
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      最近在看有关k8s的一些知识，想手动搭建一套环境来体验一下，本文详细记录一下搭建的过程。 环境 三台Ubuntu系统的虚拟机，其中一台作为mas
-    </div>
-    <div class="read-more">
-      <a href="/post/create-k8s/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/etcd-mvcc/">Etcd实现MVCC的原理</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-19" class="post-time">
-        2019-05-19
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      etcd满足的是CAP理论中的CP，实现了最终的强一致，使用Raft协议，Quorum机制（大多数同意原则）, MVCC的意思 Multi-Version Concurrency Control 多版本并发
-    </div>
-    <div class="read-more">
-      <a href="/post/etcd-mvcc/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/redis-rdb-aof/">Redis持久化</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-17" class="post-time">
-        2019-05-17
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      redis的持久化有两种方式，RDB和AOF RDB: 在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成一
-    </div>
-    <div class="read-more">
-      <a href="/post/redis-rdb-aof/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/golang-redis-lock/">Golang利用redis实现分布式锁</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-16" class="post-time">
-        2019-05-16
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      原理 使用SETNX命令(SET if Not eXists) SETNX key value 将 key 的值设为 value，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。 设置成功，返回 1 。
-    </div>
-    <div class="read-more">
-      <a href="/post/golang-redis-lock/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/tcp-detail/">TCP协议细节学习</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-14" class="post-time">
-        2019-05-14
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      TCP协议中包含ip信息么 TCP协议中并不包含ip信息，ip信息是在第三层处理的，TCP中处理的是端口信息 MSS的值是如何计算的 TCP协议中
-    </div>
-    <div class="read-more">
-      <a href="/post/tcp-detail/" class="read-more-link">Read more</a>
+      <a href="/post/golang-gc/" class="read-more-link">Read more</a>
     </div>
     
   </div>
@@ -612,11 +333,11 @@
         <a href="/">1</a>
       </li>
       
-      <li  class="active" >
+      <li >
         <a href="/page/2/">2</a>
       </li>
       
-      <li >
+      <li  class="active" >
         <a href="/page/3/">3</a>
       </li>
       

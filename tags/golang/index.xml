@@ -6,7 +6,16 @@
     <description>Recent content in golang on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 31 May 2019 21:30:05 +0800</lastBuildDate><atom:link href="http://anakin.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 26 May 2021 15:23:15 +0800</lastBuildDate><atom:link href="http://anakin.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Using Aws Documentdb With Golang</title>
+      <link>http://anakin.github.io/post/using-aws-documentdb-with-golang/</link>
+      <pubDate>Wed, 26 May 2021 15:23:15 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/using-aws-documentdb-with-golang/</guid>
+      <description>Background AWS Document DB是基本兼容Mongo DB的AWS服务，Mongo DB是比较流行的非结构化文档数据库。使用Golang操作Document DB的方法</description>
+    </item>
+    
     <item>
       <title>Docker部署完整的PHP-RPC-Golang环境</title>
       <link>http://anakin.github.io/post/docker-golang-php/</link>
