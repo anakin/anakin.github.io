@@ -294,7 +294,10 @@
   <div class="post-content">
     
     <div class="post-summary">
-      Download DynamoDB wget https://s3.ap-southeast-1.amazonaws.com/dynamodb-local-singapore/dynamodb_local_latest.tar.gz Extract file tar zxvf dynamodb_local_latest.tar.gz Start Dynamo DB locally java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb Create fake aws credential  edit .aws/config  [profile default] output = text region = ap-southeast-1 edit .aws/credentials  [default] aws_access_key_id = fakeMyKeyId aws_secret_access_key = fakeSecretAccessKey Create demo table  create table json file, user_table.json  { &quot;TableName&quot;: &quot;user-demo-table&quot;, &quot;AttributeDefinitions&quot;: [ { &quot;AttributeName&quot;: &quot;user_name&quot;, &quot;AttributeType&quot;: &quot;S&quot; }], &quot;KeySchema&quot;: [{ &quot;KeyType&quot;: &quot;HASH&quot;, &quot;AttributeName&quot;: &quot;user_name&quot; }], &quot;ProvisionedThroughput&quot;: { &quot;WriteCapacityUnits&quot;: 5, &quot;ReadCapacityUnits&quot;: 5 } } create table  aws dynamodb create-table --region ap-southeast-1 --cli-input-json file://user_table.
+      Download DynamoDB wget https://s3.ap-southeast-1.amazonaws.com/dynamodb-local-singapore/dynamodb_local_latest.tar.gz Extract file tar zxvf dynamodb_local_latest.tar.gz Start Dynamo DB locally We can start Dynamo DB service with docker or with JAVA.
+ start with docker  edit docker-compose.yml
+version: '3.8' services: dynamodb-local: command: &quot;-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ./data&quot; image: &quot;amazon/dynamodb-local:latest&quot; container_name: dynamodb-local ports: - &quot;8000:8000&quot; volumes: - &quot;./docker/dynamodb:/home/dynamodblocal/data&quot; working_dir: /home/dynamodblocal start container
+docker-compose up -d start with JAVA directly  java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb Create fake aws credential  edit .
     </div>
     <div class="read-more">
       <a href="/post/develop-dynamodb-locally/" class="read-more-link">Read more</a>

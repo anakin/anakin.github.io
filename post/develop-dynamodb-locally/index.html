@@ -23,7 +23,10 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="Anakin" />
-  <meta name="description" content="Download DynamoDB wget https://s3.ap-southeast-1.amazonaws.com/dynamodb-local-singapore/dynamodb_local_latest.tar.gz Extract file tar zxvf dynamodb_local_latest.tar.gz Start Dynamo DB locally java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb Create fake aws credential  edit .aws/config  [profile default] output = text region = ap-southeast-1 edit .aws/credentials  [default] aws_access_key_id = fakeMyKeyId aws_secret_access_key = fakeSecretAccessKey Create demo table  create table json file, user_table.json  { &amp;quot;TableName&amp;quot;: &amp;quot;user-demo-table&amp;quot;, &amp;quot;AttributeDefinitions&amp;quot;: [ { &amp;quot;AttributeName&amp;quot;: &amp;quot;user_name&amp;quot;, &amp;quot;AttributeType&amp;quot;: &amp;quot;S&amp;quot; }], &amp;quot;KeySchema&amp;quot;: [{ &amp;quot;KeyType&amp;quot;: &amp;quot;HASH&amp;quot;, &amp;quot;AttributeName&amp;quot;: &amp;quot;user_name&amp;quot; }], &amp;quot;ProvisionedThroughput&amp;quot;: { &amp;quot;WriteCapacityUnits&amp;quot;: 5, &amp;quot;ReadCapacityUnits&amp;quot;: 5 } } create table  aws dynamodb create-table --region ap-southeast-1 --cli-input-json file://user_table." />
+  <meta name="description" content="Download DynamoDB wget https://s3.ap-southeast-1.amazonaws.com/dynamodb-local-singapore/dynamodb_local_latest.tar.gz Extract file tar zxvf dynamodb_local_latest.tar.gz Start Dynamo DB locally We can start Dynamo DB service with docker or with JAVA.
+ start with docker  edit docker-compose.yml
+version: &#39;3.8&#39; services: dynamodb-local: command: &amp;quot;-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ./data&amp;quot; image: &amp;quot;amazon/dynamodb-local:latest&amp;quot; container_name: dynamodb-local ports: - &amp;quot;8000:8000&amp;quot; volumes: - &amp;quot;./docker/dynamodb:/home/dynamodblocal/data&amp;quot; working_dir: /home/dynamodblocal start container
+docker-compose up -d start with JAVA directly  java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb Create fake aws credential  edit ." />
 
   <meta name="keywords" content="anakin, sun, github" />
 
@@ -60,19 +63,28 @@
 
 
 <meta property="og:title" content="How to Develop DynamoDB Locally" />
-<meta property="og:description" content="Download DynamoDB wget https://s3.ap-southeast-1.amazonaws.com/dynamodb-local-singapore/dynamodb_local_latest.tar.gz Extract file tar zxvf dynamodb_local_latest.tar.gz Start Dynamo DB locally java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb Create fake aws credential  edit .aws/config  [profile default] output = text region = ap-southeast-1 edit .aws/credentials  [default] aws_access_key_id = fakeMyKeyId aws_secret_access_key = fakeSecretAccessKey Create demo table  create table json file, user_table.json  { &quot;TableName&quot;: &quot;user-demo-table&quot;, &quot;AttributeDefinitions&quot;: [ { &quot;AttributeName&quot;: &quot;user_name&quot;, &quot;AttributeType&quot;: &quot;S&quot; }], &quot;KeySchema&quot;: [{ &quot;KeyType&quot;: &quot;HASH&quot;, &quot;AttributeName&quot;: &quot;user_name&quot; }], &quot;ProvisionedThroughput&quot;: { &quot;WriteCapacityUnits&quot;: 5, &quot;ReadCapacityUnits&quot;: 5 } } create table  aws dynamodb create-table --region ap-southeast-1 --cli-input-json file://user_table." />
+<meta property="og:description" content="Download DynamoDB wget https://s3.ap-southeast-1.amazonaws.com/dynamodb-local-singapore/dynamodb_local_latest.tar.gz Extract file tar zxvf dynamodb_local_latest.tar.gz Start Dynamo DB locally We can start Dynamo DB service with docker or with JAVA.
+ start with docker  edit docker-compose.yml
+version: &#39;3.8&#39; services: dynamodb-local: command: &quot;-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ./data&quot; image: &quot;amazon/dynamodb-local:latest&quot; container_name: dynamodb-local ports: - &quot;8000:8000&quot; volumes: - &quot;./docker/dynamodb:/home/dynamodblocal/data&quot; working_dir: /home/dynamodblocal start container
+docker-compose up -d start with JAVA directly  java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb Create fake aws credential  edit ." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://anakin.github.io/post/develop-dynamodb-locally/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2021-06-04T08:17:59&#43;08:00" />
 <meta property="article:modified_time" content="2021-06-04T08:17:59&#43;08:00" />
 
 <meta itemprop="name" content="How to Develop DynamoDB Locally">
-<meta itemprop="description" content="Download DynamoDB wget https://s3.ap-southeast-1.amazonaws.com/dynamodb-local-singapore/dynamodb_local_latest.tar.gz Extract file tar zxvf dynamodb_local_latest.tar.gz Start Dynamo DB locally java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb Create fake aws credential  edit .aws/config  [profile default] output = text region = ap-southeast-1 edit .aws/credentials  [default] aws_access_key_id = fakeMyKeyId aws_secret_access_key = fakeSecretAccessKey Create demo table  create table json file, user_table.json  { &quot;TableName&quot;: &quot;user-demo-table&quot;, &quot;AttributeDefinitions&quot;: [ { &quot;AttributeName&quot;: &quot;user_name&quot;, &quot;AttributeType&quot;: &quot;S&quot; }], &quot;KeySchema&quot;: [{ &quot;KeyType&quot;: &quot;HASH&quot;, &quot;AttributeName&quot;: &quot;user_name&quot; }], &quot;ProvisionedThroughput&quot;: { &quot;WriteCapacityUnits&quot;: 5, &quot;ReadCapacityUnits&quot;: 5 } } create table  aws dynamodb create-table --region ap-southeast-1 --cli-input-json file://user_table."><meta itemprop="datePublished" content="2021-06-04T08:17:59&#43;08:00" />
+<meta itemprop="description" content="Download DynamoDB wget https://s3.ap-southeast-1.amazonaws.com/dynamodb-local-singapore/dynamodb_local_latest.tar.gz Extract file tar zxvf dynamodb_local_latest.tar.gz Start Dynamo DB locally We can start Dynamo DB service with docker or with JAVA.
+ start with docker  edit docker-compose.yml
+version: &#39;3.8&#39; services: dynamodb-local: command: &quot;-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ./data&quot; image: &quot;amazon/dynamodb-local:latest&quot; container_name: dynamodb-local ports: - &quot;8000:8000&quot; volumes: - &quot;./docker/dynamodb:/home/dynamodblocal/data&quot; working_dir: /home/dynamodblocal start container
+docker-compose up -d start with JAVA directly  java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb Create fake aws credential  edit ."><meta itemprop="datePublished" content="2021-06-04T08:17:59&#43;08:00" />
 <meta itemprop="dateModified" content="2021-06-04T08:17:59&#43;08:00" />
-<meta itemprop="wordCount" content="111">
+<meta itemprop="wordCount" content="159">
 <meta itemprop="keywords" content="golang,dynamodb," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="How to Develop DynamoDB Locally"/>
-<meta name="twitter:description" content="Download DynamoDB wget https://s3.ap-southeast-1.amazonaws.com/dynamodb-local-singapore/dynamodb_local_latest.tar.gz Extract file tar zxvf dynamodb_local_latest.tar.gz Start Dynamo DB locally java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb Create fake aws credential  edit .aws/config  [profile default] output = text region = ap-southeast-1 edit .aws/credentials  [default] aws_access_key_id = fakeMyKeyId aws_secret_access_key = fakeSecretAccessKey Create demo table  create table json file, user_table.json  { &quot;TableName&quot;: &quot;user-demo-table&quot;, &quot;AttributeDefinitions&quot;: [ { &quot;AttributeName&quot;: &quot;user_name&quot;, &quot;AttributeType&quot;: &quot;S&quot; }], &quot;KeySchema&quot;: [{ &quot;KeyType&quot;: &quot;HASH&quot;, &quot;AttributeName&quot;: &quot;user_name&quot; }], &quot;ProvisionedThroughput&quot;: { &quot;WriteCapacityUnits&quot;: 5, &quot;ReadCapacityUnits&quot;: 5 } } create table  aws dynamodb create-table --region ap-southeast-1 --cli-input-json file://user_table."/>
+<meta name="twitter:description" content="Download DynamoDB wget https://s3.ap-southeast-1.amazonaws.com/dynamodb-local-singapore/dynamodb_local_latest.tar.gz Extract file tar zxvf dynamodb_local_latest.tar.gz Start Dynamo DB locally We can start Dynamo DB service with docker or with JAVA.
+ start with docker  edit docker-compose.yml
+version: &#39;3.8&#39; services: dynamodb-local: command: &quot;-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ./data&quot; image: &quot;amazon/dynamodb-local:latest&quot; container_name: dynamodb-local ports: - &quot;8000:8000&quot; volumes: - &quot;./docker/dynamodb:/home/dynamodblocal/data&quot; working_dir: /home/dynamodblocal start container
+docker-compose up -d start with JAVA directly  java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb Create fake aws credential  edit ."/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -316,6 +328,27 @@
 </code></pre><h2 id="extract-file">Extract file</h2>
 <pre><code>tar zxvf dynamodb_local_latest.tar.gz
 </code></pre><h2 id="start-dynamo-db-locally">Start Dynamo DB locally</h2>
+<p>We can start Dynamo DB service with docker or with JAVA.</p>
+<ol>
+<li>start with docker</li>
+</ol>
+<p>edit docker-compose.yml</p>
+<pre><code>version: '3.8'
+services:
+  dynamodb-local:
+    command: &quot;-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ./data&quot;
+    image: &quot;amazon/dynamodb-local:latest&quot;
+    container_name: dynamodb-local
+    ports:
+      - &quot;8000:8000&quot;
+    volumes:
+      - &quot;./docker/dynamodb:/home/dynamodblocal/data&quot;
+    working_dir: /home/dynamodblocal
+</code></pre><p>start container</p>
+<pre><code>docker-compose up -d
+</code></pre><ol start="2">
+<li>start with JAVA directly</li>
+</ol>
 <pre><code>java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
 </code></pre><h2 id="create-fake-aws-credential">Create fake aws credential</h2>
 <ol>
