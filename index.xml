@@ -6,10 +6,74 @@
     <description>Recent content on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 26 May 2021 15:23:15 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 04 Jun 2021 08:17:59 +0800</lastBuildDate>
     
         <atom:link href="http://anakin.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How to Develop DynamoDB Locally</title>
+      <link>http://anakin.github.io/post/develop-dynamodb-locally/</link>
+      <pubDate>Fri, 04 Jun 2021 08:17:59 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/develop-dynamodb-locally/</guid>
+      
+        <description>&lt;h2 id=&#34;download-dynamodb&#34;&gt;Download DynamoDB&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;wget https://s3.ap-southeast-1.amazonaws.com/dynamodb-local-singapore/dynamodb_local_latest.tar.gz
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;extract-file&#34;&gt;Extract file&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;tar zxvf dynamodb_local_latest.tar.gz
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;start-dynamo-db-locally&#34;&gt;Start Dynamo DB locally&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;create-fake-aws-credential&#34;&gt;Create fake aws credential&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;edit .aws/config&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;[profile default]
+output = text
+region = ap-southeast-1
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;edit .aws/credentials&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;[default]
+aws_access_key_id = fakeMyKeyId
+aws_secret_access_key = fakeSecretAccessKey
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;create-demo-table&#34;&gt;Create demo table&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;create table json file, user_table.json&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;TableName&amp;quot;: &amp;quot;user-demo-table&amp;quot;,
+  &amp;quot;AttributeDefinitions&amp;quot;: [
+    {
+      &amp;quot;AttributeName&amp;quot;: &amp;quot;user_name&amp;quot;,
+      &amp;quot;AttributeType&amp;quot;: &amp;quot;S&amp;quot;
+    }],
+  &amp;quot;KeySchema&amp;quot;: [{
+    &amp;quot;KeyType&amp;quot;: &amp;quot;HASH&amp;quot;,
+    &amp;quot;AttributeName&amp;quot;: &amp;quot;user_name&amp;quot;
+  }],
+  &amp;quot;ProvisionedThroughput&amp;quot;: {
+    &amp;quot;WriteCapacityUnits&amp;quot;: 5,
+    &amp;quot;ReadCapacityUnits&amp;quot;: 5
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;create table&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;aws dynamodb create-table --region ap-southeast-1 --cli-input-json file://user_table.json --endpoint-url http://localhost:8000
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;connect-db-via-golang&#34;&gt;Connect DB via golang&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;	const (
+	REGION     = &amp;quot;ap-southeast-1&amp;quot;
+	EndPoint = &amp;quot;http://localhost:8000&amp;quot;
+)
+	sess, err := session.NewSession(&amp;amp;aws.Config{
+		Region: aws.String(REGION),
+		Endpoint: aws.String(EndPoint),
+	})
+    db := dynamodb.New(sess)
+&lt;/code&gt;&lt;/pre&gt;</description>
+      
+    </item>
     
     <item>
       <title>Using Aws Documentdb With Golang</title>
@@ -2812,57 +2876,6 @@ func main() {
 	defer lock.Unlock()
 }
 &lt;/code&gt;&lt;/pre&gt;</description>
-      
-    </item>
-    
-    <item>
-      <title>TCP协议细节学习</title>
-      <link>http://anakin.github.io/post/tcp-detail/</link>
-      <pubDate>Tue, 14 May 2019 12:34:43 +0800</pubDate>
-      
-      <guid>http://anakin.github.io/post/tcp-detail/</guid>
-      
-        <description>&lt;h2 id=&#34;tcp协议中包含ip信息么&#34;&gt;TCP协议中包含ip信息么&lt;/h2&gt;
-&lt;p&gt;TCP协议中并不包含ip信息，ip信息是在第三层处理的，TCP中处理的是端口信息&lt;/p&gt;
-&lt;h2 id=&#34;mss的值是如何计算的&#34;&gt;MSS的值是如何计算的&lt;/h2&gt;
-&lt;p&gt;TCP协议中可选的MSS（Maximum Segment Size，最大报文长度））参数，一般使用MTU代替，值为1460。这个值是怎么来的呢？
-Maximum Transmission Unit，缩写MTU，中文名是：最大传输单元。
-假设MTU值和IP数据包大小一致，一个IP数据包的大小是：65535，那么加上以太网帧头和为，一个以太网帧的大小就是：65535 + 14 + 4 = 65553，看起来似乎很完美，发送方也不需要拆包，接收方也不需要重组。
-那么假设我们现在的带宽是：100Mbps，因为以太网帧是传输中的最小可识别单元，再往下就是0101所对应的光信号了，所以我们的一条带宽同时只能发送一个以太网帧。如果同时发送多个，那么对端就无法重组成一个以太网帧了，在100Mbps的带宽中（假设中间没有损耗），我们计算一下发送这一帧需要的时间：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;( 65553 * 8 ) / ( 100 * 1024 * 1024 ) ≈ 0.005(s)
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在100M网络下传输一帧就需要5ms，也就是说这5ms其他进程发送不了任何数据。如果是早先的电话拨号，网速只有2M的情况下：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;( 65553 * 8 ) / ( 2 * 1024 * 1024 ) ≈ 0.100(s)
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;100ms，这简直是噩梦。其实这就像红绿灯，时间要设置合理，交替通行，不然同一个方向如果一直是绿灯，那么另一个方向就要堵成翔了。
-既然大了不行，那设置小一点可以么？
-假设MTU值设置为100，那么单个帧传输的时间，在2Mbps带宽下需要：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;( 100 * 8 ) / ( 2 * 1024 * 1024 ) * 1000 ≈ 5(ms)
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;时间上已经能接受了，问题在于，不管MTU设置为多少，以太网头帧尾大小是固定的，都是14 + 4，所以在MTU为100的时候，一个以太网帧的传输效率为：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;( 100 - 14 - 4 ) / 100 = 82%
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;写成公式就是：( T - 14 - 4 ) / T，当T趋于无穷大的时候，效率接近100%，也就是MTU的值越大，传输效率最高，但是基于上一点传输时间的问题，来个折中的选择吧，既然头加尾是18，那就凑个整来个1500，总大小就是1518，传输效率：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;1500 / 1518 =  98.8%
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;100Mbps传输时间：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;( 1518 * 8 ) / ( 100 * 1024 * 1024 ) * 1000 = 0.11(ms)
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;2Mbps传输时间：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;( 1518 * 8 ) / ( 2 * 1024 * 1024 ) * 1000 = 5.79(ms)
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;总体上时间都还能接受
-因此，1500，是一个折中的结果而已，这就是为啥路由器上一般都设置成这个值。
-另外，如果使用PPPoE协议（ADSL）,就需要设置成更小的值，为啥呢，。
-PPPoE协议头信息为:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;| VER(4bit) | TYPE(4bit) | CODE(8bit) | SESSION-ID(16bit) | LENGTH(16bit) |
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这里总共是48位，也就是6个字节，那么另外2个字节是什么呢？答案是PPP协议的ID号，占用两个字节，所以在PPPoE环境下，最佳MTU值应该是：1500 - 4 - 2 = 1492
-说回来，MTU的值的计算，需要从1500中减去IP数据包包头的大小20Bytes和TCP数据段的包头20Bytes，最后就得到了1460。&lt;/p&gt;
-&lt;h2 id=&#34;四次挥手的原因&#34;&gt;四次挥手的原因&lt;/h2&gt;
-&lt;p&gt;TCP连接是全双工的，即一端接收到FIN报时，对端虽然不再能发送数据，但是可以接收数据，所以需要两边都关闭连接才算完全关闭了这条TCP连接。&lt;/p&gt;
-&lt;h2 id=&#34;time-wait状态&#34;&gt;TIME-WAIT状态&lt;/h2&gt;
-&lt;p&gt;主动关闭的一方收到对端发出的FIN报之后，就从FIN-WAIT-2状态切换到TIME-WAIT状态了，再等待2MSL时间才再切换到CLOSED状态。这么做的原因在于：&lt;/p&gt;
-&lt;p&gt;确保被动关闭的一方有足够的时间收到ACK，如果没有收到会触发重传。
-有足够的时间，以让该连接不会与后面的连接混在一起。
-TIME-WAIT状态如果过多，会占用系统资源。Linux下有几个参数可以调整TIME-WAIT状态时间：&lt;/p&gt;
-&lt;p&gt;net.ipv4.tcp_tw_reuse = 1 表示开启重用。允许将TIME-WAIT sockets重新用于新的TCP连接，默认为0，表示关闭。&lt;/p&gt;
-&lt;p&gt;net.ipv4.tcp_tw_recycle = 1 表示开启TCP连接中TIME-WAIT sockets的快速回收，默认为0，表示关闭。&lt;/p&gt;
-&lt;p&gt;net.ipv4.tcp_max_tw_buckets = 5000表示系统同时保持TIME_WAIT套接字的最大数量，如果超过这个数字，TIME_WAIT套接字将立刻被清除并打印警告信息。默认为180000，改为5000。&lt;/p&gt;
-&lt;p&gt;然而，从TCP状态转换图可以看出，主动进行关闭的链接才会进入TIME-WAIT状态，所以最好的办法：尽量不要让服务器主动关闭链接，除非一些异常情况，如客户端协议错误、客户端超时等等。&lt;/p&gt;
-</description>
       
     </item>
     

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>dynamodb on Anakin- 奔向NB的生活</title>
+    <link>http://anakin.github.io/tags/dynamodb/</link>
+    <description>Recent content in dynamodb on Anakin- 奔向NB的生活</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 04 Jun 2021 08:17:59 +0800</lastBuildDate><atom:link href="http://anakin.github.io/tags/dynamodb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Develop DynamoDB Locally</title>
+      <link>http://anakin.github.io/post/develop-dynamodb-locally/</link>
+      <pubDate>Fri, 04 Jun 2021 08:17:59 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/develop-dynamodb-locally/</guid>
+      <description>Download DynamoDB wget https://s3.ap-southeast-1.amazonaws.com/dynamodb-local-singapore/dynamodb_local_latest.tar.gz Extract file tar zxvf dynamodb_local_latest.tar.gz Start Dynamo DB locally java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb Create fake aws credential  edit .aws/config  [profile default] output = text region = ap-southeast-1 edit .aws/credentials  [default] aws_access_key_id = fakeMyKeyId aws_secret_access_key = fakeSecretAccessKey Create demo table  create table json file, user_table.json  { &amp;quot;TableName&amp;quot;: &amp;quot;user-demo-table&amp;quot;, &amp;quot;AttributeDefinitions&amp;quot;: [ { &amp;quot;AttributeName&amp;quot;: &amp;quot;user_name&amp;quot;, &amp;quot;AttributeType&amp;quot;: &amp;quot;S&amp;quot; }], &amp;quot;KeySchema&amp;quot;: [{ &amp;quot;KeyType&amp;quot;: &amp;quot;HASH&amp;quot;, &amp;quot;AttributeName&amp;quot;: &amp;quot;user_name&amp;quot; }], &amp;quot;ProvisionedThroughput&amp;quot;: { &amp;quot;WriteCapacityUnits&amp;quot;: 5, &amp;quot;ReadCapacityUnits&amp;quot;: 5 } } create table  aws dynamodb create-table --region ap-southeast-1 --cli-input-json file://user_table.</description>
+    </item>
+    
+  </channel>
+</rss>

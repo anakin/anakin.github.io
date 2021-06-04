@@ -6,7 +6,16 @@
     <description>Recent content in golang on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 26 May 2021 15:23:15 +0800</lastBuildDate><atom:link href="http://anakin.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 04 Jun 2021 08:17:59 +0800</lastBuildDate><atom:link href="http://anakin.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Develop DynamoDB Locally</title>
+      <link>http://anakin.github.io/post/develop-dynamodb-locally/</link>
+      <pubDate>Fri, 04 Jun 2021 08:17:59 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/develop-dynamodb-locally/</guid>
+      <description>Download DynamoDB wget https://s3.ap-southeast-1.amazonaws.com/dynamodb-local-singapore/dynamodb_local_latest.tar.gz Extract file tar zxvf dynamodb_local_latest.tar.gz Start Dynamo DB locally java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb Create fake aws credential  edit .aws/config  [profile default] output = text region = ap-southeast-1 edit .aws/credentials  [default] aws_access_key_id = fakeMyKeyId aws_secret_access_key = fakeSecretAccessKey Create demo table  create table json file, user_table.json  { &amp;quot;TableName&amp;quot;: &amp;quot;user-demo-table&amp;quot;, &amp;quot;AttributeDefinitions&amp;quot;: [ { &amp;quot;AttributeName&amp;quot;: &amp;quot;user_name&amp;quot;, &amp;quot;AttributeType&amp;quot;: &amp;quot;S&amp;quot; }], &amp;quot;KeySchema&amp;quot;: [{ &amp;quot;KeyType&amp;quot;: &amp;quot;HASH&amp;quot;, &amp;quot;AttributeName&amp;quot;: &amp;quot;user_name&amp;quot; }], &amp;quot;ProvisionedThroughput&amp;quot;: { &amp;quot;WriteCapacityUnits&amp;quot;: 5, &amp;quot;ReadCapacityUnits&amp;quot;: 5 } } create table  aws dynamodb create-table --region ap-southeast-1 --cli-input-json file://user_table.</description>
+    </item>
+    
     <item>
       <title>Using Aws Documentdb With Golang</title>
       <link>http://anakin.github.io/post/using-aws-documentdb-with-golang/</link>

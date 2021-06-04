@@ -277,6 +277,37 @@
   <header class="post-header">
     <h1 class="post-title">
       
+      <a class="post-link" href="/post/develop-dynamodb-locally/">How to Develop DynamoDB Locally</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2021-06-04" class="post-time">
+        2021-06-04
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      Download DynamoDB wget https://s3.ap-southeast-1.amazonaws.com/dynamodb-local-singapore/dynamodb_local_latest.tar.gz Extract file tar zxvf dynamodb_local_latest.tar.gz Start Dynamo DB locally java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb Create fake aws credential  edit .aws/config  [profile default] output = text region = ap-southeast-1 edit .aws/credentials  [default] aws_access_key_id = fakeMyKeyId aws_secret_access_key = fakeSecretAccessKey Create demo table  create table json file, user_table.json  { &quot;TableName&quot;: &quot;user-demo-table&quot;, &quot;AttributeDefinitions&quot;: [ { &quot;AttributeName&quot;: &quot;user_name&quot;, &quot;AttributeType&quot;: &quot;S&quot; }], &quot;KeySchema&quot;: [{ &quot;KeyType&quot;: &quot;HASH&quot;, &quot;AttributeName&quot;: &quot;user_name&quot; }], &quot;ProvisionedThroughput&quot;: { &quot;WriteCapacityUnits&quot;: 5, &quot;ReadCapacityUnits&quot;: 5 } } create table  aws dynamodb create-table --region ap-southeast-1 --cli-input-json file://user_table.
+    </div>
+    <div class="read-more">
+      <a href="/post/develop-dynamodb-locally/" class="read-more-link">Read more</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
       <a class="post-link" href="/post/using-aws-documentdb-with-golang/">Using Aws Documentdb With Golang</a>
     </h1>
     
@@ -547,37 +578,6 @@
     </div>
     <div class="read-more">
       <a href="/post/php-laravel-grpc/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/gokit-example/">Gokit创建微服务的例子(翻译)</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-27" class="post-time">
-        2019-05-27
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      第一原理 让我们创建一个Go kit 服务，我们暂时只用一个main.go文件。你的事务逻辑 你的服务从你的事务逻辑开始。在Go kit里，我们用一个in
-    </div>
-    <div class="read-more">
-      <a href="/post/gokit-example/" class="read-more-link">Read more</a>
     </div>
     
   </div>

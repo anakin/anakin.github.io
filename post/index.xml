@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 26 May 2021 15:23:15 +0800</lastBuildDate><atom:link href="http://anakin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 04 Jun 2021 08:17:59 +0800</lastBuildDate><atom:link href="http://anakin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Develop DynamoDB Locally</title>
+      <link>http://anakin.github.io/post/develop-dynamodb-locally/</link>
+      <pubDate>Fri, 04 Jun 2021 08:17:59 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/develop-dynamodb-locally/</guid>
+      <description>Download DynamoDB wget https://s3.ap-southeast-1.amazonaws.com/dynamodb-local-singapore/dynamodb_local_latest.tar.gz Extract file tar zxvf dynamodb_local_latest.tar.gz Start Dynamo DB locally java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb Create fake aws credential  edit .aws/config  [profile default] output = text region = ap-southeast-1 edit .aws/credentials  [default] aws_access_key_id = fakeMyKeyId aws_secret_access_key = fakeSecretAccessKey Create demo table  create table json file, user_table.json  { &amp;quot;TableName&amp;quot;: &amp;quot;user-demo-table&amp;quot;, &amp;quot;AttributeDefinitions&amp;quot;: [ { &amp;quot;AttributeName&amp;quot;: &amp;quot;user_name&amp;quot;, &amp;quot;AttributeType&amp;quot;: &amp;quot;S&amp;quot; }], &amp;quot;KeySchema&amp;quot;: [{ &amp;quot;KeyType&amp;quot;: &amp;quot;HASH&amp;quot;, &amp;quot;AttributeName&amp;quot;: &amp;quot;user_name&amp;quot; }], &amp;quot;ProvisionedThroughput&amp;quot;: { &amp;quot;WriteCapacityUnits&amp;quot;: 5, &amp;quot;ReadCapacityUnits&amp;quot;: 5 } } create table  aws dynamodb create-table --region ap-southeast-1 --cli-input-json file://user_table.</description>
+    </item>
+    
     <item>
       <title>Using Aws Documentdb With Golang</title>
       <link>http://anakin.github.io/post/using-aws-documentdb-with-golang/</link>
@@ -177,15 +186,6 @@
       
       <guid>http://anakin.github.io/post/golang-redis-lock/</guid>
       <description>原理 使用SETNX命令(SET if Not eXists) SETNX key value 将 key 的值设为 value，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。 设置成功，返回 1 。</description>
-    </item>
-    
-    <item>
-      <title>TCP协议细节学习</title>
-      <link>http://anakin.github.io/post/tcp-detail/</link>
-      <pubDate>Tue, 14 May 2019 12:34:43 +0800</pubDate>
-      
-      <guid>http://anakin.github.io/post/tcp-detail/</guid>
-      <description>TCP协议中包含ip信息么 TCP协议中并不包含ip信息，ip信息是在第三层处理的，TCP中处理的是端口信息 MSS的值是如何计算的 TCP协议中</description>
     </item>
     
   </channel>
