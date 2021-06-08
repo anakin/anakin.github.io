@@ -78,7 +78,7 @@ docker-compose up -d start with JAVA directly  java -Djava.library.path=./Dynamo
 version: &#39;3.8&#39; services: dynamodb-local: command: &quot;-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ./data&quot; image: &quot;amazon/dynamodb-local:latest&quot; container_name: dynamodb-local ports: - &quot;8000:8000&quot; volumes: - &quot;./docker/dynamodb:/home/dynamodblocal/data&quot; working_dir: /home/dynamodblocal start container
 docker-compose up -d start with JAVA directly  java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb Create fake aws credential  edit ."><meta itemprop="datePublished" content="2021-06-04T08:17:59&#43;08:00" />
 <meta itemprop="dateModified" content="2021-06-04T08:17:59&#43;08:00" />
-<meta itemprop="wordCount" content="159">
+<meta itemprop="wordCount" content="194">
 <meta itemprop="keywords" content="golang,dynamodb," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="How to Develop DynamoDB Locally"/>
 <meta name="twitter:description" content="Download DynamoDB wget https://s3.ap-southeast-1.amazonaws.com/dynamodb-local-singapore/dynamodb_local_latest.tar.gz Extract file tar zxvf dynamodb_local_latest.tar.gz Start Dynamo DB locally We can start Dynamo DB service with docker or with JAVA.
@@ -316,6 +316,7 @@ docker-compose up -d start with JAVA directly  java -Djava.library.path=./Dynamo
     <li><a href="#create-fake-aws-credential">Create fake aws credential</a></li>
     <li><a href="#create-demo-table">Create demo table</a></li>
     <li><a href="#connect-db-via-golang">Connect DB via golang</a></li>
+    <li><a href="#integration-with-lambda-locally">Integration with lambda locally</a></li>
   </ul>
 </nav>
   </div>
@@ -397,6 +398,20 @@ aws_secret_access_key = fakeSecretAccessKey
 		Endpoint: aws.String(EndPoint),
 	})
     db := dynamodb.New(sess)
+</code></pre><h2 id="integration-with-lambda-locally">Integration with lambda locally</h2>
+<ol>
+<li>edit tempalte.yaml and samconfig.toml for lambda delopment with SAM</li>
+<li>change DB endpoint to</li>
+</ol>
+<pre><code>http://docker.for.mac.localhost:8000
+</code></pre><ol start="3">
+<li>start local lambda api</li>
+</ol>
+<pre><code>sam local start-api -p 3000
+</code></pre><ol start="4">
+<li>test api with cURL</li>
+</ol>
+<pre><code>curl -X POST http://127.0.0.1:3000/demo
 </code></pre>
     </div>
 

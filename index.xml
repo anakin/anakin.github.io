@@ -92,6 +92,20 @@ aws_secret_access_key = fakeSecretAccessKey
 		Endpoint: aws.String(EndPoint),
 	})
     db := dynamodb.New(sess)
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;integration-with-lambda-locally&#34;&gt;Integration with lambda locally&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;edit tempalte.yaml and samconfig.toml for lambda delopment with SAM&lt;/li&gt;
+&lt;li&gt;change DB endpoint to&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;http://docker.for.mac.localhost:8000
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;start local lambda api&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;sam local start-api -p 3000
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;test api with cURL&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;curl -X POST http://127.0.0.1:3000/demo
 &lt;/code&gt;&lt;/pre&gt;</description>
       
     </item>
