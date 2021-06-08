@@ -6,7 +6,17 @@
     <description>Recent content in Posts on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 04 Jun 2021 08:17:59 +0800</lastBuildDate><atom:link href="http://anakin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Jun 2021 17:06:12 +0800</lastBuildDate><atom:link href="http://anakin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Create AWS Vpc and Ec2 via Terraform</title>
+      <link>http://anakin.github.io/post/terraform-create-vpc-ec2/</link>
+      <pubDate>Tue, 08 Jun 2021 17:06:12 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/terraform-create-vpc-ec2/</guid>
+      <description>What we will do  Create new VPC Create an Internet Gateway and a NAT gateway Define subnets Create security group Create EC2 instance Integration with gitlab CI  Define terraform file We will create few .tf files:
+ backend.tf for integration with gitlab CI, we need save state file on AWS S3 bucket, otherwise Terraform will create resources every time we run CI pipeline.  terraform { backend &amp;quot;s3&amp;quot; { key = &amp;quot;terraform-pipeline/terraform.</description>
+    </item>
+    
     <item>
       <title>How to Develop DynamoDB Locally</title>
       <link>http://anakin.github.io/post/develop-dynamodb-locally/</link>
@@ -180,15 +190,6 @@ docker-compose up -d start with JAVA directly  java -Djava.library.path=./Dynamo
       
       <guid>http://anakin.github.io/post/redis-rdb-aof/</guid>
       <description>redis的持久化有两种方式，RDB和AOF RDB: 在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成一</description>
-    </item>
-    
-    <item>
-      <title>Golang利用redis实现分布式锁</title>
-      <link>http://anakin.github.io/post/golang-redis-lock/</link>
-      <pubDate>Thu, 16 May 2019 20:11:09 +0800</pubDate>
-      
-      <guid>http://anakin.github.io/post/golang-redis-lock/</guid>
-      <description>原理 使用SETNX命令(SET if Not eXists) SETNX key value 将 key 的值设为 value，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。 设置成功，返回 1 。</description>
     </item>
     
   </channel>

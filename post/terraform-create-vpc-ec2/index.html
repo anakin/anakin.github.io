@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Archive - Anakin- 奔向NB的生活</title>
+  <title>Create AWS Vpc and Ec2 via Terraform - Anakin- 奔向NB的生活</title>
   
 
 <meta name="renderer" content="webkit" />
@@ -23,7 +23,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="Anakin" />
-  <meta name="description" content="anakin sun golang github." />
+  <meta name="description" content="What we will do  Create new VPC Create an Internet Gateway and a NAT gateway Define subnets Create security group Create EC2 instance Integration with gitlab CI  Define terraform file We will create few .tf files:
+ backend.tf for integration with gitlab CI, we need save state file on AWS S3 bucket, otherwise Terraform will create resources every time we run CI pipeline.  terraform { backend &amp;quot;s3&amp;quot; { key = &amp;quot;terraform-pipeline/terraform." />
+
   <meta name="keywords" content="anakin, sun, github" />
 
 
@@ -34,8 +36,8 @@
 <meta name="generator" content="Hugo 0.83.1" />
 
 
-<link rel="canonical" href="http://anakin.github.io/post/" />
-<link href="/post/index.xml" rel="alternate" type="application/rss+xml" title="Anakin- 奔向NB的生活" />
+<link rel="canonical" href="http://anakin.github.io/post/terraform-create-vpc-ec2/" />
+
 
 
 
@@ -58,15 +60,23 @@
 
 
 
-<meta property="og:title" content="Posts" />
-<meta property="og:description" content="anakin sun golang github." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="http://anakin.github.io/post/" />
+<meta property="og:title" content="Create AWS Vpc and Ec2 via Terraform" />
+<meta property="og:description" content="What we will do  Create new VPC Create an Internet Gateway and a NAT gateway Define subnets Create security group Create EC2 instance Integration with gitlab CI  Define terraform file We will create few .tf files:
+ backend.tf for integration with gitlab CI, we need save state file on AWS S3 bucket, otherwise Terraform will create resources every time we run CI pipeline.  terraform { backend &quot;s3&quot; { key = &quot;terraform-pipeline/terraform." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://anakin.github.io/post/terraform-create-vpc-ec2/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-06-08T17:06:12&#43;08:00" />
+<meta property="article:modified_time" content="2021-06-08T17:06:12&#43;08:00" />
 
-<meta itemprop="name" content="Posts">
-<meta itemprop="description" content="anakin sun golang github."><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Posts"/>
-<meta name="twitter:description" content="anakin sun golang github."/>
+<meta itemprop="name" content="Create AWS Vpc and Ec2 via Terraform">
+<meta itemprop="description" content="What we will do  Create new VPC Create an Internet Gateway and a NAT gateway Define subnets Create security group Create EC2 instance Integration with gitlab CI  Define terraform file We will create few .tf files:
+ backend.tf for integration with gitlab CI, we need save state file on AWS S3 bucket, otherwise Terraform will create resources every time we run CI pipeline.  terraform { backend &quot;s3&quot; { key = &quot;terraform-pipeline/terraform."><meta itemprop="datePublished" content="2021-06-08T17:06:12&#43;08:00" />
+<meta itemprop="dateModified" content="2021-06-08T17:06:12&#43;08:00" />
+<meta itemprop="wordCount" content="444">
+<meta itemprop="keywords" content="terraform,aws," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Create AWS Vpc and Ec2 via Terraform"/>
+<meta name="twitter:description" content="What we will do  Create new VPC Create an Internet Gateway and a NAT gateway Define subnets Create security group Create EC2 instance Integration with gitlab CI  Define terraform file We will create few .tf files:
+ backend.tf for integration with gitlab CI, we need save state file on AWS S3 bucket, otherwise Terraform will create resources every time we run CI pipeline.  terraform { backend &quot;s3&quot; { key = &quot;terraform-pipeline/terraform."/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -218,7 +228,7 @@
 
       </li>
     
-        <li class="menu-item active">
+        <li class="menu-item">
         
           
           
@@ -265,176 +275,281 @@
     <main id="main" class="main bg-llight">
       <div class="content-wrapper">
         <div id="content" class="content container">
-          
-<section id="archive" class="archive">
+          <article class="post bg-white">
     
-      <div class="collection-title">
-        <h2 class="archive-year">2019</h2>
+    <header class="post-header">
+      <h1 class="post-title">Create AWS Vpc and Ec2 via Terraform</h1>
+      
+      <div class="post-meta">
+        <time datetime="2021-06-08" class="post-time">
+          2021-06-08
+        </time>
+        
+        
+
+        
+        
+
+        
+        
       </div>
+    </header>
 
-    <div class="archive-post">
-      <time datetime="2019-05-31" class="archive-post-time">
-        2019-05-31
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/php-laravel-grpc/" class="archive-post-link">
-          Laravel整合gRPC
-        </a>
-      </span>
-    </div>
     
-
-    <div class="archive-post">
-      <time datetime="2019-05-27" class="archive-post-time">
-        2019-05-27
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/gokit-example/" class="archive-post-link">
-          Gokit创建微服务的例子(翻译)
-        </a>
-      </span>
-    </div>
     
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Table of Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-we-will-do">What we will do</a></li>
+    <li><a href="#define-terraform-file">Define terraform file</a></li>
+    <li><a href="#define-gitlab-ci-file">Define gitlab CI file</a></li>
+    <li><a href="#conclusion">conclusion</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
 
-    <div class="archive-post">
-      <time datetime="2019-05-23" class="archive-post-time">
-        2019-05-23
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/create-k8s-4/" class="archive-post-link">
-          手动搭建kubernetes集群（四）
-        </a>
-      </span>
-    </div>
     
+    <div class="post-content">
+      <h2 id="what-we-will-do">What we will do</h2>
+<ul>
+<li>Create new VPC</li>
+<li>Create an Internet Gateway and a NAT gateway</li>
+<li>Define subnets</li>
+<li>Create security group</li>
+<li>Create EC2 instance</li>
+<li>Integration with gitlab CI</li>
+</ul>
+<h2 id="define-terraform-file">Define terraform file</h2>
+<p>We will create few .tf files:</p>
+<ol>
+<li>backend.tf
+for integration with gitlab CI, we need save state file on AWS S3 bucket, otherwise Terraform will create resources every time we run CI pipeline.</li>
+</ol>
+<pre><code>terraform {
+  backend &quot;s3&quot; {
+    key     = &quot;terraform-pipeline/terraform.tfstate&quot;
+    region  = &quot;cn-north-1&quot;
+    bucket  = &quot;dev-terraform-state&quot;
+    profile = &quot;prod-bj-profile&quot;
+  }
+}
+</code></pre><ol start="2">
+<li>provider.tf
+define terraform provider, aws for this article</li>
+</ol>
+<pre><code>provider &quot;aws&quot; {
+  access_key = &quot;aws-access-key&quot;
+  secret_key = &quot;aws-secret-key&quot;
+  region     = &quot;cn-north-1&quot;
+}
+</code></pre><ol start="3">
+<li>vpc.tf
+define resources we need to create here, including VPC, EC2, security group etc.</li>
+</ol>
+<pre><code>resource &quot;aws_vpc&quot; &quot;DEMO-BJ-VPC&quot; {
+  cidr_block           = &quot;192.168.0.0/16&quot;
+  enable_dns_hostnames = &quot;true&quot;
+  tags = {
+    Name = &quot;DEMO-BJ-VPC&quot;
+  }
+}
+resource &quot;aws_internet_gateway&quot; &quot;DEMO-BJ-GW&quot; {
+  vpc_id = aws_vpc.DEMO-BJ-VPC.id
+  tags = {
+    Name = &quot;demo-bj-gw&quot;
+  }
+}
 
-    <div class="archive-post">
-      <time datetime="2019-05-22" class="archive-post-time">
-        2019-05-22
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/golang-etcd-lock/" class="archive-post-link">
-          Golang通过ETCD实现分布式锁
-        </a>
-      </span>
+resource &quot;aws_subnet&quot; &quot;DEMO-BJ-public-a-1&quot; {
+  vpc_id            = aws_vpc.DEMO-BJ-VPC.id
+  cidr_block        = &quot;192.168.0.0/24&quot;
+  availability_zone = &quot;cn-north-1a&quot;
+  tags = {
+    Name = &quot;DEMO-BJ-public-a-1&quot;
+  }
+}
+resource &quot;aws_subnet&quot; &quot;DEMO-BJ-public-a-2&quot; {
+  vpc_id            = aws_vpc.DEMO-BJ-VPC.id
+  cidr_block        = &quot;192.168.1.0/24&quot;
+  availability_zone = &quot;cn-north-1a&quot;
+  tags = {
+    Name = &quot;DEMO-BJ-public-a-2&quot;
+  }
+}
+
+resource &quot;aws_route_table&quot; &quot;cn-north-1a-demo&quot; {
+  vpc_id = aws_vpc.DEMO-BJ-VPC.id
+
+  route {
+    cidr_block = &quot;0.0.0.0/0&quot;
+    gateway_id = aws_internet_gateway.DEMO-BJ-GW.id
+  }
+  tags = {
+    Name = &quot;cn-north-1a-demo&quot;
+  }
+}
+
+resource &quot;aws_main_route_table_association&quot; &quot;cn-north-1a-demo-public&quot; {
+  vpc_id = aws_vpc.DEMO-BJ-VPC.id
+  route_table_id = aws_route_table.cn-north-1a-demo.id
+}
+
+resource &quot;aws_security_group&quot; &quot;demo-bj-ec2-security-group&quot; {
+  name        = &quot;demo-bj-ec2-security-group&quot;
+  description = &quot;Allow incoming HTTP connections.&quot;
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = &quot;tcp&quot;
+    cidr_blocks = [&quot;0.0.0.0/0&quot;]
+  }
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = &quot;tcp&quot;
+    cidr_blocks = [&quot;0.0.0.0/0&quot;]
+  }
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = &quot;tcp&quot;
+    cidr_blocks = [&quot;0.0.0.0/0&quot;]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = &quot;-1&quot;
+    cidr_blocks = [&quot;0.0.0.0/0&quot;]
+  }
+  tags = {
+    Name = &quot;demo-bj-ec2-security-group&quot;
+  }
+  vpc_id = aws_vpc.DEMO-BJ-VPC.id
+}
+
+resource &quot;aws_eip&quot; &quot;demo-bj-ec2-eip-1&quot; {
+  instance = aws_instance.DEMO-BJ-WEB-SERVER.id
+  vpc      = true
+  tags = {
+    Name = &quot;demo-bj-eip&quot;
+  }
+}
+
+resource &quot;aws_instance&quot; &quot;DEMO-BJ-WEB-SERVER&quot; {
+  ami                         = &quot;ami-xxxxxxxxxx&quot;
+  availability_zone           = &quot;cn-north-1a&quot;
+  instance_type               = &quot;r5.large&quot;
+  key_name                    = &quot;DEMO-BJ-WEB_KeyPair&quot;
+  vpc_security_group_ids      = [&quot;${aws_security_group.demo-bj-ec2-security-group.id}&quot;]
+  subnet_id                   = aws_subnet.DEMO-BJ-public-a-1.id
+  associate_public_ip_address = true
+  source_dest_check           = true
+  iam_instance_profile        = &quot;AmazonSSMRoleForInstancesQuickSetup&quot;
+  tags = {
+    Name = &quot;DEMO-BJ-WEB-SERVER&quot;
+  }
+}
+</code></pre><p>for most of AWS resources, define resource name via tag &ldquo;Name&rdquo;</p>
+<ol start="4">
+<li>vars.tf
+define variables, like region</li>
+</ol>
+<pre><code>variable &quot;AWS_REGION&quot; {
+  default = &quot;cn-north-1&quot;
+}
+</code></pre><h2 id="define-gitlab-ci-file">Define gitlab CI file</h2>
+<p>edit gitlab-ci.yml file, content:</p>
+<pre><code>stages:
+ - apply
+
+APPLY:
+  stage: apply 
+  script:
+    - terraform init
+    - terraform plan -out main.tf
+    - terraform apply &quot;main.tf&quot;
+</code></pre><h2 id="conclusion">conclusion</h2>
+<p>Terraform is an awesome tool for managing resources on cloud platform, now you can run gitlab CI job to deploy vpc and EC2 instance in AWS.</p>
+
     </div>
+
     
-
-    <div class="archive-post">
-      <time datetime="2019-05-21" class="archive-post-time">
-        2019-05-21
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/fusion-static-ip/" class="archive-post-link">
-          给Mac上的Fusion虚拟机设置固定ip地址
-        </a>
-      </span>
-    </div>
     
-
-    <div class="archive-post">
-      <time datetime="2019-05-21" class="archive-post-time">
-        2019-05-21
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/create-k8s-3/" class="archive-post-link">
-          手动搭建kubernetes集群（三）
-        </a>
-      </span>
-    </div>
-    
-
-    <div class="archive-post">
-      <time datetime="2019-05-20" class="archive-post-time">
-        2019-05-20
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/create-k8s-2/" class="archive-post-link">
-          手动搭建kubernetes集群（二）
-        </a>
-      </span>
-    </div>
-    
-
-    <div class="archive-post">
-      <time datetime="2019-05-20" class="archive-post-time">
-        2019-05-20
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/create-k8s/" class="archive-post-link">
-          手动搭建kubernetes集群（一）
-        </a>
-      </span>
-    </div>
-    
-
-    <div class="archive-post">
-      <time datetime="2019-05-19" class="archive-post-time">
-        2019-05-19
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/etcd-mvcc/" class="archive-post-link">
-          Etcd实现MVCC的原理
-        </a>
-      </span>
-    </div>
-    
-
-    <div class="archive-post">
-      <time datetime="2019-05-17" class="archive-post-time">
-        2019-05-17
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/redis-rdb-aof/" class="archive-post-link">
-          Redis持久化
-        </a>
-      </span>
-    </div></section>
-
-
-
-
-
-
-  
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-  <nav class="pagination">
-    <ul>
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Anakin</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+      2021-06-08
       
-      <li >
-        <a href="/post/">1</a>
-      </li>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="http://anakin.github.io/tags/terraform/">terraform</a>
+          <a href="http://anakin.github.io/tags/aws/">aws</a>
+          
+        </div>
+
       
-      <li  class="active" >
-        <a href="/post/page/2/">2</a>
-      </li>
-      
-      <li >
-        <a href="/post/page/3/">3</a>
-      </li>
-      
-    </ul>
-  </nav>
+      <nav class="post-nav">
+        
+        
+          <a class="next" href="/post/develop-dynamodb-locally/">
+            <span class="next-text nav-default">How to Develop DynamoDB Locally</span>
+            <span class="prev-text nav-mobile">Next</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
+  </article>
 
   
   
 
+  
+  
 
+  
 
+  
+  
 
+  
+
+  
+
+  
+
+    
+
+  
 
         </div>
       </div>

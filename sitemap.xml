@@ -3,7 +3,42 @@
   
   <url>
     <loc>http://anakin.github.io/</loc>
-    <lastmod>2021-06-04T08:17:59+08:00</lastmod>
+    <lastmod>2021-06-08T17:06:12+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/aws/</loc>
+    <lastmod>2021-06-08T17:06:12+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/post/terraform-create-vpc-ec2/</loc>
+    <lastmod>2021-06-08T17:06:12+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/post/</loc>
+    <lastmod>2021-06-08T17:06:12+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/</loc>
+    <lastmod>2021-06-08T17:06:12+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://anakin.github.io/tags/terraform/</loc>
+    <lastmod>2021-06-08T17:06:12+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -25,27 +60,6 @@
   <url>
     <loc>http://anakin.github.io/post/develop-dynamodb-locally/</loc>
     <lastmod>2021-06-04T08:17:59+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://anakin.github.io/post/</loc>
-    <lastmod>2021-06-04T08:17:59+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://anakin.github.io/tags/</loc>
-    <lastmod>2021-06-04T08:17:59+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://anakin.github.io/tags/aws/</loc>
-    <lastmod>2021-05-26T15:23:15+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

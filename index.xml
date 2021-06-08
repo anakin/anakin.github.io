@@ -6,10 +6,182 @@
     <description>Recent content on Anakin- 奔向NB的生活</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 04 Jun 2021 08:17:59 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 08 Jun 2021 17:06:12 +0800</lastBuildDate>
     
         <atom:link href="http://anakin.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Create AWS Vpc and Ec2 via Terraform</title>
+      <link>http://anakin.github.io/post/terraform-create-vpc-ec2/</link>
+      <pubDate>Tue, 08 Jun 2021 17:06:12 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/terraform-create-vpc-ec2/</guid>
+      
+        <description>&lt;h2 id=&#34;what-we-will-do&#34;&gt;What we will do&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Create new VPC&lt;/li&gt;
+&lt;li&gt;Create an Internet Gateway and a NAT gateway&lt;/li&gt;
+&lt;li&gt;Define subnets&lt;/li&gt;
+&lt;li&gt;Create security group&lt;/li&gt;
+&lt;li&gt;Create EC2 instance&lt;/li&gt;
+&lt;li&gt;Integration with gitlab CI&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;define-terraform-file&#34;&gt;Define terraform file&lt;/h2&gt;
+&lt;p&gt;We will create few .tf files:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;backend.tf
+for integration with gitlab CI, we need save state file on AWS S3 bucket, otherwise Terraform will create resources every time we run CI pipeline.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;terraform {
+  backend &amp;quot;s3&amp;quot; {
+    key     = &amp;quot;terraform-pipeline/terraform.tfstate&amp;quot;
+    region  = &amp;quot;cn-north-1&amp;quot;
+    bucket  = &amp;quot;dev-terraform-state&amp;quot;
+    profile = &amp;quot;prod-bj-profile&amp;quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;provider.tf
+define terraform provider, aws for this article&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;provider &amp;quot;aws&amp;quot; {
+  access_key = &amp;quot;aws-access-key&amp;quot;
+  secret_key = &amp;quot;aws-secret-key&amp;quot;
+  region     = &amp;quot;cn-north-1&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;vpc.tf
+define resources we need to create here, including VPC, EC2, security group etc.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;resource &amp;quot;aws_vpc&amp;quot; &amp;quot;DEMO-BJ-VPC&amp;quot; {
+  cidr_block           = &amp;quot;192.168.0.0/16&amp;quot;
+  enable_dns_hostnames = &amp;quot;true&amp;quot;
+  tags = {
+    Name = &amp;quot;DEMO-BJ-VPC&amp;quot;
+  }
+}
+resource &amp;quot;aws_internet_gateway&amp;quot; &amp;quot;DEMO-BJ-GW&amp;quot; {
+  vpc_id = aws_vpc.DEMO-BJ-VPC.id
+  tags = {
+    Name = &amp;quot;demo-bj-gw&amp;quot;
+  }
+}
+
+resource &amp;quot;aws_subnet&amp;quot; &amp;quot;DEMO-BJ-public-a-1&amp;quot; {
+  vpc_id            = aws_vpc.DEMO-BJ-VPC.id
+  cidr_block        = &amp;quot;192.168.0.0/24&amp;quot;
+  availability_zone = &amp;quot;cn-north-1a&amp;quot;
+  tags = {
+    Name = &amp;quot;DEMO-BJ-public-a-1&amp;quot;
+  }
+}
+resource &amp;quot;aws_subnet&amp;quot; &amp;quot;DEMO-BJ-public-a-2&amp;quot; {
+  vpc_id            = aws_vpc.DEMO-BJ-VPC.id
+  cidr_block        = &amp;quot;192.168.1.0/24&amp;quot;
+  availability_zone = &amp;quot;cn-north-1a&amp;quot;
+  tags = {
+    Name = &amp;quot;DEMO-BJ-public-a-2&amp;quot;
+  }
+}
+
+resource &amp;quot;aws_route_table&amp;quot; &amp;quot;cn-north-1a-demo&amp;quot; {
+  vpc_id = aws_vpc.DEMO-BJ-VPC.id
+
+  route {
+    cidr_block = &amp;quot;0.0.0.0/0&amp;quot;
+    gateway_id = aws_internet_gateway.DEMO-BJ-GW.id
+  }
+  tags = {
+    Name = &amp;quot;cn-north-1a-demo&amp;quot;
+  }
+}
+
+resource &amp;quot;aws_main_route_table_association&amp;quot; &amp;quot;cn-north-1a-demo-public&amp;quot; {
+  vpc_id = aws_vpc.DEMO-BJ-VPC.id
+  route_table_id = aws_route_table.cn-north-1a-demo.id
+}
+
+resource &amp;quot;aws_security_group&amp;quot; &amp;quot;demo-bj-ec2-security-group&amp;quot; {
+  name        = &amp;quot;demo-bj-ec2-security-group&amp;quot;
+  description = &amp;quot;Allow incoming HTTP connections.&amp;quot;
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = &amp;quot;tcp&amp;quot;
+    cidr_blocks = [&amp;quot;0.0.0.0/0&amp;quot;]
+  }
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = &amp;quot;tcp&amp;quot;
+    cidr_blocks = [&amp;quot;0.0.0.0/0&amp;quot;]
+  }
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = &amp;quot;tcp&amp;quot;
+    cidr_blocks = [&amp;quot;0.0.0.0/0&amp;quot;]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = &amp;quot;-1&amp;quot;
+    cidr_blocks = [&amp;quot;0.0.0.0/0&amp;quot;]
+  }
+  tags = {
+    Name = &amp;quot;demo-bj-ec2-security-group&amp;quot;
+  }
+  vpc_id = aws_vpc.DEMO-BJ-VPC.id
+}
+
+resource &amp;quot;aws_eip&amp;quot; &amp;quot;demo-bj-ec2-eip-1&amp;quot; {
+  instance = aws_instance.DEMO-BJ-WEB-SERVER.id
+  vpc      = true
+  tags = {
+    Name = &amp;quot;demo-bj-eip&amp;quot;
+  }
+}
+
+resource &amp;quot;aws_instance&amp;quot; &amp;quot;DEMO-BJ-WEB-SERVER&amp;quot; {
+  ami                         = &amp;quot;ami-xxxxxxxxxx&amp;quot;
+  availability_zone           = &amp;quot;cn-north-1a&amp;quot;
+  instance_type               = &amp;quot;r5.large&amp;quot;
+  key_name                    = &amp;quot;DEMO-BJ-WEB_KeyPair&amp;quot;
+  vpc_security_group_ids      = [&amp;quot;${aws_security_group.demo-bj-ec2-security-group.id}&amp;quot;]
+  subnet_id                   = aws_subnet.DEMO-BJ-public-a-1.id
+  associate_public_ip_address = true
+  source_dest_check           = true
+  iam_instance_profile        = &amp;quot;AmazonSSMRoleForInstancesQuickSetup&amp;quot;
+  tags = {
+    Name = &amp;quot;DEMO-BJ-WEB-SERVER&amp;quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;for most of AWS resources, define resource name via tag &amp;ldquo;Name&amp;rdquo;&lt;/p&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;vars.tf
+define variables, like region&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;variable &amp;quot;AWS_REGION&amp;quot; {
+  default = &amp;quot;cn-north-1&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;define-gitlab-ci-file&#34;&gt;Define gitlab CI file&lt;/h2&gt;
+&lt;p&gt;edit gitlab-ci.yml file, content:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;stages:
+ - apply
+
+APPLY:
+  stage: apply 
+  script:
+    - terraform init
+    - terraform plan -out main.tf
+    - terraform apply &amp;quot;main.tf&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;conclusion&#34;&gt;conclusion&lt;/h2&gt;
+&lt;p&gt;Terraform is an awesome tool for managing resources on cloud platform, now you can run gitlab CI job to deploy vpc and EC2 instance in AWS.&lt;/p&gt;
+</description>
+      
+    </item>
     
     <item>
       <title>How to Develop DynamoDB Locally</title>
@@ -2805,112 +2977,6 @@ auto-aof-rewrite-min-size 64mb
 AOF备份所有的操作，数据更完整，但是效率略差，文件相对较大
 实际环境中，可以两者同时使用&lt;/p&gt;
 </description>
-      
-    </item>
-    
-    <item>
-      <title>Golang利用redis实现分布式锁</title>
-      <link>http://anakin.github.io/post/golang-redis-lock/</link>
-      <pubDate>Thu, 16 May 2019 20:11:09 +0800</pubDate>
-      
-      <guid>http://anakin.github.io/post/golang-redis-lock/</guid>
-      
-        <description>&lt;h2 id=&#34;原理&#34;&gt;原理&lt;/h2&gt;
-&lt;p&gt;使用SETNX命令(SET if Not eXists)&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;SETNX key value
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;将 key 的值设为 value，当且仅当 key 不存在。若给定的 key 已经存在，则 SETNX 不做任何动作。&lt;/p&gt;
-&lt;p&gt;设置成功，返回 1 。&lt;/p&gt;
-&lt;p&gt;设置失败，返回 0 。&lt;/p&gt;
-&lt;p&gt;为防止获取锁之后，忘记删除，成功后再设置一个过期时间&lt;/p&gt;
-&lt;p&gt;以上就是利用redis实现分布式锁的原理&lt;/p&gt;
-&lt;h2 id=&#34;代码&#34;&gt;代码&lt;/h2&gt;
-&lt;pre&gt;&lt;code&gt;package main
-
-import (
-	&amp;quot;fmt&amp;quot;
-	&amp;quot;github.com/gomodule/redigo/redis&amp;quot;
-	&amp;quot;log&amp;quot;
-	&amp;quot;time&amp;quot;
-)
-
-type Lock struct {
-	resource string
-	token    string
-	conn     redis.Conn
-	timeout  int
-}
-
-func (lock *Lock) tryLock() (ok bool, err error) {
-	_, err = redis.String(lock.conn.Do(&amp;quot;SET&amp;quot;, lock.key(), lock.token, &amp;quot;EX&amp;quot;, int(lock.timeout), &amp;quot;NX&amp;quot;))
-	if err == redis.ErrNil {
-		return false, nil
-	}
-	if err != nil {
-		return false, err
-	}
-	return true, nil
-}
-func (lock *Lock) Unlock() (err error) {
-	_, err = lock.conn.Do(&amp;quot;del&amp;quot;, lock.key())
-	return
-}
-
-func (lock *Lock) key() string {
-	return fmt.Sprintf(&amp;quot;redislock:%s&amp;quot;, lock.resource)
-}
-
-func (lock *Lock) AddTimeout(ex_time int64) (ok bool, err error) {
-	ttl_time, err := redis.Int64(lock.conn.Do(&amp;quot;TTL&amp;quot;, lock.key()))
-	fmt.Println(ttl_time)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if ttl_time &amp;gt; 0 {
-		fmt.Println(11)
-		_, err := redis.String(lock.conn.Do(&amp;quot;SET&amp;quot;, lock.key(), lock.token, &amp;quot;EX&amp;quot;, int(ttl_time+ex_time)))
-		if err == redis.ErrNil {
-			return false, nil
-		}
-		if err != nil {
-			return false, err
-		}
-	}
-	return false, nil
-}
-
-func TryLock(conn redis.Conn, resource string, token string, DefaultTimeout int) (lock *Lock, ok bool, err error) {
-	return TryLockWithTimeout(conn, resource, token, DefaultTimeout)
-}
-
-func TryLockWithTimeout(conn redis.Conn, resource string, token string, timeout int) (lock *Lock, ok bool, err error) {
-	lock = &amp;amp;Lock{resource: resource, token: token, conn: conn, timeout: timeout}
-	ok, err = lock.tryLock()
-	if !ok || err != nil {
-		lock = nil
-	}
-	return
-}
-
-func main() {
-	fmt.Println(&amp;quot;start&amp;quot;)
-	DefaultTimeout := 10
-	conn, err := redis.Dial(&amp;quot;tcp&amp;quot;, &amp;quot;localhost:6379&amp;quot;)
-	if err != nil {
-		log.Fatal(err)
-	}
-	lock, ok, err := TryLock(conn, &amp;quot;anakin.sun&amp;quot;, &amp;quot;token&amp;quot;, int(DefaultTimeout))
-	if err != nil {
-		log.Fatal(&amp;quot;error lock&amp;quot;)
-	}
-	if !ok {
-		log.Fatal(&amp;quot;lock fail&amp;quot;)
-	}
-	lock.AddTimeout(100)
-	time.Sleep(time.Duration(DefaultTimeout) * time.Second)
-	fmt.Println(&amp;quot;end&amp;quot;)
-	defer lock.Unlock()
-}
-&lt;/code&gt;&lt;/pre&gt;</description>
       
     </item>
     

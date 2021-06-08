@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>terraform on Anakin- 奔向NB的生活</title>
+    <link>http://anakin.github.io/tags/terraform/</link>
+    <description>Recent content in terraform on Anakin- 奔向NB的生活</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 08 Jun 2021 17:06:12 +0800</lastBuildDate><atom:link href="http://anakin.github.io/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Create AWS Vpc and Ec2 via Terraform</title>
+      <link>http://anakin.github.io/post/terraform-create-vpc-ec2/</link>
+      <pubDate>Tue, 08 Jun 2021 17:06:12 +0800</pubDate>
+      
+      <guid>http://anakin.github.io/post/terraform-create-vpc-ec2/</guid>
+      <description>What we will do  Create new VPC Create an Internet Gateway and a NAT gateway Define subnets Create security group Create EC2 instance Integration with gitlab CI  Define terraform file We will create few .tf files:
+ backend.tf for integration with gitlab CI, we need save state file on AWS S3 bucket, otherwise Terraform will create resources every time we run CI pipeline.  terraform { backend &amp;quot;s3&amp;quot; { key = &amp;quot;terraform-pipeline/terraform.</description>
+    </item>
+    
+  </channel>
+</rss>

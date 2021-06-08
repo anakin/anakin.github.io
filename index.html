@@ -277,6 +277,38 @@
   <header class="post-header">
     <h1 class="post-title">
       
+      <a class="post-link" href="/post/terraform-create-vpc-ec2/">Create AWS Vpc and Ec2 via Terraform</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2021-06-08" class="post-time">
+        2021-06-08
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      What we will do  Create new VPC Create an Internet Gateway and a NAT gateway Define subnets Create security group Create EC2 instance Integration with gitlab CI  Define terraform file We will create few .tf files:
+ backend.tf for integration with gitlab CI, we need save state file on AWS S3 bucket, otherwise Terraform will create resources every time we run CI pipeline.  terraform { backend &quot;s3&quot; { key = &quot;terraform-pipeline/terraform.
+    </div>
+    <div class="read-more">
+      <a href="/post/terraform-create-vpc-ec2/" class="read-more-link">Read more</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
       <a class="post-link" href="/post/develop-dynamodb-locally/">How to Develop DynamoDB Locally</a>
     </h1>
     
@@ -550,37 +582,6 @@ docker-compose up -d start with JAVA directly  java -Djava.library.path=./Dynamo
     </div>
     <div class="read-more">
       <a href="/post/docker-golang-php/" class="read-more-link">Read more</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/post/php-laravel-grpc/">Laravel整合gRPC</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2019-05-31" class="post-time">
-        2019-05-31
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      最近需要用Laravel实现一个Rest的API，后端调用Golang的RPC服务，记录一下整合的过程。 环境准备 php安装grpc和prot
-    </div>
-    <div class="read-more">
-      <a href="/post/php-laravel-grpc/" class="read-more-link">Read more</a>
     </div>
     
   </div>
